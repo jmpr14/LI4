@@ -1,0 +1,19 @@
+Funcionais:
+	-Sistema deverá disponibilizar para consulta todos os médicos e os seus serviços (preço à hora, descrição, especialidade, disponibilidade, ???) a todos os utilizadores.
+	-Todos os utilizadores que queiram usufruir dos serviços têm que se autenticar no site, tendo para isto que efectuar um registo.
+	-O registo envolve o preenchimento dos dados: (email, palavra-passe, nome completo, nif, data de nascimento, morada, nº de telemovel)
+	-Para iniciar sessão no site o utilizador tem que introduzir o email e password. Caso os dados não correspondam o utilizador continua com estatuto de visitante.
+	-Consulta por categorias médicas(?????)
+	-Utilizador precisa de estar autenticado para aceder à area pessoal
+	-Na área pessoal, o utilizador poderá editar o perfil, consultar histórico de consultas, ver as consultas agendadas
+	-Se o utilizador for "normal"/cliente poderá avaliar as consultas que fez na area pessoal, através do historico de consultas. Esta avaliação será numa escala de 1 a 5 (??).
+	-Ao agendar uma consulta o cliente autenticado terá que escolher um horário e dia em que o médico esteja livre. Esta consulta fica "pending" no sistema até o médico aceitar ou rejeitar.
+	-O administrador terá uma conta especial com mais privilégios.
+	-Os médicos terão que provar o seu estatuto no momento do registo. A conta fica em avaliação até ser aprovada pelo administrador.
+
+
+
+Nao funcionais:
+	-De modo a motivar e facilitar a utilizaçao o site deverá ter uma interface simples e intuitiva
+	-Visto que o objetivo é ser apresentado num browser terá que ser compativel com os navegadores web mais comuns (IE, firefox, chrome, opera, safari)
+	- falar de disponibilidade, downtime, segurança, ???
