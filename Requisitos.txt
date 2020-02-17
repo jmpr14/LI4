@@ -7,9 +7,15 @@ Funcionais:
 	-Utilizador precisa de estar autenticado para aceder à area pessoal
 	-Na área pessoal, o utilizador poderá editar o perfil, consultar histórico de consultas, ver as consultas agendadas
 	-Se o utilizador for "normal"/cliente poderá avaliar as consultas que fez na area pessoal, através do historico de consultas. Esta avaliação será numa escala de 1 a 5 (??).
-	-Ao agendar uma consulta o cliente autenticado terá que escolher um horário e dia em que o médico esteja livre. Esta consulta fica "pending" no sistema até o médico aceitar ou rejeitar.
 	-O administrador terá uma conta especial com mais privilégios.
 	-Os médicos terão que provar o seu estatuto no momento do registo. A conta fica em avaliação até ser aprovada pelo administrador.
+		
+		--> Agendamento de consultas
+	-Os clientes podem fazer pedidos de consulta que serão dados a conhecer a todos os médicos, nos quais se encontra especificada a disponibilidade do cliente 
+para a marcação de uma consulta.
+	-Um médico disponível, tendo em conta a disponibilidade do cliente, responderá a esse pedido agendando uma consulta para o cliente que enviou o pedido, 
+enviando para este uma notificação acerca da data da consulta com o nome do médico responsável pela mesma. Após isto, a consulta fica marcada.
+	-Ambos médicos e clientes podem desmarcar uma consulta, desde que seja, no mínimo com 12horas de antecedência.
 
 
 
