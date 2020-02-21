@@ -9,7 +9,7 @@ Na área pessoal, o utilizador/cliente poderá editar o perfil, consultar histó
 O cliente poderá ainda avaliar as consultas que fez na sua area pessoal, através do historico de consultas. Esta avaliação será numa escala de 1 a 5 estrelas.
 
 	- O administrador terá uma conta especial com mais privilégios, de entre os quais adicionar um novo médico à aplicação, mediante um prévio pedido de inscrição com esse estatuto
-e fazer a gestão de todas as contas registadas, nomeadamente, eliminar, bloquear, etc.
+e fazer a gestão de todas as contas registadas, nomeadamente, eliminar, bloquear, etc. Para além disso, o administrador é o responsável por definir o preço de cada consulta.
 
 	- Um convidado apenas tem a possibilidade de se inscrever como paciente ou de fazer um pedido de registo na aplicação como médico. No caso da segunda opção descrita anteriormente, 
 é enviado para o administrador uma notificação. O processo de comprovação do estatuto do médico é feito de forma completamente alheia à aplicação em si. Caso o candidato consiga provar os seus 
