@@ -22,7 +22,8 @@ estatutos ao administrador, este último regista o candidato na aplicação como
 	- Os clientes podem fazer pedidos de consulta que serão dados a conhecer a todos os médicos, nos quais se encontra especificada a disponibilidade do cliente 
 para a marcação de uma consulta.
 	- Um médico disponível, tendo em conta a disponibilidade do cliente, responderá a esse pedido agendando uma consulta para o cliente que enviou o pedido, 
-enviando para este uma notificação acerca da data da consulta com o nome do médico responsável pela mesma. Após isto, a consulta fica marcada.
+enviando para este uma notificação acerca da data da consulta com o nome do médico responsável pela mesma e com o respetivo preço de consulta definido à partida 
+pelo administrador. Após isto, a consulta fica marcada.
 	- Ambos médicos e clientes podem desmarcar uma consulta, desde que seja, no mínimo com 12horas de antecedência.
 
 
