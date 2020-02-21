@@ -3,12 +3,12 @@ Funcionais:
 	-Todos os utilizadores que queiram usufruir dos serviços têm que se autenticar no site, tendo para isto que efectuar um registo.
 	-O registo envolve o preenchimento dos dados: (email, palavra-passe, nome completo, nif, data de nascimento, morada, nº de telemovel)
 	-Para iniciar sessão no site o utilizador tem que introduzir o email e password. Caso os dados não correspondam o utilizador continua com estatuto de visitante.
-	-Consulta por categorias médicas(?????)
-	-Utilizador precisa de estar autenticado para aceder à area pessoal
-	-Na área pessoal, o utilizador poderá editar o perfil, consultar histórico de consultas, ver as consultas agendadas
-	-Se o utilizador for "normal"/cliente poderá avaliar as consultas que fez na area pessoal, através do historico de consultas. Esta avaliação será numa escala de 1 a 5 (??).
-	-O administrador terá uma conta especial com mais privilégios.
-	-Os médicos terão que provar o seu estatuto no momento do registo. A conta fica em avaliação até ser aprovada pelo administrador.
+	-Utilizador precisa de estar autenticado para aceder à area pessoal.
+	-Na área pessoal, o utilizador poderá editar o perfil, consultar histórico de consultas e ver as consultas agendadas.
+	-Se o utilizador for "normal"/cliente poderá avaliar as consultas que fez na area pessoal, através do historico de consultas. Esta avaliação será numa escala de 1 a 5 estrelas.
+	-O administrador terá uma conta especial com mais privilégios, de entre os quais adicionar um novo médico à aplicação e fazer a gestão de todas as contas registadas, 
+nomeadamente, eliminar, bloquear, etc.
+	-Os médicos terão que provar o seu estatuto no momento do registo com o administrado. A conta fica em avaliação até ser aprovada pelo administrador.
 		
 		--> Agendamento de consultas
 	-Os clientes podem fazer pedidos de consulta que serão dados a conhecer a todos os médicos, nos quais se encontra especificada a disponibilidade do cliente 
