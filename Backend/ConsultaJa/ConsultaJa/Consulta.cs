@@ -5,7 +5,7 @@ namespace ConsultaJa
 	public class Consulta
 	{
 		/**
-		 * Valores que caracterizam o estado 
+		 * Valores que caracterizam o estado
 		 * de uma consulta
 		 */
 		private static readonly int PEDIDO = 3;
@@ -45,25 +45,46 @@ namespace ConsultaJa
 		/**
 		 * Construtor para objetos da classe Consulta
 		 */
-		public Consulta(Paciente p, DateTime data_hora)
+		public Consulta(Paciente p, Medico m, int ano, int mes, int dia, int hora, int min, int sec)
 		{
 			this.id = -1;
-			this.m = null;
+			this.m = m;
 			this.p = p;
-			this.data_hora = data_hora;
+			this.data_hora = new DateTime(ano, mes, dia, hora, min, sec);
 			this.estado = PEDIDO;
 		}
 
+		/**
+		 * Método que retorna o id da consulta 
+		 * à qual é enviado o método
+		 */
+		public int getID()
+		{
+			return this.id;
+		}
+
+		/**
+		 * Método que permite marcar uma 
+		 * consulta como agendada
+		 */
 		public void agendar()
 		{
 			this.estado = AGENDADA;
 		}
 
+		/**
+		 * Método que permite marcar uma 
+		 * consulta como pendente
+		 */
 		public void pendente() 
 		{
 			this.estado = PENDENTE;
 		}
 
+		/**
+		 * Método que permite marcar uma 
+		 * consulta como realizada
+		 */
 		public void realizar()
 		{
 			this.estado = REALIZADA;

@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace ConsultaJa
 {
-    public class Medico
+    public class Medico : Conta
     {
         /**
          * Estrutura de dados que guarda os 
@@ -43,7 +44,8 @@ namespace ConsultaJa
          * Construtor para objetos 
          * da classe médico
          */
-        public Medico(string nif, string morada)
+        public Medico(string email, string password, string nome, DateTime dataNascimento, string nif, string morada) : 
+            base(email,password,nome,dataNascimento)
         {
             this.nif = nif;
             this.morada = morada;
@@ -87,7 +89,7 @@ namespace ConsultaJa
          */
         public void classificar(double classificacao)
         {
-            if (classificacao < 5 && classificacao > 0)
+            if (classificacao <= 5 && classificacao >= 0)
             {
                 this.classificacao *= (double)this.numClassificacoes;
                 this.classificacao += classificacao;
@@ -111,6 +113,13 @@ namespace ConsultaJa
             sb.Append(this.morada);
             sb.Append("; Classificação: ");
             sb.Append(this.classificacao);
+            sb.Append("; Contactos: {");
+            foreach (string s in this.contactos)
+            {
+                sb.Append(s);
+                sb.Append(", ");
+            }
+            sb.Append("}");
             return sb.ToString();
         }
     }

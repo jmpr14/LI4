@@ -7,6 +7,12 @@ namespace ConsultaJa
 	public class Paciente : Conta
 	{
 		/**
+		 * Variável de classe o número de 
+		 * consultas administradas
+		 */
+		private static int numConsultas = 0;
+
+		/**
 		 * Variável que guarda a morada do paciente 
 		 */
 		private string morada;
@@ -41,20 +47,20 @@ namespace ConsultaJa
 		 * Variável que guarda uma lista com todas 
 		 * as consultas agendadas para o paciente
 		 */
-		private List<Consulta> agendadas;
+		private Dictionary<int,Consulta> agendadas;
 
 		/**
 		 * Variável que guarda uma lista com o histórico 
 		 * de consultas administradas ao paciente
 		 */
-		private List<Consulta> historico;
+		private Dictionary<int,Consulta> historico;
 
 		/**
 		 * Variável que guarda uma lista com as consultas 
 		 * provisóriamente marcadas por médicos à espera 
 		 * da confirmação do próprio cliente
 		 */
-		private List<Consulta> pendentes;
+		private Dictionary<int,Consulta> pendentes;
 
 		/**
 		 * Construtor para objetos da classe Paciente 
@@ -65,9 +71,9 @@ namespace ConsultaJa
 			this.morada = morada;
 			this.nif = nif;
 			this.dataNascimento = dataNascimento;
-			this.agendadas = new List<Consulta>();
-			this.historico = new List<Consulta>();
-			this.pendentes = new List<Consulta>();
+			this.agendadas = new Dictionary<int, Consulta>();
+			this.historico = new Dictionary<int, Consulta>();
+			this.pendentes = new Dictionary<int, Consulta>();
 		}
 
 		/**
@@ -126,7 +132,7 @@ namespace ConsultaJa
 		 */
 		public void addInfo(string descricao, string info)
 		{
-			List<string> l;
+			List<string> l; ;
 			/* Se já existir a categoria adicionamos 
 			 * à respetiva lista */
 			if (this.infoGeral.TryGetValue(descricao, out l))
@@ -146,8 +152,21 @@ namespace ConsultaJa
 		 */
 		public void agendar(Consulta c)
 		{
-			this.agendadas.Add(c);
+			/* atribuimos um id à consulta
+			 * aquando da sua criação */
+			c.setID(numConsultas++);
+			this.agendadas.Add(c.getID(), c);
+			c.agendar();
 		}
+
+		/*
+		public void marcaPendente(Consulta c)
+		{
+			Consulta c;
+			if(this.agendadas.Remove(c))
+				this.pendentes
+		}
+		*/
 
 		/**
 		 * Implementação do método ToString 
