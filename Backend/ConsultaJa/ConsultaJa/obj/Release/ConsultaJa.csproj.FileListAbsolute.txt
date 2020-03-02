@@ -3,3 +3,9 @@ C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.exe
 C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.pdb
 C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.exe
 C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.pdb
+C:\Users\Asus\Documents\Universidade - 3ºano\Universidade - 2ºsemestre - 3ºano\Laboratórios de Informática IV\Projeto\trunk\Backend\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.csprojAssemblyReference.cache
+C:\Users\Asus\Documents\Universidade - 3ºano\Universidade - 2ºsemestre - 3ºano\Laboratórios de Informática IV\Projeto\trunk\Backend\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.exe
+C:\Users\Asus\Documents\Universidade - 3ºano\Universidade - 2ºsemestre - 3ºano\Laboratórios de Informática IV\Projeto\trunk\Backend\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.pdb
+C:\Users\Asus\Documents\Universidade - 3ºano\Universidade - 2ºsemestre - 3ºano\Laboratórios de Informática IV\Projeto\trunk\Backend\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.exe.config
+C:\Users\Asus\Documents\Universidade - 3ºano\Universidade - 2ºsemestre - 3ºano\Laboratórios de Informática IV\Projeto\trunk\Backend\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.exe
+C:\Users\Asus\Documents\Universidade - 3ºano\Universidade - 2ºsemestre - 3ºano\Laboratórios de Informática IV\Projeto\trunk\Backend\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.pdb

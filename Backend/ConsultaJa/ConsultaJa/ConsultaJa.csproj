@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Consulta.cs" />
     <Compile Include="Conta.cs" />
+    <Compile Include="Exceptions\ClassificacaoInvalida.cs" />
     <Compile Include="Exceptions\ContactoExistente.cs" />
     <Compile Include="Medico.cs" />
     <Compile Include="Paciente.cs" />

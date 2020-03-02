@@ -66,7 +66,7 @@ namespace ConsultaJa
 
 		public void realizar()
 		{
-			´this.estado = REALIZADA;
+			this.estado = REALIZADA;
 		}
 
 		/**

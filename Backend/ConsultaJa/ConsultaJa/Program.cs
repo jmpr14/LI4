@@ -10,8 +10,10 @@ namespace ConsultaJa
     {
         static void Main(string[] args)
         {
-            Paciente p = new Paciente("djhfiuehfsef@gmail.com","123456","456789123");
-            Console.WriteLine(p.ToString());
+            Medico m = new Medico("123789456", "Rua do Cruzeiro...");
+            m.classificar(4);
+            m.classificar(3);
+            Console.WriteLine(m.ToString());
         }
     }
 }

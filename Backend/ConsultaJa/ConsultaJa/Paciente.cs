@@ -33,6 +33,11 @@ namespace ConsultaJa
 		private DateTime dataNascimento;
 
 		/**
+		 * Variável que guarda o saldo do paciente 
+		 */
+		int saldo;
+
+		/**
 		 * Variável que guarda uma lista com todas 
 		 * as consultas agendadas para o paciente
 		 */
