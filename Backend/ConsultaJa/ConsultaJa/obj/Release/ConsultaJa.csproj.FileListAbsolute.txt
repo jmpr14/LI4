@@ -1,0 +1,5 @@
+C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.exe.config
+C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.exe
+C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\bin\Release\ConsultaJa.pdb
+C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.exe
+C:\Users\Asus\Documents\VStests\ConsultaJa\ConsultaJa\obj\Release\ConsultaJa.pdb
