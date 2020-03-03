@@ -36,6 +36,15 @@ namespace ConsultaJa
 		private DateTime dataNascimento;
 
 		/**
+		 * Método que retorna a string correspondente 
+		 * ao id da conta à qual é enviado o método
+		 */
+		public string getID()
+		{
+			return this.id;
+		}
+
+		/**
 		 * Método que retorna o mail associado 
 		 * à conta à qual é enviado o método
 		 */
