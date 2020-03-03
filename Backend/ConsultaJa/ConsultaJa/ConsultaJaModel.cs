@@ -99,9 +99,28 @@ namespace ConsultaJa
 			this.pacientes.Add(this.constroiID(p), p);
 		}
 
-		public void login(string email, string password)
+		/**
+		 * Método que permite fazer login na aplicação
+		 */
+		public void login(string id, string email, string password)
 		{
-			
+			if (id.Contains("P")){
+				Paciente p;
+				if (!this.pacientes.TryGetValue(id, out p))
+					throw new MailNaoRegistado("Conta inexistente");
+
+				if (p != null && !p.getPassword().Equals(password))
+					throw new PasswordErrada("Password incorreta");
+			}
+			if (id.Contains("M"))
+			{
+				Medico m;
+				if (!this.medicos.TryGetValue(id, out m))
+					throw new MailNaoRegistado("Conta inexistente");
+
+				if (m != null && !m.getPassword().Equals(password))
+					throw new PasswordErrada("Password incorreta");
+			}
 		}
 	}
 }

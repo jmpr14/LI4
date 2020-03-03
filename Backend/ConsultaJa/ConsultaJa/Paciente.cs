@@ -132,7 +132,7 @@ namespace ConsultaJa
 		 */
 		public void addInfo(string descricao, string info)
 		{
-			List<string> l; ;
+			List<string> l;
 			/* Se já existir a categoria adicionamos 
 			 * à respetiva lista */
 			if (this.infoGeral.TryGetValue(descricao, out l))
