@@ -182,5 +182,59 @@ namespace ConsultaJa
 			sb.Append(this.nif);
 			return sb.ToString();
 		}
+
+		/**
+         * Método que retorna o histórico 
+         * de um dado médico
+         */
+		public Dictionary<int, Consulta> getHistorico()
+		{
+			return this.historico;
+		}
+
+		public Dictionary<int, Consulta> getConsultasAgendadas()
+		{
+			return this.agendadas;
+		}
+
+		/**
+		 * Método que permite propor uma 
+		 * consulta a um paciente
+		 */
+		public void addPropostaConsulta(Consulta c)
+		{
+			this.pendentes.Add(c.getID(), c);
+		}
+
+		/**
+		 * Método que permite aceitar uma proposta 
+		 * de consulta fornecendo o id da respetiva 
+		 * consulta
+		 */
+		public void aceitarProposta(int idConsulta)
+		{
+			Consulta c;
+			if(this.pendentes.TryGetValue(idConsulta, out c))
+			{
+				/* Removemos a consulta da lista 
+				 * de pendentes */
+				this.pendentes.Remove(idConsulta);
+
+				/* Adicionamos à lista de agendadas */
+				this.agendadas.Add(c.getID(), c);
+			}
+		}
+
+		/**
+		 * Método que permite rejeitar uma proposta 
+		 * de consulta fornecendo o id da respetiva 
+		 * consulta
+		 */
+		public void rejeitarProposta(int idConsulta)
+		{
+			/* Apenas removemos a consulta da 
+			 * lista de pendentes */
+			this.pendentes.Remove(idConsulta);
+		}
 	}
 }

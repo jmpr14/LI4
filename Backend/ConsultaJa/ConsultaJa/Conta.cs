@@ -92,6 +92,18 @@ namespace ConsultaJa
 			this.nome = nome;
 			this.dataNascimento = dataNascimento;
 		}
+
+		/**
+		 * Método que permite alterar a password 
+		 * da conta, fornecendo a sua pass antiga
+		 */
+		public void alterarPassword(string password, string novaPass)
+		{
+			if (!this.password.Equals(password))
+				throw new PasswordErrada("Password incorreta");
+
+			this.password = novaPass;
+		}
 	}
 }
 

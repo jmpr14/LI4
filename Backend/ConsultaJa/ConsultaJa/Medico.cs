@@ -41,6 +41,27 @@ namespace ConsultaJa
         int saldo;
 
         /**
+         * Estrutura de dados que guarda o 
+         * histórico de consultas do médico
+         */
+        Dictionary<int, Consulta> historico;
+
+        /**
+         * Estrutura de dados que guarda o conjunto 
+         * de consultas agendadas para o médico
+         */
+        Dictionary<int, Consulta> agendadas;
+
+        /**
+         * Estrutura de dados que guarda o conjunto 
+         * de consultas pendentes para o médico. 
+         * Estas consultas são propostas por si 
+         * e aguardam aprovação do paciente envolvido 
+         * para passarem para agendadas
+         */
+        Dictionary<int, Consulta> pendentes;
+
+        /**
          * Construtor para objetos 
          * da classe médico
          */
@@ -53,6 +74,9 @@ namespace ConsultaJa
             this.numClassificacoes = 0;
             this.saldo = 0;
             this.contactos = new List<string>();
+            this.historico = new Dictionary<int, Consulta>();
+            this.agendadas = new Dictionary<int, Consulta>();
+            this.pendentes = new Dictionary<int, Consulta>();
         }
 
         /**
@@ -121,6 +145,20 @@ namespace ConsultaJa
             }
             sb.Append("}");
             return sb.ToString();
+        }
+
+        /**
+         * Método que retorna o histórico 
+         * de um dado médico
+         */
+        public Dictionary<int, Consulta> getHistorico()
+        {
+            return this.historico;
+        }
+
+        public Dictionary<int, Consulta> getConsultasAgendadas()
+        {
+            return this.agendadas;
         }
     }
 }

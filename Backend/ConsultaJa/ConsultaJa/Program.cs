@@ -10,13 +10,8 @@ namespace ConsultaJa
     {
         static void Main(string[] args)
         {
-            Medico m = new Medico("123789456", "Rua do Cruzeiro...");
-            m.classificar(4);
-            m.classificar(3);
-            m.classificar(3);
-            m.classificar(5);
-            m.addContacto("934752103");
-            Console.WriteLine(m.ToString());
+            ConsultaJaModel cjm = new ConsultaJaModel();
+            cjm.novoMedico("Miguel Oliveira", "migueloliveira985@gmail.com", "sdhawfebfse", null, new DateTime(1999, 08, 07), "Rua do Cruzeiro", "266951155");
         }
     }
 }

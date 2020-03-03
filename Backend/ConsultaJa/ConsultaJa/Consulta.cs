@@ -43,6 +43,21 @@ namespace ConsultaJa
 		private int estado;
 
 		/**
+		 * Variável que representa o preço 
+		 * de toda e qualquer consulta (em centimos)
+		 */
+		private static int preco = 15000;
+
+		/**
+		 * Método que permite alterar o 
+		 * preço das consultas
+		 */
+		public static void alterarPreco(int novoPreco)
+		{
+			Consulta.preco = novoPreco;
+		}
+
+		/**
 		 * Construtor para objetos da classe Consulta
 		 */
 		public Consulta(Paciente p, Medico m, int ano, int mes, int dia, int hora, int min, int sec)
@@ -61,6 +76,11 @@ namespace ConsultaJa
 		public int getID()
 		{
 			return this.id;
+		}
+
+		public Paciente getPaciente()
+		{
+			return this.p;
 		}
 
 		/**
@@ -108,6 +128,16 @@ namespace ConsultaJa
 		public void setID(int id)
 		{
 			this.id = id;
+		}
+
+		/**
+		 * Método que permite atribui um valor à variável 
+		 * médico de um objeto da classe `Consulta ao qual 
+		 * é enviado o método
+		 */
+		public void setMedico(Medico m)
+		{
+			this.m = m;
 		}
 	}
 }
