@@ -89,10 +89,12 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo médico na aplicação
 		 */
-		public void novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
+		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
 		{
+			String ret;
 			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada);
-			this.medicos.Add(this.constroiID(m), m);
+			this.medicos.Add((ret = this.constroiID(m)), m);
+			return ret;
 		}
 
 		/**
