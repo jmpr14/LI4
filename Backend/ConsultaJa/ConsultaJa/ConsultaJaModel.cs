@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsultaJa {
+namespace ConsultaJa
+{
 	public class ConsultaJaModel
 	{
 		/**
@@ -14,7 +15,7 @@ namespace ConsultaJa {
 		/**
 		 * Variável de classe que guarda o número 
 		 * de pacientes inscritos na aplicação
-		 */ 
+		 */
 		private static int nPacientes = 0;
 
 		/**
@@ -60,10 +61,10 @@ namespace ConsultaJa {
 		 * id aquando da criação de uma nova 
 		 * conta
 		 */
-		private string constroiID(Conta c) 
+		private string constroiID(Conta c)
 		{
 			StringBuilder sb = new StringBuilder();
-			if(c is Medico)
+			if (c is Medico)
 			{
 				sb.Append("M");
 				sb.Append(nMedicos++);
@@ -97,6 +98,10 @@ namespace ConsultaJa {
 			Paciente p = new Paciente(email, password, nome, morada, nif, dataNascimento);
 			this.pacientes.Add(this.constroiID(p), p);
 		}
-	}
 
+		public void login(string email, string password)
+		{
+			
+		}
+	}
 }
