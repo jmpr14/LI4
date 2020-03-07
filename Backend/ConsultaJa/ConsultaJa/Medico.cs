@@ -89,6 +89,16 @@ namespace ConsultaJa
         }
 
         /**
+         * Método que retorna a classificação do 
+         * objeto da classe Médico ao qual é enviado 
+         * o respetivo médico
+         */
+        public double getClassificacao()
+        {
+            return this.classificacao;
+        }
+
+        /**
          * Método que permite adicionar um certo 
          * numerário à carteira digital do médico
          */
@@ -159,6 +169,92 @@ namespace ConsultaJa
         public Dictionary<int, Consulta> getConsultasAgendadas()
         {
             return this.agendadas;
+        }
+
+        /**
+         * Método que permite adicionar uma consulta 
+         * pendente a um objeto da classe Medico
+         */
+        public void addPendente(Consulta c)
+        {
+            this.pendentes.Add(c.getID(), c);
+        }
+
+        /**
+         * Método que permite marcar uma consulta 
+         * pendente como agendada caso ela existe 
+         * no estado pendente
+         */
+        public void agendar(int idConsulta)
+        {
+            Consulta c;
+            if (this.pendentes.TryGetValue(idConsulta, out c))
+            {
+                /* Marcamos a consulta como agendada */
+                c.agendar();
+
+                /* Removemos a consulta da lista 
+				 * de pendentes */
+                this.pendentes.Remove(idConsulta);
+
+                /* Adicionamos à lista de agendadas */
+                this.agendadas.Add(c.getID(), c);
+            }
+        }
+
+        /**
+		 * Método que move uma consulta da lista 
+		 * de agendadas para o histórico
+		 */
+        public void moveParaHistorico(int idConsulta)
+        {
+            Consulta c;
+            if (this.agendadas.TryGetValue(idConsulta, out c))
+            {
+                /* Marcamos a consulta como realizada */
+                c.realizar();
+
+                /* Removemos a consulta da lista 
+				 * das agendadas */
+                this.agendadas.Remove(idConsulta);
+
+                /* Adicionamos a consulta ao histórico */
+                this.historico.Add(c.getID(), c);
+            }
+        }
+
+        /**
+         * Método que permite desmarcar a consulta de um médico
+         */
+        public void desmarcarConsulta(int idConsulta)
+        {
+            /* Removemos a consulta da lista das agendadas */
+            this.agendadas.Remove(idConsulta);
+        }
+
+        /**
+		 * Método que permite efetuar um carregamento 
+		 * para a carteira digital de um cliente na 
+		 * aplicação
+		 */
+        public int efetuaCarregamento(int montante)
+        {
+            return this.saldo += montante;
+        }
+
+        /**
+         * Implementação do método equals 
+         * para objetos da classe Medico
+         */
+        public override bool Equals(object obj)
+        {
+            if (this == obj) return true;
+
+            if (obj == null || !this.GetType().Equals(obj.GetType())) return false;
+
+            Medico m = (Medico)obj;
+
+            return m.getID().Equals(this.getID());
         }
     }
 }

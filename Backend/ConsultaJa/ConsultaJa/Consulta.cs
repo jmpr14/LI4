@@ -111,6 +111,17 @@ namespace ConsultaJa
 		}
 
 		/**
+		 * Método que permite desmarcar uma consulta
+		 */
+		public void desmarcar()
+		{
+			/* Eliminamos a consulta quer para 
+			 * o paciente quer para o médico */
+			this.m.desmarcarConsulta(this.id);
+			this.p.desmarcarConsulta(this.id);
+		}
+
+		/**
 		 * Método que permite associar um médico a uma 
 		 * consulta, visto que no princípio tal não é feito, 
 		 * tendo em conta que no princípio temos apenas um 

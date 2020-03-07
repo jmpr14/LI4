@@ -7,7 +7,7 @@ namespace ConsultaJa
 	public class Paciente : Conta
 	{
 		/**
-		 * Variável de classe o número de 
+		 * Variável de classe que guarda o número de 
 		 * consultas administradas
 		 */
 		private static int numConsultas = 0;
@@ -71,6 +71,8 @@ namespace ConsultaJa
 			this.morada = morada;
 			this.nif = nif;
 			this.dataNascimento = dataNascimento;
+			this.saldo = 0;
+			this.infoGeral = new Dictionary<string, List<string>>();
 			this.agendadas = new Dictionary<int, Consulta>();
 			this.historico = new Dictionary<int, Consulta>();
 			this.pendentes = new Dictionary<int, Consulta>();
@@ -216,12 +218,36 @@ namespace ConsultaJa
 			Consulta c;
 			if(this.pendentes.TryGetValue(idConsulta, out c))
 			{
+				/* Marcamos a consulta como agendada */
+				c.agendar();
+
 				/* Removemos a consulta da lista 
 				 * de pendentes */
 				this.pendentes.Remove(idConsulta);
 
 				/* Adicionamos à lista de agendadas */
 				this.agendadas.Add(c.getID(), c);
+			}
+		}
+
+		/**
+		 * Método que move uma consulta da lista 
+		 * de agendadas para o histórico
+		 */
+		public void moveParaHistorico(int idConsulta)
+		{
+			Consulta c;
+			if(this.agendadas.TryGetValue(idConsulta, out c))
+			{
+				/* Marcamos a consulta como realizada */
+				c.realizar();
+
+				/* Removemos a consulta da lista 
+				 * das agendadas */
+				this.agendadas.Remove(idConsulta);
+
+				/* Adicionamos a consulta ao histórico */
+				this.historico.Add(c.getID(), c);
 			}
 		}
 
@@ -235,6 +261,40 @@ namespace ConsultaJa
 			/* Apenas removemos a consulta da 
 			 * lista de pendentes */
 			this.pendentes.Remove(idConsulta);
+		}
+
+		/**
+         * Método que permite desmarcar a consulta de um médico
+         */
+		public void desmarcarConsulta(int idConsulta)
+		{
+			/* Removemos a consulta da lista das agendadas */
+			this.agendadas.Remove(idConsulta);
+		}
+
+		/**
+		 * Método que permite efetuar um carregamento 
+		 * para a carteira digital de um cliente na 
+		 * aplicação
+		 */
+		public int efetuaCarregamento(int montante)
+		{
+			return this.saldo += montante;
+		}
+
+		/**
+         * Implementação do método equals 
+         * para objetos da classe Medico
+         */
+		public override bool Equals(object obj)
+		{
+			if (this == obj) return true;
+
+			if (obj == null || !this.GetType().Equals(obj.GetType())) return false;
+
+			Paciente p = (Paciente)obj;
+
+			return p.getID().Equals(this.getID());
 		}
 	}
 }

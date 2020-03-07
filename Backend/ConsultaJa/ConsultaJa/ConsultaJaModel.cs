@@ -101,24 +101,32 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo paciente na aplicação
 		 */
-		public void novoPaciente(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
+		public String novoPaciente(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
 		{
+			String ret;
 			Paciente p = new Paciente(email, password, nome, morada, nif, dataNascimento);
-			this.pacientes.Add(this.constroiID(p), p);
+			this.pacientes.Add((ret = this.constroiID(p)), p);
+			return ret;
 		}
 
 		/**
 		 * Método que permite fazer login na aplicação
 		 */
-		public void login(string id, string email, string password)
+		public Conta login(string id, string email, string password)
 		{
+			Conta ret = null;
 			if (id.Contains("P")){
 				Paciente p;
 				if (!this.pacientes.TryGetValue(id, out p))
 					throw new MailNaoRegistado("Conta inexistente");
 
+				if (!p.getEmail().Equals(email))
+					throw new MailNaoRegistado("Mail introduzido não correspondente");
+
 				if (p != null && !p.getPassword().Equals(password))
 					throw new PasswordErrada("Password incorreta");
+
+				ret = p;
 			}
 			if (id.Contains("M"))
 			{
@@ -126,9 +134,15 @@ namespace ConsultaJa
 				if (!this.medicos.TryGetValue(id, out m))
 					throw new MailNaoRegistado("Conta inexistente");
 
+				if(!m.getEmail().Equals(email))
+					throw new MailNaoRegistado("Mail introduzido não correspondente");
+
 				if (m != null && !m.getPassword().Equals(password))
 					throw new PasswordErrada("Password incorreta");
+
+				ret = m;
 			}
+			return ret;
 		}
 
 		/**
@@ -240,7 +254,9 @@ namespace ConsultaJa
 
 		/**
 		 * Método que permite a um médico propor 
-		 * uma consulta a um paciente
+		 * uma consulta a um paciente, tendo este 
+		 * previamente criado uma solicitação de 
+		 * consulta
 		 */
 		public void proporConsulta(int idConsulta, Medico m)
 		{
@@ -262,6 +278,44 @@ namespace ConsultaJa
 			foreach (Consulta c in this.pedidos.Values)
 				ret.Add(c);
 			return ret;
+		}
+
+		/**
+		 * Método que permite desmarcar uma 
+		 * consulta fornecendo o id do utente 
+		 * autenticado e o id da consulta a 
+		 * ser desmarcada
+		 */
+		public void desmarcaConsulta(string id, int idConsulta)
+		{
+			/* Em primeiro lugar vamos testar se o 
+			 * pedido de desmarcação foi feito 
+			 * por um médico */
+			if (id.Contains("M"))
+			{
+				Medico m;
+				if (this.medicos.TryGetValue(id, out m))
+				{
+					foreach(Consulta c in m.getConsultasAgendadas().Values)
+					{
+						if (c.getID().Equals(idConsulta))
+							c.desmarcar();
+					}
+
+				}
+			}
+			else
+			{
+				Paciente p;
+				if(this.pacientes.TryGetValue(id, out p))
+				{
+					foreach(Consulta c in p.getConsultasAgendadas().Values)
+					{
+						if (c.getID().Equals(idConsulta))
+							c.desmarcar();
+					}
+				}
+			}
 		}
 	}
 }
