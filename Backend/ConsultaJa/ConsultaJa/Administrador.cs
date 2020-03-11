@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace ConsultaJa
 {
-    public class Administrador : Conta 
+    public class Administrador : Conta
     {
         /**
          * Variável que guarda os pedidos
-         * de inscrição para médicos. Notar 
+         * de inscrição para médicos. Notar
          * que neste Map a chave é o email
          */
         private Dictionary<string, Medico> pedidosInsc;

@@ -15,5 +15,16 @@ namespace ConsultaJaDB
 		{
 			MySqlConnection msc = new MySqlConnection("");
 		}
+
+		/**
+		 * Método que permite obter um único 
+		 * objeto da classe ContaDAO
+		 */
+		public ContaDAO getInstance()
+		{
+			if (ContaDAO.inst == null)
+				ContaDAO.inst = new ContaDAO();
+			return inst;
+		}
 	}
 }
