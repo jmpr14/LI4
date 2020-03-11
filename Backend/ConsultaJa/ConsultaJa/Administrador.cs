@@ -50,5 +50,25 @@ namespace ConsultaJa
                 this.pedidosInsc.Remove(email);
             return m;
         }
+
+        /**
+         * Implementação obrigatória do método 
+         * getHistorico() para superclasses 
+         * da classe Conta
+         */
+        public override Dictionary<int, Consulta> getHistorico()
+        {
+            return null;
+        }
+
+        /**
+         * Implementação obrigatória do método 
+         * getConsultasAgendadas() para 
+         * superclasses da classe Conta
+         */
+        public override Dictionary<int, Consulta> getConsultasAgendadas()
+        {
+            return null;
+        }
     }
 }

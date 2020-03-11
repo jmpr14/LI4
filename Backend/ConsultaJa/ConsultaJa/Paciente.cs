@@ -189,12 +189,12 @@ namespace ConsultaJa
          * Método que retorna o histórico 
          * de um dado médico
          */
-		public Dictionary<int, Consulta> getHistorico()
+		public override Dictionary<int, Consulta> getHistorico()
 		{
 			return this.historico;
 		}
 
-		public Dictionary<int, Consulta> getConsultasAgendadas()
+		public override Dictionary<int, Consulta> getConsultasAgendadas()
 		{
 			return this.agendadas;
 		}

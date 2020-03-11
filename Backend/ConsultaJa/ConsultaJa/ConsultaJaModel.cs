@@ -7,7 +7,7 @@ namespace ConsultaJa
 	public class ConsultaJaModel
 	{
 		/**
-		 * Variável de classe que guarda o número 
+		 * Variável de classe que guarda o número
 		 * de médicos inscritos na aplicação
 		 */
 		private static int nMedicos = 0;
@@ -19,7 +19,7 @@ namespace ConsultaJa
 		private static int nPacientes = 0;
 
 		/**
-		 * Variável de classe que guarda o número 
+		 * Variável de classe que guarda o número
 		 * de consultas solicitadas por clientes
 		 */
 		private static int nConsultas = 0;
@@ -28,13 +28,7 @@ namespace ConsultaJa
 		 * Estrutura de dados que guarda todos 
 		 * os médicos registados na aplicação
 		 */
-		private Dictionary<string, Medico> medicos;
-
-		/**
-		 * Estrutura de dados que guarda todos 
-		 * os pacientes registados na aplicação
-		 */
-		private Dictionary<string, Paciente> pacientes;
+		private Dictionary<string, Conta> contas;
 
 		/**
 		 * Estrutura de dados que guarda o conjunto 
@@ -63,8 +57,7 @@ namespace ConsultaJa
 		 */
 		public ConsultaJaModel()
 		{
-			this.medicos = new Dictionary<string, Medico>();
-			this.pacientes = new Dictionary<string, Paciente>();
+			this.contas = new Dictionary<string, Conta>();
 			this.pedidos = new Dictionary<int, Consulta>();
 		}
 
@@ -95,11 +88,11 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo médico na aplicação
 		 */
-		private string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
+		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
 		{
 			String ret;
 			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada);
-			this.medicos.Add((ret = this.constroiID(m)), m);
+			this.contas.Add((ret = this.constroiID(m)), m);
 			return ret;
 		}
 
@@ -111,7 +104,7 @@ namespace ConsultaJa
 		{
 			String ret;
 			Paciente p = new Paciente(email, password, nome, morada, nif, dataNascimento);
-			this.pacientes.Add((ret = this.constroiID(p)), p);
+			this.contas.Add((ret = this.constroiID(p)), p);
 			return ret;
 		}
 
@@ -121,33 +114,16 @@ namespace ConsultaJa
 		public Conta login(string id, string email, string password)
 		{
 			Conta ret = null;
-			if (id.Contains("P")){
-				Paciente p;
-				if (!this.pacientes.TryGetValue(id, out p))
-					throw new MailNaoRegistado("Conta inexistente");
 
-				if (!p.getEmail().Equals(email))
-					throw new MailNaoRegistado("Mail introduzido não correspondente");
+			if (!this.contas.TryGetValue(id, out ret))
+				throw new MailNaoRegistado("Conta inexistente");
 
-				if (p != null && !p.getPassword().Equals(password))
-					throw new PasswordErrada("Password incorreta");
+			if (!ret.getEmail().Equals(email))
+				throw new MailNaoRegistado("Mail introduzido não correspondente");
 
-				ret = p;
-			}
-			if (id.Contains("M"))
-			{
-				Medico m;
-				if (!this.medicos.TryGetValue(id, out m))
-					throw new MailNaoRegistado("Conta inexistente");
+			if (ret != null && !ret.getPassword().Equals(password))
+				throw new PasswordErrada("Password incorreta");
 
-				if(!m.getEmail().Equals(email))
-					throw new MailNaoRegistado("Mail introduzido não correspondente");
-
-				if (m != null && !m.getPassword().Equals(password))
-					throw new PasswordErrada("Password incorreta");
-
-				ret = m;
-			}
 			return ret;
 		}
 
@@ -157,10 +133,11 @@ namespace ConsultaJa
 		 */
 		public void avaliarMedico(string idMedico, int classificacao)
 		{
-			Medico m;
-			if (this.medicos.TryGetValue(idMedico, out m))
-				m.classificar(classificacao);
-			else throw new MailNaoRegistado("Id de médico a avaliar inexistente");
+			Conta c;
+			if (this.contas.TryGetValue(idMedico, out c) && c is Medico)
+				((Medico)c).classificar(classificacao);
+			else 
+				throw new MailNaoRegistado("Id de médico a avaliar inexistente");
 		}
 
 		/**
@@ -170,18 +147,11 @@ namespace ConsultaJa
 		public Dictionary<int, Consulta> getHistorico(string id)
 		{
 			Dictionary<int, Consulta> ret = null;
-			if (id.Contains("M"))
-			{
-				Medico m;
-				if (this.medicos.TryGetValue(id, out m))
-					ret = m.getHistorico();
-			}
+			Conta c;
+			if (this.contas.TryGetValue(id, out c))
+				ret = c.getHistorico();
 			else
-			{
-				Paciente p;
-				if (this.pacientes.TryGetValue(id, out p))
-					ret = p.getHistorico();
-			}
+				throw new MailNaoRegistado("Id fornecido não é válido!");
 			return ret;
 		}
 
@@ -193,18 +163,11 @@ namespace ConsultaJa
 		public Dictionary<int, Consulta> getConsultasAgendadas(string id)
 		{
 			Dictionary<int, Consulta> ret = null;
-			if (id.Contains("M"))
-			{
-				Medico m;
-				if (this.medicos.TryGetValue(id, out m))
-					ret = m.getConsultasAgendadas();
-			}
+			Conta c;
+			if (this.contas.TryGetValue(id, out c))
+				ret = c.getConsultasAgendadas();
 			else
-			{
-				Paciente p;
-				if (this.pacientes.TryGetValue(id, out p))
-					ret = p.getConsultasAgendadas();
-			}
+				throw new MailNaoRegistado("Id fornecido não é válido!");
 			return ret;
 		}
 
@@ -223,23 +186,11 @@ namespace ConsultaJa
 		 */
 		public void alterarPassword(string id, string password, string novaPass)
 		{
-			if (id.Contains("M"))
-			{
-				Medico m;
-				if (this.medicos.TryGetValue(id, out m))
-					m.alterarPassword(password, novaPass);
-				else
-					throw new MailNaoRegistado("Conta inexistente");
-			}
-
-			if(id.Contains("P"))
-			{
-				Paciente p;
-				if (this.pacientes.TryGetValue(id, out p))
-					p.alterarPassword(password, novaPass);
-				else 
-					throw new MailNaoRegistado("Conta inexistente");
-			}
+			Conta c;
+			if (this.contas.TryGetValue(id, out c))
+				c.alterarPassword(password, novaPass);
+			else
+				throw new MailNaoRegistado("Id fornecido não é válido!");
 		}
 
 		/**
@@ -248,14 +199,17 @@ namespace ConsultaJa
 		 */
 		public void solicitarConsulta(string idPaciente, int ano, int mes, int dia, int hora, int minuto)
 		{
-			Paciente p;
-			if (this.pacientes.TryGetValue(idPaciente, out p)) {
-				Consulta c = new Consulta(p, null, ano, mes, dia, hora, minuto, 0);
+			Conta cc;
+			if (this.contas.TryGetValue(idPaciente, out cc) && cc is Paciente)
+			{
+				Consulta c = new Consulta((Paciente)cc, null, ano, mes, dia, hora, minuto, 0);
 				/* Atribuimos id à consulta e 
 				 * adicionamos aos pedidos */
 				c.setID(nConsultas);
 				this.pedidos.Add(nConsultas++, c);
 			}
+			else
+				throw new MailNaoRegistado("Não existe um paciente com esse id!");
 		}
 
 		/**
@@ -297,31 +251,13 @@ namespace ConsultaJa
 			/* Em primeiro lugar vamos testar se o 
 			 * pedido de desmarcação foi feito 
 			 * por um médico */
-			if (id.Contains("M"))
-			{
-				Medico m;
-				if (this.medicos.TryGetValue(id, out m))
+			Conta c;
+			if(this.contas.TryGetValue(id, out c))
+				foreach(Consulta cc in c.getConsultasAgendadas().Values)
 				{
-					foreach(Consulta c in m.getConsultasAgendadas().Values)
-					{
-						if (c.getID().Equals(idConsulta))
-							c.desmarcar();
-					}
-
+					if (cc.getID().Equals(idConsulta))
+						cc.desmarcar();
 				}
-			}
-			else
-			{
-				Paciente p;
-				if(this.pacientes.TryGetValue(id, out p))
-				{
-					foreach(Consulta c in p.getConsultasAgendadas().Values)
-					{
-						if (c.getID().Equals(idConsulta))
-							c.desmarcar();
-					}
-				}
-			}
 		}
 
 		/**
@@ -332,14 +268,16 @@ namespace ConsultaJa
 		 */
 		public void efetuaCarregamento(string idPaciente, int montante)
 		{
-			Paciente p;
-			if (this.pacientes.TryGetValue(idPaciente, out p))
+			Conta c;
+			if (this.contas.TryGetValue(idPaciente, out c) && c is Paciente)
 			{
-				p.efetuaCarregamento(montante);
+				((Paciente)c).efetuaCarregamento(montante);
 			}
-			/* Se o id de paciente não estiver atribuido lançamos exceção */
+			/* Se o id de paciente não estiver 
+			 * atribuido lançamos exceção 
+			 */
 			else
-				throw new MailNaoRegistado("Impossível efetuar carregamento. Conta inexistente.");
+				throw new MailNaoRegistado("Impossível efetuar carregamento. Conta de paciente inexistente.");
 		}
 
 		/**

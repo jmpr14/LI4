@@ -3,7 +3,6 @@ using MySql.Data.MySqlClient;
 
 namespace ConsultaJaDB
 {
-
 	/**
 	 * Classe que permite aceder à base de dados 
 	 * e extrair informações relacionadas 

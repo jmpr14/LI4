@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsultaJa
 {
@@ -79,6 +80,18 @@ namespace ConsultaJa
 		{
 			return this.dataNascimento;
 		}
+
+		/**
+		 * Método que retorna o histórico de uma conta
+		 */
+		public abstract Dictionary<int, Consulta> getHistorico();
+
+		/**
+		 * Método que retorna um conjunto de consultas 
+		 * agendadas associadas à conta à qual é 
+		 * enviado o método
+		 */
+		public abstract Dictionary<int, Consulta> getConsultasAgendadas();
 
 		/**
 		 * Método que permite atribuir um valor à 
