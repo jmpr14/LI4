@@ -6,11 +6,6 @@ namespace ConsultaJa
 {
 	public class Paciente : Conta
 	{
-		/**
-		 * Variável de classe que guarda o número de 
-		 * consultas administradas
-		 */
-		private static int numConsultas = 0;
 
 		/**
 		 * Variável que guarda a morada do paciente 
@@ -146,19 +141,6 @@ namespace ConsultaJa
 				l.Add(info);
 				this.infoGeral.Add(descricao, l);
 			}
-		}
-
-		/**
-		 * Método que permite agendar uma consulta 
-		 * para o cliente ao qual é enviado o método
-		 */
-		public void agendar(Consulta c)
-		{
-			/* atribuimos um id à consulta
-			 * aquando da sua criação */
-			c.setID(numConsultas++);
-			this.agendadas.Add(c.getID(), c);
-			c.agendar();
 		}
 
 		/*
