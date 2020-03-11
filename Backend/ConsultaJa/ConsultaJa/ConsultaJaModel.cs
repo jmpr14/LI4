@@ -13,7 +13,7 @@ namespace ConsultaJa
 		private static int nMedicos = 0;
 
 		/**
-		 * Variável de classe que guarda o número 
+		 * Variável de classe que guarda o número
 		 * de pacientes inscritos na aplicação
 		 */
 		private static int nPacientes = 0;
@@ -38,16 +38,17 @@ namespace ConsultaJa
 
 		/**
 		 * Estrutura de dados que guarda o conjunto 
-		 * de todas as consultas agendadas
-		 */
-		private Dictionary<int, Consulta> agendadas;
-
-		/**
-		 * Estrutura de dados que guarda o conjunto 
 		 * de todos os pedidos de consulta solicitados 
 		 * por parte de pacientes
 		 */
 		private Dictionary<int, Consulta> pedidos;
+
+		/**
+		 * Variável que indica o saldo já angariado 
+		 * na administração de consultas para 
+		 * pacientes
+		 */
+		private int saldo;
 
 		/**
 		 * Construtor para objetos da classe ConsultaJaModel, 
@@ -58,7 +59,6 @@ namespace ConsultaJa
 		{
 			this.medicos = new Dictionary<string, Medico>();
 			this.pacientes = new Dictionary<string, Paciente>();
-			this.agendadas = new Dictionary<int, Consulta>();
 			this.pedidos = new Dictionary<int, Consulta>();
 		}
 
@@ -316,6 +316,24 @@ namespace ConsultaJa
 					}
 				}
 			}
+		}
+
+		/**
+		 * Método que permite efetuar carregamento de 
+		 * um certo montante na carteira digital do 
+		 * paciente cujo id é enviado como parâmetro 
+		 * do método
+		 */
+		public void efetuaCarregamento(string idPaciente, int montante)
+		{
+			Paciente p;
+			if (this.pacientes.TryGetValue(idPaciente, out p))
+			{
+				p.efetuaCarregamento(montante);
+			}
+			/* Se o id de paciente não estiver atribuido lançamos exceção */
+			else
+				throw new MailNaoRegistado("Impossível efetuar carregamento. Conta inexistente.");
 		}
 	}
 }
