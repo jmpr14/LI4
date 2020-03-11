@@ -72,6 +72,15 @@ namespace ConsultaJa
 		}
 
 		/**
+		 * Método que retorna a data de 
+		 * nascimento associada à conta
+		 */
+		public DateTime getDataNascimento()
+		{
+			return this.dataNascimento;
+		}
+
+		/**
 		 * Método que permite atribuir um valor à 
 		 * variável id do objeto da classe conta ao 
 		 * qual é enviado o método

@@ -99,6 +99,24 @@ namespace ConsultaJa
         }
 
         /**
+         * Método que retorna a morada do objeto da 
+         * classe Medico ao qual é enviado o método
+         */
+        public string getMorada()
+        {
+            return this.morada;
+        }
+
+        /**
+         * Método que retorna o nif do objeto da 
+         * classe Medico ao qual é enviado o método
+         */
+        public string getNif()
+        {
+            return this.nif;
+        }
+
+        /**
          * Método que permite adicionar um certo 
          * numerário à carteira digital do médico
          */

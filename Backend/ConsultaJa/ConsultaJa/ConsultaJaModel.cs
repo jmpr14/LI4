@@ -44,6 +44,12 @@ namespace ConsultaJa
 		private Dictionary<int, Consulta> pedidos;
 
 		/**
+		 * Variável que guarda a conta com 
+		 * direitos de administração
+		 */
+		private Administrador admin;
+
+		/**
 		 * Variável que indica o saldo já angariado 
 		 * na administração de consultas para 
 		 * pacientes
@@ -89,7 +95,7 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo médico na aplicação
 		 */
-		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
+		private string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
 		{
 			String ret;
 			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada);
@@ -334,6 +340,32 @@ namespace ConsultaJa
 			/* Se o id de paciente não estiver atribuido lançamos exceção */
 			else
 				throw new MailNaoRegistado("Impossível efetuar carregamento. Conta inexistente.");
+		}
+
+		/**
+		 * Método que permite fazer um novo 
+		 * pedido de inscrição de um médico
+		 */
+		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada)
+		{
+			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada);
+			this.admin.fazerPedido(m);
+		}
+
+		/**
+		 * Método que permite aceitar ou rejeitar um 
+		 * pedido de inscrição feito por parte de um médico
+		 */
+		public string trataPedido(string email, Boolean action)
+		{
+			string idM = null;
+			Medico m = this.admin.removerPedido(email);
+			if (action)
+			{
+				idM = this.novoMedico(m.getNome(), m.getEmail(), m.getPassword(), null, 
+					m.getDataNascimento(), m.getMorada(), m.getNif());
+			}
+			return idM;
 		}
 	}
 }
