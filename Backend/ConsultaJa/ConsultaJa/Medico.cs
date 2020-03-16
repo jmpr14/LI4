@@ -10,35 +10,41 @@ namespace ConsultaJa
          * Estrutura de dados que guarda os 
          * diferentes contactos de cada médico
          */
-        List<string> contactos;
+        private List<string> contactos;
 
         /**
          * Variável que guarda a morada do médico
          */
-        string morada;
+        private string morada;
 
         /**
          * Variável que guarda o nif do médico
          */
-        string nif;
+        private string nif;
 
         /**
          * Variável que guarda a classificação 
          * do médico em questão
          */
-        double classificacao;
+        private double classificacao;
 
         /**
          * Variável que guarda a quantidade 
          * de classificações feitas ao médico
          */
-        int numClassificacoes;
+        private int numClassificacoes;
 
         /**
          * Variável que guarda o saldo 
          * do médico em questão
          */
-        int saldo;
+        private int saldo;
+
+        /**
+         * Variável de instância que guarda 
+         * o código postal pertencente ao médico
+         */
+        private string codigo_postal;
 
         /**
          * Estrutura de dados que guarda o 
@@ -65,7 +71,7 @@ namespace ConsultaJa
          * Construtor para objetos 
          * da classe médico
          */
-        public Medico(string email, string password, string nome, DateTime dataNascimento, string nif, string morada) : 
+        public Medico(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal) : 
             base(email,password,nome,dataNascimento)
         {
             this.nif = nif;
@@ -74,6 +80,7 @@ namespace ConsultaJa
             this.numClassificacoes = 0;
             this.saldo = 0;
             this.contactos = new List<string>();
+            this.codigo_postal = codigo_postal;
             this.historico = new Dictionary<int, Consulta>();
             this.agendadas = new Dictionary<int, Consulta>();
             this.pendentes = new Dictionary<int, Consulta>();
@@ -114,6 +121,24 @@ namespace ConsultaJa
         public string getNif()
         {
             return this.nif;
+        }
+
+        /**
+         * Método que permite obter o número 
+         * de classificações feitas a um médico
+         */
+        public int getNumClassificacoes()
+        {
+            return this.numClassificacoes;
+        }
+
+        /**
+         * Método que retorna o código 
+         * postal de um médico
+         */
+        public string getCodigo_Postal()
+        {
+            return this.codigo_postal;
         }
 
         /**

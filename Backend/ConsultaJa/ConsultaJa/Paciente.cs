@@ -36,7 +36,13 @@ namespace ConsultaJa
 		/**
 		 * Variável que guarda o saldo do paciente 
 		 */
-		int saldo;
+		private int saldo;
+
+		/**
+		 * Variável de instância que corresponde ao 
+		 * código postal do paciente
+		 */
+		private string codigo_postal;
 
 		/**
 		 * Variável que guarda uma lista com todas 
@@ -60,13 +66,14 @@ namespace ConsultaJa
 		/**
 		 * Construtor para objetos da classe Paciente 
 		 */
-		public Paciente(string email, string password, string nome, string morada, string nif, DateTime dataNascimento) : 
+		public Paciente(string email, string password, string nome, string morada, string nif, DateTime dataNascimento, string codigo_postal) : 
 			base(email,password,nome,dataNascimento)
 		{
 			this.morada = morada;
 			this.nif = nif;
 			this.dataNascimento = dataNascimento;
 			this.saldo = 0;
+			this.codigo_postal = codigo_postal;
 			this.infoGeral = new Dictionary<string, List<string>>();
 			this.agendadas = new Dictionary<int, Consulta>();
 			this.historico = new Dictionary<int, Consulta>();
@@ -100,6 +107,46 @@ namespace ConsultaJa
 		public string getNome()
 		{
 			return base.getNome();
+		}
+
+		/**
+		 * Método que retorna o código
+		 * postal do objeto da classe Paciente 
+		 * ao qual é enviado o método
+		 */
+		public string getCodigo_Postal()
+		{
+			return this.codigo_postal;
+		}
+
+		/**
+		 * Método que retorna o nif do objeto da 
+		 * classe Paciente ao qual é enviado o 
+		 * método
+		 */
+		public string getNif()
+		{
+			return this.nif;
+		}
+
+		/**
+		 * Método que retorna o saldo do objeto 
+		 * da classe Paciente ao qual é enviado 
+		 * o método
+		 */
+		public int getSaldo()
+		{
+			return this.saldo;
+		}
+
+		/**
+		 * Método que retorna a morada do objeto 
+		 * da classe Paciente ao qual é enviado 
+		 * o método
+		 */
+		public string getMorada()
+		{
+			return this.morada;
 		}
 
 		/**
@@ -142,15 +189,6 @@ namespace ConsultaJa
 				this.infoGeral.Add(descricao, l);
 			}
 		}
-
-		/*
-		public void marcaPendente(Consulta c)
-		{
-			Consulta c;
-			if(this.agendadas.Remove(c))
-				this.pendentes
-		}
-		*/
 
 		/**
 		 * Implementação do método ToString 

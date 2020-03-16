@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsultaJaDB;
 
 namespace ConsultaJa
 {
@@ -49,9 +50,7 @@ namespace ConsultaJa
             }
             Console.WriteLine("Logout efetuado co sucesso. Adeus, " + c.getNome());
         }
-
-
-
+        /*
         static void Main(string[] args)
         {
             ConsultaJaModel cjm = new ConsultaJaModel();
@@ -91,6 +90,6 @@ namespace ConsultaJa
                         break;
                 }
             }
-        }
+        }*/
     }
 }

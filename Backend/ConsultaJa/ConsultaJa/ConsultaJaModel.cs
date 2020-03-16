@@ -88,10 +88,10 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo médico na aplicação
 		 */
-		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
+		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif, string codigo_postal)
 		{
 			String ret;
-			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada);
+			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada, codigo_postal);
 			this.contas.Add((ret = this.constroiID(m)), m);
 			return ret;
 		}
@@ -100,10 +100,10 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo paciente na aplicação
 		 */
-		public String novoPaciente(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif)
+		public String novoPaciente(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif, string codigo_postal)
 		{
 			String ret;
-			Paciente p = new Paciente(email, password, nome, morada, nif, dataNascimento);
+			Paciente p = new Paciente(email, password, nome, morada, nif, dataNascimento, codigo_postal);
 			this.contas.Add((ret = this.constroiID(p)), p);
 			return ret;
 		}
@@ -281,12 +281,12 @@ namespace ConsultaJa
 		}
 
 		/**
-		 * Método que permite fazer um novo 
+		 * Método que permite fazer um novo
 		 * pedido de inscrição de um médico
 		 */
-		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada)
+		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal)
 		{
-			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada);
+			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada,codigo_postal);
 			this.admin.fazerPedido(m);
 		}
 
@@ -301,7 +301,7 @@ namespace ConsultaJa
 			if (action)
 			{
 				idM = this.novoMedico(m.getNome(), m.getEmail(), m.getPassword(), null, 
-					m.getDataNascimento(), m.getMorada(), m.getNif());
+					m.getDataNascimento(), m.getMorada(), m.getNif(), m.getCodigo_Postal());
 			}
 			return idM;
 		}
