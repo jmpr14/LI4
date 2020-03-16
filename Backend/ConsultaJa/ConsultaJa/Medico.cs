@@ -7,12 +7,6 @@ namespace ConsultaJa
     public class Medico : Conta
     {
         /**
-         * Estrutura de dados que guarda os 
-         * diferentes contactos de cada médico
-         */
-        private List<string> contactos;
-
-        /**
          * Variável que guarda a morada do médico
          */
         private string morada;
@@ -79,7 +73,6 @@ namespace ConsultaJa
             this.classificacao = -1; /* Valor que representa ausência de qualquer classificação */
             this.numClassificacoes = 0;
             this.saldo = 0;
-            this.contactos = new List<string>();
             this.codigo_postal = codigo_postal;
             this.historico = new Dictionary<int, Consulta>();
             this.agendadas = new Dictionary<int, Consulta>();
@@ -142,6 +135,15 @@ namespace ConsultaJa
         }
 
         /**
+         * Método que retorna uma lista com todos os 
+         * contactos disponíveis associados a um médico
+         */
+        public List<string> getContactos()
+        {
+            return base.getContactos();
+        }
+
+        /**
          * Método que permite adicionar um certo 
          * numerário à carteira digital do médico
          */
@@ -156,7 +158,7 @@ namespace ConsultaJa
          */
         public void addContacto(string contacto)
         {
-            this.contactos.Add(contacto);
+            base.addContacto(contacto);
         }
 
         /**
@@ -191,7 +193,7 @@ namespace ConsultaJa
             sb.Append("; Classificação: ");
             sb.Append(this.classificacao);
             sb.Append("; Contactos: {");
-            foreach (string s in this.contactos)
+            foreach (string s in this.getContactos())
             {
                 sb.Append(s);
                 sb.Append(", ");

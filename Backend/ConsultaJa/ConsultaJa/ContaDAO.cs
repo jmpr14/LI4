@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using MySql.Data.MySqlClient;
 using System.Data;
 using ConsultaJa;
@@ -27,6 +28,22 @@ namespace ConsultaJaDB
 		private MySqlConnection connection;
 
 		/**
+		 * Método que permite carregar a password 
+		 * de um ficheiro configs.txt
+		 */
+		private static string getPassword()
+		{
+			/* Criamos um objeto para ler 
+			 * do ficheiro configs */
+			StreamReader sr = new StreamReader("configs.txt");
+			string ret = sr.ReadLine();
+			/* Fechamos a stream que usamos 
+			 * para ler do ficheiro */
+			sr.Close();
+			return ret;
+		}
+
+		/**
 		 * Construtor para objetos da classe ContaDAO. 
 		 * É de notar que este construtor é privado
 		 */
@@ -35,7 +52,7 @@ namespace ConsultaJaDB
 			string server = "localhost";
 			string database = "consultaja";
 			string uid = "root";
-			string password = "miguelrso1999";
+			string password = getPassword();
 			string connectionString;
 			connectionString = "SERVER=" + server + ";" + "DATABASE=" +
 			database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
@@ -73,6 +90,32 @@ namespace ConsultaJaDB
 			/* Fechamos a conexão */
 			this.connection.Close();
 			return ret;
+		}
+
+		/**
+		 * Método que nos diz se uma dada 
+		 * chave existe no mapeamento
+		 */
+		public bool contains(string id)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from Conta where idConta='");
+			sb.Append(id);
+			sb.Append("'");
+
+			return dt.Rows.Count != 0;
+		}
+
+		/**
+		 * Método que permite remover uma conta 
+		 * da base de dados fornecendo o seu ID
+		 */
+		public void remove(string id)
+		{
+
 		}
 
 		/**
@@ -117,6 +160,35 @@ namespace ConsultaJaDB
 
 			msda.Fill(dt);
 
+		}
+
+		/**
+		 * Método que dado um identificador de uma 
+		 * conta e o próprio objeto correspondente 
+		 * acrescenta à base de dados todos os seus 
+		 * contactos
+		 */
+		private void putTabContactos(string id, Conta value)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb;
+			MySqlDataAdapter msda;
+
+			foreach (string contacto in value.getContactos())
+			{
+				sb = new StringBuilder();
+				sb.Append("insert into Contactos (telemovel, Conta_idConta) values ('");
+				sb.Append(contacto);
+				sb.Append("','");
+				sb.Append(id);
+				sb.Append("')");
+
+				msda = new MySqlDataAdapter(sb.ToString(),this.connection);
+
+				msda.Fill(dt);
+			}
+			
 		}
 
 		/**
@@ -189,6 +261,10 @@ namespace ConsultaJaDB
 			/* Colocar o novo objeto 
 			 * na tabela conta */
 			this.putTabConta(id, value);
+
+			/* Colocar os contactos da conta 
+			 * na base de dados */
+			this.putTabContactos(id, value);
 
 			if (value is Medico)
 				this.putTableMedico(id, (Medico)value);
@@ -268,6 +344,35 @@ namespace ConsultaJaDB
 		}
 
 		/**
+		 * Método que carrega os contactos associados 
+		 * à conta na base de dados para a respetiva 
+		 * conta
+		 */
+		private void getContactos(string id, Conta c)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from contactos where Conta_idConta='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+
+			msda.Fill(dt);
+
+			/* 
+			 * Cada contacto lido é adicionado 
+			 * à respetiva conta
+			 */
+			foreach(DataRow dr in dt.Rows)
+			{
+				c.addContacto(dr.Field<string>("telemovel"));
+			}
+		}
+
+		/**
 		 * Método que permite obter um objeto 
 		 * da classe Conta fornecendo o seu id
 		 */
@@ -307,6 +412,8 @@ namespace ConsultaJaDB
 						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"));
 				}
 			}
+
+			this.getContactos(id, c);
 
 			this.connection.Close();
 			return c;

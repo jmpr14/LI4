@@ -37,6 +37,13 @@ namespace ConsultaJa
 		private DateTime dataNascimento;
 
 		/**
+		 * Variável que guarda uma lista com os 
+		 * contactos associados a um objeto da 
+		 * classe Conta
+		 */
+		private List<string> contactos;
+
+		/**
 		 * Método que retorna a string correspondente 
 		 * ao id da conta à qual é enviado o método
 		 */
@@ -113,6 +120,7 @@ namespace ConsultaJa
 			this.password = password;
 			this.nome = nome;
 			this.dataNascimento = dataNascimento;
+			this.contactos = new List<string>();
 		}
 
 		/**
@@ -125,6 +133,26 @@ namespace ConsultaJa
 				throw new PasswordErrada("Password incorreta");
 
 			this.password = novaPass;
+		}
+
+		/**
+		 * Método que permite adicionar um 
+		 * contacto a um paciente
+		 */
+		public void addContacto(string contacto)
+		{
+			if (this.contactos.Contains(contacto))
+				throw new Exceptions.ContactoExistente("Contacto já existe.");
+			this.contactos.Add(contacto);
+		}
+
+		/**
+		 * Método que retorna os contactos 
+		 * associados a uma conta
+		 */
+		public List<string> getContactos()
+		{
+			return this.contactos;
 		}
 	}
 }

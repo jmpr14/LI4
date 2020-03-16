@@ -13,11 +13,6 @@ namespace ConsultaJa
 		private string morada;
 
 		/**
-		 * Variável que guarda os contactos do paciente
-		 */
-		private List<string> contactos;
-
-		/**
 		 * Variável que representa o nif 
 		 * do objeto da classe paciente 
 		 */
@@ -150,6 +145,15 @@ namespace ConsultaJa
 		}
 
 		/**
+         * Método que retorna uma lista com todos os 
+         * contactos disponíveis associados a um paciente
+         */
+		public List<string> getContactos()
+		{
+			return base.getContactos();
+		}
+
+		/**
 		 * Método que permite a atribuição de um 
 		 * valor à variavel id do paciente ao qual 
 		 * é enviado o método
@@ -165,9 +169,7 @@ namespace ConsultaJa
 		 */
 		public void addContacto(string contacto)
 		{
-			if (this.contactos.Contains(contacto))
-				throw new Exceptions.ContactoExistente("Contacto já existe.");
-			this.contactos.Add(contacto);
+			base.addContacto(contacto);
 		}
 
 		/**
