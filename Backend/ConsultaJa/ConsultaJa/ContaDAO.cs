@@ -98,6 +98,8 @@ namespace ConsultaJaDB
 		 */
 		public bool contains(string id)
 		{
+			/* Abrimos a conexão */
+			this.connection.Open();
 			DataTable dt = new DataTable();
 
 			StringBuilder sb = new StringBuilder();
@@ -106,7 +108,84 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
+			/* Fechamos a conexão */
 			return dt.Rows.Count != 0;
+		}
+
+		/**
+		 * Método que permite remover todas as entradas 
+		 * na tabela Contactos que referenciem a conta 
+		 * cujo id é passado por parâmetro do método
+		 */
+		private void removeFromTableContactos(string id)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("delete from Contactos where Conta_idConta='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+
+			msda.Fill(dt);
+		}
+
+		/**
+		 * Método que permite remover a entrada na 
+		 * tabela medico referente ao id que é passado 
+		 * como parâmetro
+		 */
+		private void removeFromTableMedico(string id)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("delete from Medico where idMedico='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+
+			msda.Fill(dt);
+		}
+
+		/**
+		 * Método que permite remover a entrada na 
+		 * tabela paciente referente ao id que é passado 
+		 * como parâmetro
+		 */
+		private void removeFromTablePaciente(string id)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("delete from Paciente where idPaciente='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+
+			msda.Fill(dt);
+		}
+
+		/**
+		 * Método que permite remover a entrada na 
+		 * tabela conta referente ao id que é passado 
+		 * como parâmetro
+		 */
+		private void removeFromTableConta(string id)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("delete from Conta where idConta='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+
+			msda.Fill(dt);
 		}
 
 		/**
@@ -115,7 +194,36 @@ namespace ConsultaJaDB
 		 */
 		public void remove(string id)
 		{
+			/* Abrimos a conexão */
+			this.connection.Open();
 
+			/* Removemos todas as linhas da tabela 
+			 * contacto que referenciem a conta que 
+			 * se pretende remover 
+			 */
+			this.removeFromTableContactos(id);
+
+			/* Se o id corresponder a um médico 
+			 * removemos a respetiva entrada da 
+			 * tabela medicò 
+			 */
+			if (id.Contains("M"))
+				this.removeFromTableMedico(id);
+
+			/* Se corresponder a um paciente removemos 
+			 * a respetiva linha da tabela Paciente 
+			 */
+			if (id.Contains("P"))
+				this.removeFromTablePaciente(id);
+
+			/* Finalmente removemos a respetiva entrada 
+			 * da tabela conta à qual se encontra atribuido 
+			 * o id que é passado como parâmetro do método
+			 */
+			this.removeFromTableConta(id);
+
+			/* Fechamos a conexão */
+			this.connection.Close();
 		}
 
 		/**
@@ -256,7 +364,6 @@ namespace ConsultaJaDB
 		{
 			/* Abrimos a conexão */
 			this.connection.Open();
-			DataTable dt = new DataTable();
 
 			/* Colocar o novo objeto 
 			 * na tabela conta */

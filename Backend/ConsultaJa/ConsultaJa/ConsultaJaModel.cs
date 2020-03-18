@@ -202,7 +202,7 @@ namespace ConsultaJa
 			Conta cc;
 			if (this.contas.TryGetValue(idPaciente, out cc) && cc is Paciente)
 			{
-				Consulta c = new Consulta((Paciente)cc, null, ano, mes, dia, hora, minuto, 0);
+				Consulta c = new Consulta((Paciente)cc, null, null, null, null, ano, mes, dia, hora, minuto, 0);
 				/* Atribuimos id à consulta e 
 				 * adicionamos aos pedidos */
 				c.setID(nConsultas);

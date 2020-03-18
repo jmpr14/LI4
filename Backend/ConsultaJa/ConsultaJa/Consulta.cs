@@ -37,10 +37,34 @@ namespace ConsultaJa
 		private DateTime data_hora;
 
 		/**
+		 * Variável que guarda a localidade onde 
+		 * será/foi realizada a consulta
+		 */
+		private string localidade;
+
+		/**
+		 * Variável que guarda o preço ao qual 
+		 * cada consulta foi/será administrada
+		 */
+		private int precoUni;
+
+		/**
+		 * Variável que guarda a morada onde 
+		 * será/foi administrada a consulta
+		 */
+		private string morada;
+
+		/**
 		 * Variável que define o estado 
 		 * da consulta
 		 */
 		private int estado;
+
+		/**
+		 * Variável que contém algumas observações 
+		 * feitas após a administração da consulta
+		 */
+		private string observacoes;
 
 		/**
 		 * Variável que representa o preço 
@@ -60,11 +84,16 @@ namespace ConsultaJa
 		/**
 		 * Construtor para objetos da classe Consulta
 		 */
-		public Consulta(Paciente p, Medico m, int ano, int mes, int dia, int hora, int min, int sec)
+		public Consulta(Paciente p, Medico m, string localidade, string morada, string observacoes,
+			int ano, int mes, int dia, int hora, int min, int sec)
 		{
 			this.id = -1;
 			this.m = m;
 			this.p = p;
+			this.localidade = localidade;
+			this.precoUni = preco;
+			this.morada = morada;
+			this.observacoes = observacoes;
 			this.data_hora = new DateTime(ano, mes, dia, hora, min, sec);
 			this.estado = PEDIDO;
 		}
@@ -78,9 +107,78 @@ namespace ConsultaJa
 			return this.id;
 		}
 
+		/**
+		 * Método que retorna o objeto 
+		 * paciente envolvido na consulta
+		 */
 		public Paciente getPaciente()
 		{
 			return this.p;
+		}
+
+		/**
+		 * Método que retorna o objeto 
+		 * medico envolvido na consulta
+		 */
+		public Medico getMedico()
+		{
+			return this.m;
+		}
+
+		/**
+		 * Método que retorna a data 
+		 * e hora da consulta
+		 */
+		public DateTime getData_Hora()
+		{
+			return this.data_hora;
+		}
+
+		/**
+		 * Método que retorna a localidade 
+		 * onde será/foi realizada a consulta
+		 */
+		public string getLocalidade()
+		{
+			return this.localidade;
+		}
+
+		/**
+		 * Método que retorna a morada onde 
+		 * será/foi realizada a consulta
+		 */
+		public string getMorada()
+		{
+			return this.morada;
+		}
+
+		/**
+		 * Método que retorna um inteiro que
+		 * identifica o estado atual do objeto
+		 * da classe consulta ao qual é enviado
+		 * o método
+		 */
+		public int getEstado()
+		{
+			return this.estado;
+		}
+
+		/**
+		 * Método que retorna o preço ao qual
+		 * a consulta foi administrada
+		 */
+		public int getPrecoUni()
+		{
+			return this.precoUni;
+		}
+
+		/**
+		 * Método que retorna as observações 
+		 * feitas à à qual é enviado o método
+		 */
+		public string getObservacoes()
+		{
+			return this.observacoes;
 		}
 
 		/**
