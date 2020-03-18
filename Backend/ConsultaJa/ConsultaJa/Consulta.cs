@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace ConsultaJa
 {
@@ -84,10 +85,10 @@ namespace ConsultaJa
 		/**
 		 * Construtor para objetos da classe Consulta
 		 */
-		public Consulta(Paciente p, Medico m, string localidade, string morada, string observacoes,
+		public Consulta(int id, Paciente p, Medico m, string localidade, string morada, string observacoes,
 			int ano, int mes, int dia, int hora, int min, int sec)
 		{
-			this.id = -1;
+			this.id = id;
 			this.m = m;
 			this.p = p;
 			this.localidade = localidade;
@@ -247,6 +248,22 @@ namespace ConsultaJa
 		public void setMedico(Medico m)
 		{
 			this.m = m;
+		}
+
+		public override string ToString()
+		{
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("Id: ");
+			sb.Append(this.id);
+			sb.Append("; idPaciente: ");
+			sb.Append(this.p.getID());
+			sb.Append("; idMedico: ");
+			sb.Append(this.m.getID());
+			sb.Append("; Data: ");
+			sb.Append(this.data_hora);
+
+			return sb.ToString();
 		}
 	}
 }

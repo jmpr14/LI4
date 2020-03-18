@@ -25,10 +25,10 @@ namespace ConsultaJaDB
 		private static InfoGeralDAO inst = null;
 
 		/**
-		 * Variável de instância que guarda 
-		 * a conesão à base de dados
+		 * String a partir da qual conseguimos 
+		 * aceder à base de dados
 		 */
-		private MySqlConnection connection;
+		private string connectionstring;
 
 		/**
 		 * Método que permite carregar a password 
@@ -56,11 +56,8 @@ namespace ConsultaJaDB
 			string database = "consultaja";
 			string uid = "root";
 			string password = getPassword();
-			string connectionString;
-			connectionString = "SERVER=" + server + ";" + "DATABASE=" +
+			this.connectionstring = "SERVER=" + server + ";" + "DATABASE=" +
 			database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
-
-			this.connection = new MySqlConnection(connectionString);
 		}
 
 		/**
@@ -80,8 +77,9 @@ namespace ConsultaJaDB
 		 */
 		public int size(string idPaciente)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 
 			DataTable dt = new DataTable();
 
@@ -90,14 +88,14 @@ namespace ConsultaJaDB
 			sb.Append(idPaciente);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
 			int ret = dt.Rows.Count;
 
 			/* Fechamos a conexão */
-			this.connection.Close();
+			connection.Close();
 
 			return ret;
 		}
@@ -109,8 +107,9 @@ namespace ConsultaJaDB
 		 */
 		public bool contains(string idPaciente, string tipo)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 
 			DataTable dt = new DataTable();
 			StringBuilder sb = new StringBuilder();
@@ -120,12 +119,12 @@ namespace ConsultaJaDB
 			sb.Append(tipo);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
 			/* Fechamos a conexão */
-			this.connection.Close();
+			connection.Close();
 
 			return dt.Rows.Count != 0;
 		}
@@ -134,7 +133,7 @@ namespace ConsultaJaDB
 		 * Método que permite associar um novo tipo 
 		 * de infogeral a um cliente na base de dados
 		 */
-		private void putNewType(string idPaciente, string tipo)
+		private void putNewType(string idPaciente, string tipo, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -145,7 +144,7 @@ namespace ConsultaJaDB
 			sb.Append(idPaciente);
 			sb.Append("')");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -154,7 +153,7 @@ namespace ConsultaJaDB
 		 * Método que permite adicionar uma informação 
 		 * geral a um paciente na base de dados
 		 */
-		private void putInfo(string idPaciente, string tipo, string info)
+		private void putInfo(string idPaciente, string tipo, string info, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -166,7 +165,7 @@ namespace ConsultaJaDB
 			sb.Append("','");
 			sb.Append(idPaciente);
 			sb.Append("')");
-			MySqlDataAdapter msdaa = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msdaa = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msdaa.Fill(dt);
 		}
@@ -179,24 +178,25 @@ namespace ConsultaJaDB
 		 */
 		public void put(string idPaciente, string tipo, string info)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Verificamos se o paciente possui o 
 			 * tipo de informação geral fornecido */
 			bool exists = this.contains(idPaciente, tipo);
 
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 
 			/* Se o cliente não possuir nenhuma info 
 			 * do tipo especificado criar esse novo 
 			 * tipo na base de dados*/
 			if (!exists)
-				this.putNewType(idPaciente, tipo);
+				this.putNewType(idPaciente, tipo, connection);
 
 			/* Agora inserimos a nova informação desse mesmo tipo */
-			this.putInfo(idPaciente, tipo, info);
+			this.putInfo(idPaciente, tipo, info, connection);
 
 			/* Fechamos a conexão */
-			this.connection.Close();
+			connection.Close();
 		}
 
 		/**
@@ -205,6 +205,7 @@ namespace ConsultaJaDB
 		 */
 		public List<string> get(string idPaciente, string tipo)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			if (!contains(idPaciente, tipo))
 				throw new Exception("[Error] Não existe informação geral desse tipo");
 
@@ -213,7 +214,7 @@ namespace ConsultaJaDB
 			List<string> ret = new List<string>();
 
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 
 			DataTable dt = new DataTable();
 
@@ -224,7 +225,7 @@ namespace ConsultaJaDB
 			sb.Append(idPaciente);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
@@ -233,7 +234,7 @@ namespace ConsultaJaDB
 				ret.Add(dr.Field<string>("descricao"));
 			}
 
-			this.connection.Close();
+			connection.Close();
 
 			return ret;
 		}

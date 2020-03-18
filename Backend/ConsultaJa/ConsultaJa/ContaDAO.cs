@@ -22,10 +22,10 @@ namespace ConsultaJaDB
 		private static ContaDAO inst = null;
 
 		/**
-		 * Variável de instância que guarda 
-		 * a conesão à base de dados
+		 * String utilizada para aceder 
+		 * à base de dados
 		 */
-		private MySqlConnection connection;
+		private string connectionstring;
 
 		/**
 		 * Método que permite carregar a password 
@@ -53,11 +53,8 @@ namespace ConsultaJaDB
 			string database = "consultaja";
 			string uid = "root";
 			string password = getPassword();
-			string connectionString;
-			connectionString = "SERVER=" + server + ";" + "DATABASE=" +
+			this.connectionstring = "SERVER=" + server + ";" + "DATABASE=" +
 			database + ";" + "UID=" + uid + ";" + "PASSWORD=" + password + ";";
-
-			this.connection = new MySqlConnection(connectionString);
 		}
 
 		/**
@@ -78,17 +75,18 @@ namespace ConsultaJaDB
 		 */
 		public int size()
 		{
-			this.connection.Open();
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			connection.Open();
 			DataTable dt = new DataTable();
 
-			MySqlDataAdapter msda = new MySqlDataAdapter("select * from Conta", this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter("select * from Conta", connection);
 
 			msda.Fill(dt);
 
 			int ret = dt.Rows.Count;
 
 			/* Fechamos a conexão */
-			this.connection.Close();
+			connection.Close();
 			return ret;
 		}
 
@@ -98,8 +96,9 @@ namespace ConsultaJaDB
 		 */
 		public bool contains(string id)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 			DataTable dt = new DataTable();
 
 			StringBuilder sb = new StringBuilder();
@@ -109,6 +108,7 @@ namespace ConsultaJaDB
 			sb.Append("'");
 
 			/* Fechamos a conexão */
+			connection.Close();
 			return dt.Rows.Count != 0;
 		}
 
@@ -117,7 +117,7 @@ namespace ConsultaJaDB
 		 * na tabela Contactos que referenciem a conta 
 		 * cujo id é passado por parâmetro do método
 		 */
-		private void removeFromTableContactos(string id)
+		private void removeFromTableContactos(string id, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -126,7 +126,7 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -136,7 +136,7 @@ namespace ConsultaJaDB
 		 * tabela medico referente ao id que é passado 
 		 * como parâmetro
 		 */
-		private void removeFromTableMedico(string id)
+		private void removeFromTableMedico(string id, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -145,7 +145,7 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -155,7 +155,7 @@ namespace ConsultaJaDB
 		 * tabela paciente referente ao id que é passado 
 		 * como parâmetro
 		 */
-		private void removeFromTablePaciente(string id)
+		private void removeFromTablePaciente(string id, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -164,7 +164,7 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -174,7 +174,7 @@ namespace ConsultaJaDB
 		 * tabela conta referente ao id que é passado 
 		 * como parâmetro
 		 */
-		private void removeFromTableConta(string id)
+		private void removeFromTableConta(string id, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -183,7 +183,7 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -194,36 +194,37 @@ namespace ConsultaJaDB
 		 */
 		public void remove(string id)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 
 			/* Removemos todas as linhas da tabela 
 			 * contacto que referenciem a conta que 
 			 * se pretende remover 
 			 */
-			this.removeFromTableContactos(id);
+			this.removeFromTableContactos(id, connection);
 
 			/* Se o id corresponder a um médico 
 			 * removemos a respetiva entrada da 
 			 * tabela medicò 
 			 */
 			if (id.Contains("M"))
-				this.removeFromTableMedico(id);
+				this.removeFromTableMedico(id, connection);
 
 			/* Se corresponder a um paciente removemos 
 			 * a respetiva linha da tabela Paciente 
 			 */
 			if (id.Contains("P"))
-				this.removeFromTablePaciente(id);
+				this.removeFromTablePaciente(id, connection);
 
 			/* Finalmente removemos a respetiva entrada 
 			 * da tabela conta à qual se encontra atribuido 
 			 * o id que é passado como parâmetro do método
 			 */
-			this.removeFromTableConta(id);
+			this.removeFromTableConta(id, connection);
 
 			/* Fechamos a conexão */
-			this.connection.Close();
+			connection.Close();
 		}
 
 		/**
@@ -247,7 +248,7 @@ namespace ConsultaJaDB
 		 * uma conta apenas na tabela Conta da 
 		 * base de dados
 		 */
-		private void putTabConta(string id, Conta value)
+		private void putTabConta(string id, Conta value, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -264,7 +265,7 @@ namespace ConsultaJaDB
 			sb.Append(this.criarData(value.getDataNascimento()));
 			sb.Append("')");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
@@ -276,7 +277,7 @@ namespace ConsultaJaDB
 		 * acrescenta à base de dados todos os seus 
 		 * contactos
 		 */
-		private void putTabContactos(string id, Conta value)
+		private void putTabContactos(string id, Conta value, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -292,7 +293,7 @@ namespace ConsultaJaDB
 				sb.Append(id);
 				sb.Append("')");
 
-				msda = new MySqlDataAdapter(sb.ToString(),this.connection);
+				msda = new MySqlDataAdapter(sb.ToString(),connection);
 
 				msda.Fill(dt);
 			}
@@ -303,7 +304,7 @@ namespace ConsultaJaDB
 		 * Método que permite inserir uma nova 
 		 * entrada na tabela medico da base de dados
 		 */
-		private void putTableMedico(string id, Medico value)
+		private void putTableMedico(string id, Medico value, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -324,7 +325,7 @@ namespace ConsultaJaDB
 			sb.Append(value.getSaldo());
 			sb.Append("')");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -333,7 +334,7 @@ namespace ConsultaJaDB
 		 * Método que permite inserir uma nova 
 		 * entrada na tabela paciente da base de dados
 		 */
-		private void putTablePaciente(string id, Paciente value)
+		private void putTablePaciente(string id, Paciente value, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -350,7 +351,7 @@ namespace ConsultaJaDB
 			sb.Append(value.getCodigo_Postal());
 			sb.Append("')");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 		}
@@ -362,25 +363,26 @@ namespace ConsultaJaDB
 		 */
 		public void put(string id, Conta value)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
-			this.connection.Open();
+			connection.Open();
 
 			/* Colocar o novo objeto 
 			 * na tabela conta */
-			this.putTabConta(id, value);
+			this.putTabConta(id, value, connection);
 
 			/* Colocar os contactos da conta 
 			 * na base de dados */
-			this.putTabContactos(id, value);
+			this.putTabContactos(id, value, connection);
 
 			if (value is Medico)
-				this.putTableMedico(id, (Medico)value);
+				this.putTableMedico(id, (Medico)value, connection);
 
 			if (value is Paciente)
-				this.putTablePaciente(id, (Paciente)value);
+				this.putTablePaciente(id, (Paciente)value, connection);
 
 			/* Fechamos a conexão */
-			this.connection.Close();
+			connection.Close();
 		}
 
 		/**
@@ -389,7 +391,7 @@ namespace ConsultaJaDB
 		 * objeto da classe Medico
 		 */
 		private Medico createMedico(string idMedico, string nome, string password, 
-			string email, DateTime dataNascimento)
+			string email, DateTime dataNascimento, MySqlConnection connection)
 		{
 			Medico m = null;
 
@@ -400,7 +402,7 @@ namespace ConsultaJaDB
 			sb.Append("select * from Medico where idMedico='");
 			sb.Append(idMedico);
 			sb.Append("'");
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
@@ -410,7 +412,7 @@ namespace ConsultaJaDB
 			 */
 			foreach(DataRow dr in dt.Rows)
 			{
-				m = new Medico(email, password, nome, dataNascimento, dr.Field<string>("nif"),
+				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dataNascimento, dr.Field<string>("nif"),
 					dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
 			}
 			return m;
@@ -422,7 +424,7 @@ namespace ConsultaJaDB
 		 * objeto da classe Paciente
 		 */
 		private Paciente createPaciente(string idPaciente, string nome, string password,
-			string email, DateTime dataNascimento)
+			string email, DateTime dataNascimento, MySqlConnection connection)
 		{
 			Paciente p = null;
 
@@ -433,7 +435,7 @@ namespace ConsultaJaDB
 			sb.Append("select * from Paciente where idPaciente='");
 			sb.Append(idPaciente);
 			sb.Append("'");
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
@@ -443,7 +445,7 @@ namespace ConsultaJaDB
 			 */
 			foreach (DataRow dr in dt.Rows)
 			{
-				p = new Paciente(email, password, nome, dr.Field<string>("morada"), 
+				p = new Paciente(dr.Field<string>("idPaciente"), email, password, nome, dr.Field<string>("morada"), 
 					dr.Field<string>("nif"), dataNascimento, 
 					dr.Field<string>("codigo_postal"));
 			}
@@ -455,7 +457,7 @@ namespace ConsultaJaDB
 		 * à conta na base de dados para a respetiva 
 		 * conta
 		 */
-		private void getContactos(string id, Conta c)
+		private void getContactos(string id, Conta c, MySqlConnection connection)
 		{
 			DataTable dt = new DataTable();
 
@@ -465,7 +467,7 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
@@ -485,10 +487,11 @@ namespace ConsultaJaDB
 		 */
 		public Conta get(string id)
 		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			Conta c = null;
 
 			/* Abrir a conexão */
-			this.connection.Open();
+			connection.Open();
 			DataTable dt = new DataTable();
 
 			StringBuilder sb = new StringBuilder();
@@ -496,7 +499,7 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(),this.connection);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
 			msda.Fill(dt);
 
@@ -510,19 +513,19 @@ namespace ConsultaJaDB
 				if (id.Contains("M"))
 				{
 					c = this.createMedico(id, dr.Field<string>("nome"), dr.Field<string>("password"),
-						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"));
+						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"), connection);
 				}
 				/* Estamos perante um paciente */
 				if (id.Contains("P"))
 				{
 					c = this.createPaciente(id, dr.Field<string>("nome"), dr.Field<string>("password"),
-						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"));
+						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"), connection);
 				}
 			}
 
-			this.getContactos(id, c);
+			this.getContactos(id, c, connection);
 
-			this.connection.Close();
+			connection.Close();
 			return c;
 		}
 	}

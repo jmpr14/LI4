@@ -61,9 +61,10 @@ namespace ConsultaJa
 		/**
 		 * Construtor para objetos da classe Paciente 
 		 */
-		public Paciente(string email, string password, string nome, string morada, string nif, DateTime dataNascimento, string codigo_postal) : 
+		public Paciente(string id, string email, string password, string nome, string morada, string nif, DateTime dataNascimento, string codigo_postal) : 
 			base(email,password,nome,dataNascimento)
 		{
+			this.setID(id);
 			this.morada = morada;
 			this.nif = nif;
 			this.dataNascimento = dataNascimento;

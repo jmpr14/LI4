@@ -91,8 +91,9 @@ namespace ConsultaJa
 		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif, string codigo_postal)
 		{
 			String ret;
-			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada, codigo_postal);
+			Medico m = new Medico("", email, password, nome, dataNascimento, nif, morada, codigo_postal);
 			this.contas.Add((ret = this.constroiID(m)), m);
+			m.setID(ret);
 			return ret;
 		}
 
@@ -100,11 +101,12 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo paciente na aplicação
 		 */
-		public String novoPaciente(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif, string codigo_postal)
+		public string novoPaciente(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif, string codigo_postal)
 		{
 			String ret;
-			Paciente p = new Paciente(email, password, nome, morada, nif, dataNascimento, codigo_postal);
+			Paciente p = new Paciente("", email, password, nome, morada, nif, dataNascimento, codigo_postal);
 			this.contas.Add((ret = this.constroiID(p)), p);
+			p.setID(ret);
 			return ret;
 		}
 
@@ -202,7 +204,7 @@ namespace ConsultaJa
 			Conta cc;
 			if (this.contas.TryGetValue(idPaciente, out cc) && cc is Paciente)
 			{
-				Consulta c = new Consulta((Paciente)cc, null, null, null, null, ano, mes, dia, hora, minuto, 0);
+				Consulta c = new Consulta(nConsultas-1, (Paciente)cc, null, null, null, null, ano, mes, dia, hora, minuto, 0);
 				/* Atribuimos id à consulta e 
 				 * adicionamos aos pedidos */
 				c.setID(nConsultas);
@@ -286,7 +288,7 @@ namespace ConsultaJa
 		 */
 		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal)
 		{
-			Medico m = new Medico(email, password, nome, dataNascimento, nif, morada,codigo_postal);
+			Medico m = new Medico("", email, password, nome, dataNascimento, nif, morada,codigo_postal);
 			this.admin.fazerPedido(m);
 		}
 

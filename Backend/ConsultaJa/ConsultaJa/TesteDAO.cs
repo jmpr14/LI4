@@ -15,7 +15,7 @@ namespace ConsultaJa
          */
         public static void registaMedico(ContaDAO cdao)
         {
-            Medico m = new Medico("joaocosta1991@gmail.com", "amanhaesexta", "João Pedro Costa",
+            Medico m = new Medico("M0","joaocosta1991@gmail.com", "amanhaesexta", "João Pedro Costa",
                     new DateTime(1991, 2, 28), "245788193", "Rua da Escola", "4730-280");
             m.addContacto("919978113");
             m.addContacto("931254778");
@@ -29,12 +29,28 @@ namespace ConsultaJa
          */
         public static void registaPaciente(ContaDAO cdao)
         {
-            Paciente p = new Paciente("carlosSilvaa@hotmail.com", "carlosSSilva1994",
+            Paciente p = new Paciente("P0", "carlosSilvaa@hotmail.com", "carlosSSilva1994",
                     "Carlos Santos Silva", "Rua de Baixo nº155", "784512231", new DateTime(1994, 5, 24),
                     "4730-280");
             p.addContacto("935425789");
             p.addContacto("917747257");
             cdao.put("P0", p);
+        }
+
+        /**
+         * Método que permite adicionar uma consulta 
+         * fornecendo os dois id's quer de médico 
+         * quer de paciente
+         */
+        public static void registarConsulta(ConsultaDAO consdao, ContaDAO cdao, 
+            string idPaciente, string idMedico)
+        {
+            Medico m = (Medico)cdao.get("M0");
+            Console.WriteLine("Id do médico da consulta: " + m.getID());
+            Paciente p = (Paciente)cdao.get("P0");
+            Console.WriteLine("Id do paciente da consulta: " + p.getID());
+            Consulta c = new Consulta(0, p, m, "Braga", "Rua de Cima", null, 2020, 05, 25, 16, 30, 00);
+            consdao.put(c);
         }
 
         /**
@@ -65,6 +81,7 @@ namespace ConsultaJa
         {
             ContaDAO cdao = ContaDAO.getInstance();
             InfoGeralDAO igdao = InfoGeralDAO.getInstance();
+            ConsultaDAO consdao = ConsultaDAO.getInstance();
             try
             {
                 //registaPaciente(cdao);
@@ -72,11 +89,13 @@ namespace ConsultaJa
                 Conta c = cdao.get("M0");
                 Console.WriteLine(c.ToString());
                 Console.WriteLine("Size: " + cdao.size());
+                //registarConsulta(consdao, cdao, "P0", "M0");
+                Console.WriteLine(consdao.get(7).ToString());
                 //igdao.put("P0", "Alergias", "Bruffen");
                 //igdao.put("P0", "Alergias", "Paracetemol");
                 //igdao.put("P0", "Alergias", "Insetos");
                 //igdao.put("P0", "Tipo de Sangue", "O(-)");
-                printList("Tipo de Sangue de P0", igdao.get("P0", "Tipo de Sangue"));
+                printList("Alergias de P0", igdao.get("P0", "Alergias"));
             }
             catch(MailNaoRegistado exc)
             {

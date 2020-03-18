@@ -65,9 +65,10 @@ namespace ConsultaJa
          * Construtor para objetos 
          * da classe médico
          */
-        public Medico(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal) : 
+        public Medico(string id, string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal) : 
             base(email,password,nome,dataNascimento)
         {
+            this.setID(id);
             this.nif = nif;
             this.morada = morada;
             this.classificacao = -1; /* Valor que representa ausência de qualquer classificação */
