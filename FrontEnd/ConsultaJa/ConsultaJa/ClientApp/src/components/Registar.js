@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 
 export class Registar extends Component {
     static displayName = Registar.name;
@@ -12,6 +12,7 @@ export class Registar extends Component {
             morada: '',
             localidade: '',
             password: '',
+            type: '',
         };
     }
 
@@ -20,7 +21,7 @@ export class Registar extends Component {
         let age = this.state.dataNascimento;
         alert("Falta definir as acoes para os eventos");
         if (!Number(age)) {
-            alert("A idade deve ser um valor num�rico!");
+            alert("A idade deve ser um valor numérico!");
         }
     }
 
@@ -33,7 +34,29 @@ export class Registar extends Component {
     render() {
         return (
             <form onSubmit={this.mySubmitHandler}>
-                <h1> Registar-se {this.state.email} </h1>
+                <h1> Registar </h1>
+                <p> Tipo de Registo: </p>
+                <div className="radio">
+                <label>
+                <input 
+                    type="radio"
+                    name='type'
+                    value="Medico"
+                    onChange={this.myChangeHandler}
+                        />
+                        Médico &emsp;
+                </label>
+                    <b/>
+                <label>
+                <input
+                     type="radio"
+                     name='type'
+                     value="Paciente"
+                     onChange={this.myChangeHandler}
+                    />
+                    Paciente
+                </label>
+                </div>
                 <p>Insira o nome:</p>
                 <input
                     type="text"
@@ -74,7 +97,6 @@ export class Registar extends Component {
                 <br />
                 <input type='submit' />
             </form>
-
         );
     }
 }

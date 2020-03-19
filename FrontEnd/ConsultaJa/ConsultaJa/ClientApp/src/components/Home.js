@@ -8,10 +8,11 @@ export class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: 'FakePSW',
+            username: '',
             age: null,
         };
     }
+
     mySubmitHandler = (event) => {
         event.preventDefault();
         let age = this.state.age;
@@ -19,6 +20,7 @@ export class Home extends Component {
             alert("Your age must be a number");
         }
     }
+
     myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
