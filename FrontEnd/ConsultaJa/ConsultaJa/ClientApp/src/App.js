@@ -7,6 +7,7 @@ import { Registar } from './components/Registar';
 import { Login } from './components/Login';
 import { Logout } from './components/Logout';
 import { isAuthenticated } from './components/Login';
+import { Perfil } from './components/Perfil'
 
 import './custom.css'
 
@@ -36,7 +37,7 @@ export default class App extends Component {
               </Layout>
           ) : (
                   <Layout2>
-                      <Route path='/perfil' component={() => <h1> Hello World! </h1>} />
+                      <Route path='/perfil' component={Perfil} />
                       <Route path='/logout' component={Logout} />
                   </Layout2>      
                   )
