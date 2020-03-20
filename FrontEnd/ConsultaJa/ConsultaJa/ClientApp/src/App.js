@@ -8,6 +8,7 @@ import { Login } from './components/Login';
 import { Logout } from './components/Logout';
 import { isAuthenticated } from './components/Login';
 import { Perfil } from './components/Perfil'
+import { Privacy } from './components/Privacy'
 
 import './custom.css'
 
@@ -31,14 +32,16 @@ export default class App extends Component {
           !isAuthenticated() ? (
             <Layout>
                 <Route exact path='/' component={Home} />
+                <Route path='/privacy' component={Privacy} />
                 <Route path='/login' component={Login} />
-                  <Route path='/registar' component={Registar} />
-                  <PrivateRoute path='/perfil' component={() => <h1> Hello World! </h1>} />
+                <Route path='/registar' component={Registar} />
+                <PrivateRoute path='/perfil' component={Perfil} />
               </Layout>
           ) : (
                   <Layout2>
                       <Route path='/perfil' component={Perfil} />
                       <Route path='/logout' component={Logout} />
+                      <Route path='/privacy' component={Privacy} />
                   </Layout2>      
                   )
     );
