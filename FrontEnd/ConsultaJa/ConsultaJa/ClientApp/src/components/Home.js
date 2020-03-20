@@ -2,6 +2,9 @@
 
 import './Home.css';
 
+import Medicos from './images/medicos.png';
+
+
 export class Home extends Component {
   static displayName = Home.name;
 
@@ -38,7 +41,7 @@ export class Home extends Component {
 
     render() {
         return (
-            <body>
+            <form>
                 <div>
                     <h1>ConsultaJa</h1>
                     <p>Bem vindo à nossa plataforma de consultas ao domicílio.</p>
@@ -55,13 +58,9 @@ export class Home extends Component {
                     <p className="semilargecenter"> Crie uma conta e comece já a usufruir de todos os nossos serviços!</p>
                 </div>
 
-                <a className="img">
-                    <p/>
-                    <p/>
-                    <p/>
-                    <p/>
-                    <p/>
-                </a>
+                <div className="img">
+                    <img src={Medicos} />
+                </div>
 
                 <div>
                     <h1>Os Nossos Serviços</h1>
@@ -85,8 +84,7 @@ export class Home extends Component {
                             melhorar e desenvolver os nossos serviços.</li>
                     </ul>
                 </div>
-
-            </body>
+            </form>
         );
     }
 }

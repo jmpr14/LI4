@@ -1,5 +1,7 @@
 ﻿body {
-    background: #ccc url("images\\medicos.png") no-repeat right center fixed;
+    background: #ffffff no-repeat right center fixed;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
 
 div {
@@ -11,7 +13,7 @@ h1 {
     font-size: 60px;
 }
 
-a.img {
+p.img {
     background: #ccc url("images\\medicos.png") no-repeat center center fixed;
 }
 
@@ -90,12 +92,10 @@ div.sticky {
     border: 2px solid #4CAF50;
 }
 
-/*img {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    z-index: -1;
-}*/
+.img {
+    position: relative;
+    text-align: center;
+}
 
 /*Animated Search Input*/
 input[type=text] {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
 import { NavMenu2 } from './NavMenu2';
+import { Rodape } from './Rodape';
 
 export class Layout2 extends Component {
   static displayName = Layout2.name;
@@ -12,6 +13,7 @@ export class Layout2 extends Component {
         <Container>
           {this.props.children}
         </Container>
+        <Rodape />
         </div>
     );
   }
