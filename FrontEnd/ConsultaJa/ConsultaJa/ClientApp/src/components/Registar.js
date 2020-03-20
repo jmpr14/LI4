@@ -18,11 +18,7 @@ export class Registar extends Component {
 
     mySubmitHandler = (event) => {
         event.preventDefault();
-        let age = this.state.dataNascimento;
         alert("Falta definir as acoes para os eventos");
-        if (!Number(age)) {
-            alert("A idade deve ser um valor numérico!");
-        }
     }
 
     myChangeHandler = (event) => {
@@ -95,7 +91,7 @@ export class Registar extends Component {
                 />
                 <br />
                 <br />
-                <input type='submit' />
+                <input type='submit' value="Registar"/>
             </form>
         );
     }
