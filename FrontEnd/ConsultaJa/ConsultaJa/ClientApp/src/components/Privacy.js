@@ -17,7 +17,7 @@ export class Privacy extends Component {
                             e com o exercício dos direitos que lhe são conferidos pela legislação aplicável 
                             contacte-nos através dos seguintes contactos:
                     </p>
-                    <p dir="ltr">E-mail: <a href="mailto:consultaja4@gmail.com">consultaja4@gmail.com</a></p>
+                    <p>E-mail: <a href="mailto:consultaja4@gmail.com">consultaja4@gmail.com</a></p>
                 </item>
 
                 <item>
