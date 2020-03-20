@@ -11,9 +11,18 @@ h1 {
     font-size: 60px;
 }
 
+a.img {
+    background: #ccc url("images\\medicos.png") no-repeat center center fixed;
+}
+
 p.center {
     text-align: center;
-    color: red;
+    --color: red;
+}
+
+p.semilargecenter {
+    text-align: center;
+    font-size: 200%;
 }
 
 p.large {
