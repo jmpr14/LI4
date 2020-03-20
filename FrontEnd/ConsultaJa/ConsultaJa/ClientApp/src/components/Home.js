@@ -3,6 +3,12 @@
 import './Home.css';
 
 import Medicos from './images/medicos.png';
+import Casa1 from './images/casas3.png';
+import Casa2 from './images/casas4.jpg';
+import Casa3 from './images/triangulo_casas.png';
+import Estetoscopio from './images/estetoscopio.png';
+import VSLogo from './images/vs_logo.png'
+import Logo from './images/logo_consultaJa.png'
 
 
 export class Home extends Component {
@@ -75,6 +81,12 @@ export class Home extends Component {
                     </ul>
                 </div>
 
+                <div className="img">
+                    <img height={250} src={Casa1} />
+                    <img height={250} src={Estetoscopio} />
+                    <img height={250} src={Casa3} />
+                </div>
+
                 <div>
                     <h1>Quem Somos?</h1>
                     <ul>
@@ -83,6 +95,27 @@ export class Home extends Component {
                         <li>Assim pretendemos oferecer uma maior comodidade e bem-estar ao máximo de pessoas possiveis, tentando sempre
                             melhorar e desenvolver os nossos serviços.</li>
                     </ul>
+                </div>
+
+                <div className="img">
+                    <img height={250} src={Casa2} />
+                </div>
+
+                <div>
+                    <h1> O que fazemos?</h1>
+                    <ul>
+                        <li>O nosso objetivo é promover o bem-estar às pessoas, da melhor forma possivel. Para isso trabalhamos no
+                            sentido de melhorar a nossa aplicação.</li>
+                        <li>Pretendemos melhorar este projeto ao máximo possível, para que todos possam usufruir de todos os nossos
+                            serviços.</li>
+                        <li>Assim, todos os dias trabalhamos para que possamos desenvolver novas ferramentas para oferecer mais recursos
+                            e funcionalidades deste projeto aos nossos clientes.</li>
+                    </ul>
+                </div>
+
+                <div className="img">
+                    <img height={200} src={VSLogo} />
+                    <img height={200} src={Logo} />
                 </div>
             </form>
         );
