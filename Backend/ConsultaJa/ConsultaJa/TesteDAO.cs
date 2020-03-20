@@ -13,28 +13,32 @@ namespace ConsultaJa
          * Método que permite registar um novo
          * médico na base de dados
          */
-        public static void registaMedico(ContaDAO cdao)
+        public static void registaMedico(ContaDAO cdao, ConfigsDAO confdao)
         {
-            Medico m = new Medico("M0","joaocosta1991@gmail.com", "amanhaesexta", "João Pedro Costa",
-                    new DateTime(1991, 2, 28), "245788193", "Rua da Escola", "4730-280");
-            m.addContacto("919978113");
-            m.addContacto("931254778");
+            int id = confdao.getAndIncrement("medicos");
+            string idMedico = "M" + id;
+            Medico m = new Medico(idMedico,"albertosantos1989@gmail.com", "asantos1989", "Alberto Santos", 0, 0,
+                    new DateTime(1989, 7, 15), "242798140", "Rua da Silva", "4730-280");
+            m.addContacto("932541002");
+            m.addContacto("938912002");
             m.addContacto("911411212");
-            cdao.put("M0", m);
+            cdao.put(idMedico, m);
         }
 
         /**
          * Método que permite registar um novo
          * cliente na base de dados
          */
-        public static void registaPaciente(ContaDAO cdao)
+        public static void registaPaciente(ContaDAO cdao, ConfigsDAO confdao)
         {
-            Paciente p = new Paciente("P0", "carlosSilvaa@hotmail.com", "carlosSSilva1994",
+            int id = confdao.getAndIncrement("pacientes");
+            string idPaciente = "P" + id;
+            Paciente p = new Paciente(idPaciente, "carlosSilvaa@hotmail.com", "carlosSSilva1994",
                     "Carlos Santos Silva", "Rua de Baixo nº155", "784512231", new DateTime(1994, 5, 24),
                     "4730-280");
             p.addContacto("935425789");
             p.addContacto("917747257");
-            cdao.put("P0", p);
+            cdao.put(idPaciente, p);
         }
 
         /**
@@ -45,7 +49,7 @@ namespace ConsultaJa
         public static void registarConsulta(ConsultaDAO consdao, ContaDAO cdao, 
             string idPaciente, string idMedico)
         {
-            Medico m = (Medico)cdao.get("M0");
+            Medico m = (Medico)cdao.get("M1");
             Console.WriteLine("Id do médico da consulta: " + m.getID());
             Paciente p = (Paciente)cdao.get("P0");
             Console.WriteLine("Id do paciente da consulta: " + p.getID());
@@ -82,22 +86,35 @@ namespace ConsultaJa
             ContaDAO cdao = ContaDAO.getInstance();
             InfoGeralDAO igdao = InfoGeralDAO.getInstance();
             ConsultaDAO consdao = ConsultaDAO.getInstance();
+            ConfigsDAO confdao = ConfigsDAO.getInstance();
             try
             {
-                //registaPaciente(cdao);
-                //registaMedico(cdao);
-                Conta c = cdao.get("M0");
-                Console.WriteLine(c.ToString());
+                //registaPaciente(cdao,confdao);
+                //registaMedico(cdao,confdao);
+                Console.WriteLine(cdao.get("M0").ToString());
+                Console.WriteLine(cdao.get("P0").ToString());
                 Console.WriteLine("Size: " + cdao.size());
                 //registarConsulta(consdao, cdao, "P0", "M0");
-                Console.WriteLine(consdao.get(7).ToString());
+                //Console.WriteLine(consdao.get(11).ToString());
+
+                /* Alterar o valor do 
+                 * preço por consulta */
+                confdao.setValue("preco", 35000);
+                int cent = confdao.get("preco");
+
+                /* Obter o valor dos parâmetros 
+                 * da base de dados */
+                Console.WriteLine("Nº de Médicos: " + confdao.get("medicos"));
+                Console.WriteLine("Nº de Pacientes: " + confdao.get("pacientes"));
+                Console.WriteLine("Preço por consulta: " + cent / 100 + "$");
+
                 //igdao.put("P0", "Alergias", "Bruffen");
                 //igdao.put("P0", "Alergias", "Paracetemol");
                 //igdao.put("P0", "Alergias", "Insetos");
                 //igdao.put("P0", "Tipo de Sangue", "O(-)");
                 printList("Alergias de P0", igdao.get("P0", "Alergias"));
             }
-            catch(MailNaoRegistado exc)
+            catch(Exception exc)
             {
                 Console.WriteLine(exc.Message);
             }

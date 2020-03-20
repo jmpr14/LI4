@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ConsultaJaDB;
 
 namespace ConsultaJa
 {
@@ -19,11 +20,6 @@ namespace ConsultaJa
 		private string nif;
 
 		/**
-		 * Informações gerais acerca do paciente 
-		 */
-		private Dictionary<string, List<string>> infoGeral;
-
-		/**
 		 * Variável que guarda a data de nascimento do paciente 
 		 */
 		private DateTime dataNascimento;
@@ -40,23 +36,16 @@ namespace ConsultaJa
 		private string codigo_postal;
 
 		/**
-		 * Variável que guarda uma lista com todas 
-		 * as consultas agendadas para o paciente
+		 * Variável que nos permite aceder às consultas 
+		 * registadas na base de dados
 		 */
-		private Dictionary<int,Consulta> agendadas;
+		private ConsultaDAO consultas;
 
 		/**
-		 * Variável que guarda uma lista com o histórico 
-		 * de consultas administradas ao paciente
+		 * Variável que nos permite aceder às informações 
+		 * gerais de um paciente na base de dados
 		 */
-		private Dictionary<int,Consulta> historico;
-
-		/**
-		 * Variável que guarda uma lista com as consultas 
-		 * provisóriamente marcadas por médicos à espera 
-		 * da confirmação do próprio cliente
-		 */
-		private Dictionary<int,Consulta> pendentes;
+		private InfoGeralDAO info;
 
 		/**
 		 * Construtor para objetos da classe Paciente 
@@ -70,10 +59,8 @@ namespace ConsultaJa
 			this.dataNascimento = dataNascimento;
 			this.saldo = 0;
 			this.codigo_postal = codigo_postal;
-			this.infoGeral = new Dictionary<string, List<string>>();
-			this.agendadas = new Dictionary<int, Consulta>();
-			this.historico = new Dictionary<int, Consulta>();
-			this.pendentes = new Dictionary<int, Consulta>();
+			this.consultas = ConsultaDAO.getInstance();
+			this.info = InfoGeralDAO.getInstance();
 		}
 
 		/**
@@ -155,6 +142,24 @@ namespace ConsultaJa
 		}
 
 		/**
+		 * Método que permite aceder ao histórico de 
+		 * consultas de um médico
+		 */
+		public override List<Consulta> getHistorico()
+		{
+			return consultas.getAsMedicoHistorico(this.getID());
+		}
+
+		/**
+		 * Método que permite aceder à lista de consultas 
+		 * agendadas para um paciente
+		 */
+		public override List<Consulta> getConsultasAgendadas()
+		{
+			return consultas.getAsPacienteAgendadas(this.getID());
+		}
+
+		/**
 		 * Método que permite a atribuição de um 
 		 * valor à variavel id do paciente ao qual 
 		 * é enviado o método
@@ -179,18 +184,7 @@ namespace ConsultaJa
 		 */
 		public void addInfo(string descricao, string info)
 		{
-			List<string> l;
-			/* Se já existir a categoria adicionamos 
-			 * à respetiva lista */
-			if (this.infoGeral.TryGetValue(descricao, out l))
-				l.Add(info);
-
-			else
-			{
-				l = new List<string>();
-				l.Add(info);
-				this.infoGeral.Add(descricao, l);
-			}
+			this.info.put(this.getID(), descricao, info);
 		}
 
 		/**
@@ -209,26 +203,20 @@ namespace ConsultaJa
 		}
 
 		/**
-         * Método que retorna o histórico 
-         * de um dado médico
-         */
-		public override Dictionary<int, Consulta> getHistorico()
-		{
-			return this.historico;
-		}
-
-		public override Dictionary<int, Consulta> getConsultasAgendadas()
-		{
-			return this.agendadas;
-		}
-
-		/**
 		 * Método que permite propor uma 
 		 * consulta a um paciente
 		 */
-		public void addPropostaConsulta(Consulta c)
+		public void addPropostaConsulta(string localidade, int ano, int mes, int dia, 
+			int hora, int minuto, int segundo)
 		{
-			this.pendentes.Add(c.getID(), c);
+			/* É de notar que o id inserido neste caso em 
+			 * nada afeta, visto que ao inserir no cdao, 
+			 * esse id é despresado
+			 */
+			Consulta c = new Consulta(-1, this, null, localidade, this.morada, null, ano, mes, dia, hora, minuto, segundo);
+			/* Notar que a única maneira de adicionar 
+			 * consultas à aplicação é a partir do paciente*/
+			this.consultas.put(c);
 		}
 
 		/**
@@ -238,19 +226,8 @@ namespace ConsultaJa
 		 */
 		public void aceitarProposta(int idConsulta)
 		{
-			Consulta c;
-			if(this.pendentes.TryGetValue(idConsulta, out c))
-			{
-				/* Marcamos a consulta como agendada */
-				c.agendar();
-
-				/* Removemos a consulta da lista 
-				 * de pendentes */
-				this.pendentes.Remove(idConsulta);
-
-				/* Adicionamos à lista de agendadas */
-				this.agendadas.Add(c.getID(), c);
-			}
+			/* Aceitamos a proposta de consulta */
+			this.consultas.aceitarProposta(idConsulta);
 		}
 
 		/**
@@ -259,19 +236,8 @@ namespace ConsultaJa
 		 */
 		public void moveParaHistorico(int idConsulta)
 		{
-			Consulta c;
-			if(this.agendadas.TryGetValue(idConsulta, out c))
-			{
-				/* Marcamos a consulta como realizada */
-				c.realizar();
-
-				/* Removemos a consulta da lista 
-				 * das agendadas */
-				this.agendadas.Remove(idConsulta);
-
-				/* Adicionamos a consulta ao histórico */
-				this.historico.Add(c.getID(), c);
-			}
+			/* Marcamos a consulta como realizada */
+			this.consultas.marcarRealizada(idConsulta);
 		}
 
 		/**
@@ -283,7 +249,7 @@ namespace ConsultaJa
 		{
 			/* Apenas removemos a consulta da 
 			 * lista de pendentes */
-			this.pendentes.Remove(idConsulta);
+			this.consultas.remove(idConsulta);
 		}
 
 		/**
@@ -292,7 +258,7 @@ namespace ConsultaJa
 		public void desmarcarConsulta(int idConsulta)
 		{
 			/* Removemos a consulta da lista das agendadas */
-			this.agendadas.Remove(idConsulta);
+			//VER COMO VAMOS GERIR A DESMARCAÇÃO DE CONSULTAS
 		}
 
 		/**

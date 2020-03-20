@@ -18,6 +18,15 @@ namespace ConsultaJaDB
 	public class ConsultaDAO
 	{
 		/**
+		 * Valores que caracterizam o estado
+		 * de uma consulta
+		 */
+		private static readonly int PEDIDO = 3;
+		private static readonly int PENDENTE = 1;
+		private static readonly int AGENDADA = 2;
+		private static readonly int REALIZADA = 0;
+
+		/**
 		 * Variável de instância da classe 
 		 * ContaDAO que é retornada quando 
 		 * é pedida uma nova instância
@@ -167,12 +176,12 @@ namespace ConsultaJaDB
 		 */
 		private void putTableConsulta(Consulta value, MySqlConnection connection)
 		{
-			int ret=100;
+			int ret=0;
 
 			DataTable dt = new DataTable();
 
 			StringBuilder sb = new StringBuilder();
-			sb.Append("insert into Consulta (data_hora,localidade,morada,estado,preco,observaçoes,idPaciente,idMedico) values ('");
+			sb.Append("insert into Consulta (data_hora,localidade,morada,estado,observaçoes,idPaciente,idMedico) values ('");
 			sb.Append(this.criarData(value.getData_Hora()));
 			sb.Append("','");
 			sb.Append(value.getLocalidade());
@@ -180,18 +189,23 @@ namespace ConsultaJaDB
 			sb.Append(value.getMorada());
 			sb.Append("','");
 			sb.Append(value.getEstado());
-			sb.Append("',");
-			sb.Append(value.getPrecoUni());
-			sb.Append(",'");
+			sb.Append("','");
 			if (value.getObservacoes() == null)
 				sb.Append("Sem observações");
 			else
 				sb.Append(value.getObservacoes());
 			sb.Append("','");
 			sb.Append(value.getPaciente().getID());
-			sb.Append("','");
-			sb.Append(value.getMedico().getID());
-			sb.Append("')");
+
+			if (value.getMedico() != null)
+			{
+				sb.Append("','");
+				sb.Append(value.getMedico().getID());
+				sb.Append("')");
+			}
+			else
+				sb.Append("',null)");
+			
 
 			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
@@ -244,8 +258,8 @@ namespace ConsultaJaDB
 			 */
 			foreach (DataRow dr in dt.Rows)
 			{
-				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dataNascimento, dr.Field<string>("nif"),
-					dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
+				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dr.Field<double>("classificacao"),
+					dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
 			}
 			return m;
 		}
@@ -411,6 +425,232 @@ namespace ConsultaJaDB
 			connection.Close();
 
 			return c;
+		}
+
+		/**
+		 * Método que vai buscar todas as consultas 
+		 * de um determinado tipo, cujo id de médico 
+		 * é passado como parâmetro do método
+		 */
+		private List<Consulta> getAsMedicoType(string idMedico, int identifier)
+		{
+			/* Objeto a ser retornado */
+			List<Consulta> list = new List<Consulta>();
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão para a base de dados */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select idConsulta from Consulta where idMedico='");
+			sb.Append(idMedico);
+			sb.Append("' and estado=");
+			sb.Append(identifier);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			/* Fechamos a conexão */
+			connection.Close();
+
+			/* Para cada entrada da tabela consulta que 
+			 * resulte da pesquisa, acrescentamos um novo 
+			 * objeto Consulta à lista a retornar*/
+			 foreach(DataRow dr in dt.Rows)
+			{
+				list.Add(this.get(dr.Field<int>("idConsulta")));
+			}
+			return list;
+		}
+
+		/**
+		 * Método que vai buscar todas as consultas 
+		 * de um determinado tipo, cujo id de paciente
+		 * é passado como parâmetro do método
+		 */
+		private List<Consulta> getAsPacienteType(string idPaciente, int identifier)
+		{
+			/* Objeto a ser retornado */
+			List<Consulta> list = new List<Consulta>();
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão para a base de dados */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select idConsulta from Consulta where idPaciente='");
+			sb.Append(idPaciente);
+			sb.Append("' and estado=");
+			sb.Append(identifier);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			/* Para cada entrada da tabela consulta que 
+			 * resulte da pesquisa, acrescentamos um novo 
+			 * objeto Consulta à lista a retornar*/
+			foreach (DataRow dr in dt.Rows)
+			{
+				list.Add(this.get(dr.Field<int>("idConsulta")));
+			}
+			return list;
+		}
+
+		/**
+		 * Método que retorna as consultas agendadas 
+		 * para um médico
+		 */
+		public List<Consulta> getAsMedicoAgendadas(string idMedico)
+		{
+			return this.getAsMedicoType(idMedico, AGENDADA);
+		}
+
+		/**
+		 * Método que retorna as consultas realizadas
+		 * de um médico
+		 */
+		public List<Consulta> getAsMedicoHistorico(string idMedico)
+		{
+			return this.getAsMedicoType(idMedico, REALIZADA);
+		}
+
+		/**
+		 * Método que retorna uma lista com as consultas
+		 * agendadas para um dado paciente
+		 */
+		public List<Consulta> getAsPacienteAgendadas(string idPaciente)
+		{
+			return this.getAsPacienteType(idPaciente, AGENDADA);
+		}
+
+		/**
+		 * Método que retorna uma lista com as consultas
+		 * realizadas de um dado paciente
+		 */
+		public List<Consulta> getAsPacienteHistorico(string idPaciente)
+		{
+			return this.getAsPacienteType(idPaciente, REALIZADA);
+		}
+
+		/**
+		 * Método que retorna uma lista com as consultas
+		 * à espera de confirmação de um dado paciente
+		 */
+		public List<Consulta> getAsPacientePendentes(string idPaciente)
+		{
+			return this.getAsPacienteType(idPaciente, PENDENTE);
+		}
+
+		/**
+		 * Método que permite marcar uma consulta 
+		 * agendada como realizada
+		 */
+		public void marcarRealizada(int idConsulta)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("update consulta set estado=");
+			sb.Append(REALIZADA);
+			sb.Append(" where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que retorna a data para a qual 
+		 * ficou marcada/foi realizada a consulta
+		 */
+		private DateTime getDateOfConsulta(int idConsulta)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select data_hora from Consulta where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+
+			/* Apenas existirá uma linha após a pesquisa */
+			return dt.Rows[0].Field<DateTime>("data_hora");
+		}
+
+		/**
+		 * Método que valida se é possível ou não 
+		 * aceitar uma proposta para consulta
+		 */
+		private bool validaAceitacao(int idConsulta)
+		{
+			DateTime consulta, now;
+			bool ret = (consulta = this.getDateOfConsulta(idConsulta)).CompareTo((now = DateTime.Now)) < 0;
+			bool minumum2Days = now.Year >= consulta.Year ||
+						(now.Month >= consulta.Month && now.Year == consulta.Year )||
+						(now.Day >= consulta.Day + 2 && now.Month == consulta.Month && now.Year == consulta.Year);
+			return ret && minumum2Days;
+
+		}
+
+		/**
+		 * Método que mediante um pedido de consulta 
+		 * permite fazer uma proposta ao paciente em 
+		 * questão
+		 */
+		public void submeterProposta(int idConsulta, string idMedico, int precoDB)
+		{
+			MySqlConnection connection = new MySqlConnection();
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("update consulta set estado=");
+			sb.Append(PENDENTE);
+			sb.Append(", idMedico='");
+			sb.Append(idMedico);
+			sb.Append("', preco=");
+			sb.Append(precoDB);
+			
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite aceitar uma 
+		 * proposta de consulta
+		 */
+		public void aceitarProposta(int idConsulta)
+		{
+			/* Se a data da consulta for inferior à data atual 
+			 * não é possível aceitar a consulta */
+			if (!this.validaAceitacao(idConsulta))
+				throw new Exception("[Error] Impossível aceitar consulta");
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Close();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("update consulta set estado=");
+			sb.Append(AGENDADA);
+			sb.Append(" where idConsulta=");
+			sb.Append(idConsulta);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
 		}
 	}
 }

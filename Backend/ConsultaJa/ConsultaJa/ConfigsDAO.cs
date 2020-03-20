@@ -93,7 +93,7 @@ namespace ConsultaJaDB
 		 * Método que permite aceder ao valor de 
 		 * um determinado parâmetro dado o seu nome
 		 */
-		private int get(string param, MySqlConnection connection)
+		private int getValue(string param, MySqlConnection connection)
 		{
 			int ret = -1;
 			DataTable dt = new DataTable();
@@ -141,8 +141,14 @@ namespace ConsultaJaDB
 		 * parâmetro na base de dados de uma forma
 		 * atómica
 		 */
-		public void getAndIncrement(string param)
+		public int getAndIncrement(string param)
 		{
+			/* Valor que registava antes 
+			 * de incrementar */
+			int value = 0;
+
+			/* Conexão a partir da qual vamos 
+			 * aceder à base de dados */
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/**
 			 * Obtemos a exclusão 
@@ -152,16 +158,122 @@ namespace ConsultaJaDB
 
 			/* Abrimos a conexão */
 			connection.Open();
+			try
+			{
+				/* Acedemos e incrementamos o valor 
+				 * do parâmetro pedido */
+				this.increment(param, (value = this.getValue(param, connection)) + 1, connection);
 
-			/* Acedemos e incrementamos o valor 
-			 * do parâmetro pedido */
-			this.increment(param,this.get(param, connection)+1,connection);
+				/* Fechamos a conexão */
+				connection.Close();
+			}
+			/* Queremos garantir que o lock é 
+			 * cedido mesmo que algo corra mal */
+			finally
+			{
+				/* Cedemos o monitor */
+				Monitor.Exit(this);
+			}
 
-			/* Fechamos a conexão */
+			return value;
+		}
+		/**
+		 * Método que dado o nome do parâmetro 
+		 * pretendido permite obter o seu valor
+		 */
+		public int get(string param)
+		{
+			/* Criamos uma nova conexão para a base de dados */
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			/* Abrimos a conexão */
+			connection.Open();
+
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select value from configs where parametro='");
+			sb.Append(param);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			if (dt.Rows.Count == 0)
+				throw new Exception("[Error] Valor de '" + param + "' inexistente");
+
 			connection.Close();
 
-			/* Cedemos o monitor */
-			Monitor.Exit(this);
+			/* Existe apenas uma linha 
+			 * resultante da pesquisa */
+			return dt.Rows[0].Field<int>("Value");
+		}
+
+		/**
+		 * Método que nos diz se existe um determinado 
+		 * parametro na base de dados com o nome que é 
+		 * passado por parâmetro ao método
+		 */
+		public bool contains(string param)
+		{
+			/* Conexão que nos irá permitir aceder à base de dados */
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			/* Abrimos a conexão */
+			connection.Open();
+
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select * from configs where parametro='");
+			sb.Append(param);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+
+			return dt.Rows.Count != 0;
+		}
+
+		/**
+		 * Método que permite alterar 
+		 * um valor de configuração
+		 */
+		public void setValue(string param, int newValue)
+		{
+			/* Se o parâmetro não existir na base 
+			 * de dados lançamos exceção */
+			if (!this.contains(param))
+				throw new Exception("[Error] Parâmetro inexistente");
+
+			/* Nunca será possível alterar as 
+			 * constantes medicos e pacientes */
+			if (param.Equals("medicos") || param.Equals("pacientes"))
+				throw new Exception("[Error] Impossível alterar o parâmetro '" + param + "'");
+
+			/* Conexão a partir da qual conseguiremos 
+			 * conectar à base de dados */
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			/* Abrimos a conexão */
+			connection.Open();
+
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("update configs set value=");
+			sb.Append(newValue);
+			sb.Append(" where parametro='");
+			sb.Append(param);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			/* Atualizamos os valores */
+			msda.Fill(dt);
+
+			connection.Close();
 		}
 	}
 }

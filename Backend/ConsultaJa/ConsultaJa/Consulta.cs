@@ -68,21 +68,6 @@ namespace ConsultaJa
 		private string observacoes;
 
 		/**
-		 * Variável que representa o preço 
-		 * de toda e qualquer consulta (em centimos)
-		 */
-		private static int preco = 15000;
-
-		/**
-		 * Método que permite alterar o 
-		 * preço das consultas
-		 */
-		public static void alterarPreco(int novoPreco)
-		{
-			Consulta.preco = novoPreco;
-		}
-
-		/**
 		 * Construtor para objetos da classe Consulta
 		 */
 		public Consulta(int id, Paciente p, Medico m, string localidade, string morada, string observacoes,
@@ -92,8 +77,9 @@ namespace ConsultaJa
 			this.m = m;
 			this.p = p;
 			this.localidade = localidade;
-			this.precoUni = preco;
+			this.precoUni = -1;
 			this.morada = morada;
+			this.estado = PEDIDO;
 			this.observacoes = observacoes;
 			this.data_hora = new DateTime(ano, mes, dia, hora, min, sec);
 			this.estado = PEDIDO;
@@ -216,7 +202,7 @@ namespace ConsultaJa
 		{
 			/* Eliminamos a consulta quer para 
 			 * o paciente quer para o médico */
-			this.m.desmarcarConsulta(this.id);
+			//this.m.desmarcarConsulta(this.id);
 			this.p.desmarcarConsulta(this.id);
 		}
 

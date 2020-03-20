@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using ConsultaJa;
 using System.Text;
+using System.Threading;
 
 namespace ConsultaJaDB
 {
@@ -412,8 +413,8 @@ namespace ConsultaJaDB
 			 */
 			foreach(DataRow dr in dt.Rows)
 			{
-				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dataNascimento, dr.Field<string>("nif"),
-					dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
+				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dr.Field<double>("classificacao"), 
+					dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
 			}
 			return m;
 		}
@@ -527,6 +528,96 @@ namespace ConsultaJaDB
 
 			connection.Close();
 			return c;
+		}
+
+		/**
+		 * Método que permite efetuar um carregamento para a ca
+		 */
+		public void efetuarCarregamento(string id, int montante)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			if (id.Contains("M"))
+				sb.Append("update medico set saldo=saldo+");
+			else
+				sb.Append("update paciente set saldo=saldo+");
+			sb.Append(montante);
+			if (id.Contains("M"))
+				sb.Append(" where idMedico='");
+			else
+				sb.Append("where idPaciente='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite atualizar os parâmetros 
+		 * relacionados com a avaliação do médico
+		 */
+		private void atualizarClassificacao(string idMedico, double novaClassif, int nClassif, MySqlConnection connection)
+		{
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("update medico set classificacao=");
+			sb.Append(novaClassif);
+			sb.Append(", numClassificacao=");
+			sb.Append(nClassif);
+			sb.Append(" where idMedico='");
+			sb.Append(idMedico);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+		}
+
+		/**
+		 * Método que permite avaliar o médico cujo id 
+		 * é passado como parâmetro do método
+		 */
+		public void avaliarMedico(string id, int classificacaoNew)
+		{
+			/* Se houver tentativa de avaliar 
+			 * um paciente lançamos uma exceção */
+			if (id.Contains("P"))
+				throw new Exception("[Error] Funcionalidade indisponível para pacientes");
+
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			/* Garantimos exclusão mútua para 
+			 * atualizar a classificação */
+			sb.Append("select classificacao, numClassificacao from medico where id='");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), this.connectionstring);
+			msda.Fill(dt);
+			/* Vamos buscar os valores. Obtemos a exclusão 
+			 * mútua do objeto neste local */
+			Monitor.Enter(this);
+			try
+			{
+				double classAtual = dt.Rows[0].Field<double>("classificacao");
+				int nClassifs = dt.Rows[0].Field<int>("numClassificacao");
+				/* Cálculo da nova classificação média atual */
+				double calc = (classAtual * nClassifs + classificacaoNew) / ++nClassifs;
+				/* Atualizamos o valor */
+				this.atualizarClassificacao(id, calc, nClassifs, connection);
+			}
+			Monitor.Exit(this);
+			/* Fechamos a conexão */
+
+			connection.Close();
 		}
 	}
 }

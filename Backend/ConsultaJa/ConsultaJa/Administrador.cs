@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsultaJa
 {
-    public class Administrador : Conta
+    public class Administrador
     {
         /**
          * Variável que guarda os pedidos
@@ -19,8 +19,7 @@ namespace ConsultaJa
          * Construtor para objetos da 
          * classe Administrador
          */
-        public Administrador(string email, string password, string nome, DateTime dataNascimento) 
-            : base(email, password, nome, dataNascimento) 
+        public Administrador(string email, string password, string nome, DateTime dataNascimento)
         {
             this.pedidosInsc = new Dictionary<string, Medico>();
         }
@@ -56,7 +55,7 @@ namespace ConsultaJa
          * getHistorico() para superclasses 
          * da classe Conta
          */
-        public override Dictionary<int, Consulta> getHistorico()
+        public Dictionary<int, Consulta> getHistorico()
         {
             return null;
         }
@@ -66,7 +65,7 @@ namespace ConsultaJa
          * getConsultasAgendadas() para 
          * superclasses da classe Conta
          */
-        public override Dictionary<int, Consulta> getConsultasAgendadas()
+        public Dictionary<int, Consulta> getConsultasAgendadas()
         {
             return null;
         }

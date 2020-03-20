@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConsultaJaDB;
 
 namespace ConsultaJa
 {
@@ -91,14 +92,14 @@ namespace ConsultaJa
 		/**
 		 * Método que retorna o histórico de uma conta
 		 */
-		public abstract Dictionary<int, Consulta> getHistorico();
+		public abstract List<Consulta> getHistorico();
 
 		/**
 		 * Método que retorna um conjunto de consultas 
 		 * agendadas associadas à conta à qual é 
 		 * enviado o método
 		 */
-		public abstract Dictionary<int, Consulta> getConsultasAgendadas();
+		public abstract List<Consulta> getConsultasAgendadas();
 
 		/**
 		 * Método que permite atribuir um valor à 
@@ -108,6 +109,16 @@ namespace ConsultaJa
 		public void setID(string id)
 		{
 			this.id = id;
+		}
+
+		/**
+		 * Método que permite alterar a password do 
+		 * objeto da classe Conta ao qual é enviado 
+		 * o método
+		 */
+		public void setPassword(string password)
+		{
+			this.password = password;
 		}
 
 		/**

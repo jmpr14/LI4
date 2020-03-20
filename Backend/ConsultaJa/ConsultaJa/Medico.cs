@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ConsultaJaDB;
 
 namespace ConsultaJa
 {
@@ -41,31 +42,18 @@ namespace ConsultaJa
         private string codigo_postal;
 
         /**
-         * Estrutura de dados que guarda o 
-         * histórico de consultas do médico
+         * Variável que permite aceder às 
+         * consultas na base de dados
          */
-        Dictionary<int, Consulta> historico;
-
-        /**
-         * Estrutura de dados que guarda o conjunto 
-         * de consultas agendadas para o médico
-         */
-        Dictionary<int, Consulta> agendadas;
-
-        /**
-         * Estrutura de dados que guarda o conjunto 
-         * de consultas pendentes para o médico. 
-         * Estas consultas são propostas por si 
-         * e aguardam aprovação do paciente envolvido 
-         * para passarem para agendadas
-         */
-        Dictionary<int, Consulta> pendentes;
+        private ConsultaDAO consultas;
 
         /**
          * Construtor para objetos 
          * da classe médico
          */
-        public Medico(string id, string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal) : 
+        public Medico(string id, string email, string password, string nome, 
+            double classificacao, int numClassificacoes, DateTime dataNascimento, 
+            string nif, string morada, string codigo_postal) : 
             base(email,password,nome,dataNascimento)
         {
             this.setID(id);
@@ -75,9 +63,7 @@ namespace ConsultaJa
             this.numClassificacoes = 0;
             this.saldo = 0;
             this.codigo_postal = codigo_postal;
-            this.historico = new Dictionary<int, Consulta>();
-            this.agendadas = new Dictionary<int, Consulta>();
-            this.pendentes = new Dictionary<int, Consulta>();
+            this.consultas = ConsultaDAO.getInstance();
         }
 
         /**
@@ -145,6 +131,34 @@ namespace ConsultaJa
         }
 
         /**
+         * Método que retorna todas as consultas 
+         * agendadas para um médico
+         */
+        public override List<Consulta> getConsultasAgendadas()
+        {
+            return consultas.getAsMedicoAgendadas(this.getID());
+        }
+
+        /**
+         * Método que retorna todas as consultas 
+         * realizadas de um médico
+         */
+        public override List<Consulta> getHistorico()
+        {
+            return consultas.getAsMedicoHistorico(this.getID());
+        }
+
+        /**
+         * Método que permite fazer uma proposta de 
+         * consulta mediante um pedido de consulta 
+         * previamente feito por um paciente
+         */
+        public void submeterProposta(int idConsulta, int precoDB)
+        {
+            this.consultas.submeterProposta(idConsulta, this.getID(), precoDB);
+        }
+
+        /**
          * Método que permite adicionar um certo 
          * numerário à carteira digital do médico
          */
@@ -201,81 +215,6 @@ namespace ConsultaJa
             }
             sb.Append("}");
             return sb.ToString();
-        }
-
-        /**
-         * Método que retorna o histórico 
-         * de um dado médico
-         */
-        public override Dictionary<int, Consulta> getHistorico()
-        {
-            return this.historico;
-        }
-
-        public override Dictionary<int, Consulta> getConsultasAgendadas()
-        {
-            return this.agendadas;
-        }
-
-        /**
-         * Método que permite adicionar uma consulta 
-         * pendente a um objeto da classe Medico
-         */
-        public void addPendente(Consulta c)
-        {
-            this.pendentes.Add(c.getID(), c);
-        }
-
-        /**
-         * Método que permite marcar uma consulta 
-         * pendente como agendada caso ela existe 
-         * no estado pendente
-         */
-        public void agendar(int idConsulta)
-        {
-            Consulta c;
-            if (this.pendentes.TryGetValue(idConsulta, out c))
-            {
-                /* Marcamos a consulta como agendada */
-                c.agendar();
-
-                /* Removemos a consulta da lista 
-				 * de pendentes */
-                this.pendentes.Remove(idConsulta);
-
-                /* Adicionamos à lista de agendadas */
-                this.agendadas.Add(c.getID(), c);
-            }
-        }
-
-        /**
-		 * Método que move uma consulta da lista 
-		 * de agendadas para o histórico
-		 */
-        public void moveParaHistorico(int idConsulta)
-        {
-            Consulta c;
-            if (this.agendadas.TryGetValue(idConsulta, out c))
-            {
-                /* Marcamos a consulta como realizada */
-                c.realizar();
-
-                /* Removemos a consulta da lista 
-				 * das agendadas */
-                this.agendadas.Remove(idConsulta);
-
-                /* Adicionamos a consulta ao histórico */
-                this.historico.Add(c.getID(), c);
-            }
-        }
-
-        /**
-         * Método que permite desmarcar a consulta de um médico
-         */
-        public void desmarcarConsulta(int idConsulta)
-        {
-            /* Removemos a consulta da lista das agendadas */
-            this.agendadas.Remove(idConsulta);
         }
 
         /**
