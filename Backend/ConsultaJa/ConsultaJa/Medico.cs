@@ -42,6 +42,11 @@ namespace ConsultaJa
         private string codigo_postal;
 
         /**
+         * Variável que guarda a localidade do médico
+         */
+        private string localidade;
+
+        /**
          * Variável que permite aceder às 
          * consultas na base de dados
          */
@@ -53,7 +58,7 @@ namespace ConsultaJa
          */
         public Medico(string id, string email, string password, string nome, 
             double classificacao, int numClassificacoes, DateTime dataNascimento, 
-            string nif, string morada, string codigo_postal) : 
+            string nif, string morada, string codigo_postal,string localidade) : 
             base(email,password,nome,dataNascimento)
         {
             this.setID(id);
@@ -63,6 +68,7 @@ namespace ConsultaJa
             this.numClassificacoes = 0;
             this.saldo = 0;
             this.codigo_postal = codigo_postal;
+            this.localidade = localidade;
             this.consultas = ConsultaDAO.getInstance();
         }
 
@@ -119,6 +125,15 @@ namespace ConsultaJa
         public string getCodigo_Postal()
         {
             return this.codigo_postal;
+        }
+
+        /**
+         * Método que retorna a localidade 
+         * de um dado médico
+         */
+        public string getLocalidade()
+        {
+            return this.localidade;
         }
 
         /**

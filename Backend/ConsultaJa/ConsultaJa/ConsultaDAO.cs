@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using ConsultaJa;
 using MySql.Data.MySqlClient;
 
@@ -232,6 +230,34 @@ namespace ConsultaJaDB
 		}
 
 		/**
+		 * Método que dado um código postal
+		 * retorna a localidade a si atribuida
+		 */
+		private string getLocalidade(string idConta, MySqlConnection connection)
+		{
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			/* Se o id corresponder a um médico */
+			if (idConta.Contains("M"))
+				sb.Append("select localidade from medico c, codigo_postal cp where c.idMedico='");
+			/* Caso o id corresponda a um paciente */
+			else
+				sb.Append("select localidade from paciente c, codigo_postal cp where c.idPaciente='");
+
+			sb.Append(idConta);
+			sb.Append("' and cp.codigo_postal=c.codigo_postal");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			/* Apenas haverá uma linha que 
+			 * corresponda a esta pesquisa */
+			return dt.Rows[0].Field<string>("localidade");
+		}
+
+		/**
 		 * Método que dado os dados encontrados apos 
 		 * consultar a tabela conta, constroi um 
 		 * objeto da classe Medico
@@ -252,15 +278,16 @@ namespace ConsultaJaDB
 
 			msda.Fill(dt);
 
+			string localidade = this.getLocalidade(idMedico, connection);
 			/* 
 			 * Apenas existirá, no máximo 1 linha,
 			 * visto que os id's são únicos
 			 */
-			foreach (DataRow dr in dt.Rows)
-			{
-				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dr.Field<double>("classificacao"),
-					dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
-			}
+			DataRow dr = dt.Rows[0];
+			m = new Medico(dr.Field<string>("idMedico"), email, password, nome, (double)dr.Field<decimal>("classificacao"),
+				dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), 
+				dr.Field<String>("codigo_postal"),localidade);
+
 			return m;
 		}
 
@@ -285,16 +312,18 @@ namespace ConsultaJaDB
 
 			msda.Fill(dt);
 
+			/* Vamos buscar a localidade do paciente em questão */
+			string localidade = this.getLocalidade(idPaciente, connection);
+
 			/* 
 			 * Apenas existirá, no máximo 1 linha,
 			 * visto que os id's são únicos
 			 */
-			foreach (DataRow dr in dt.Rows)
-			{
-				p = new Paciente(dr.Field<string>("idPaciente"), email, password, nome, dr.Field<string>("morada"),
-					dr.Field<string>("nif"), dataNascimento,
-					dr.Field<string>("codigo_postal"));
-			}
+			DataRow dr = dt.Rows[0];
+			p = new Paciente(dr.Field<string>("idPaciente"), email, password, nome, dr.Field<string>("morada"),
+				dr.Field<string>("nif"), dataNascimento,
+				dr.Field<string>("codigo_postal"),localidade);
+
 			return p;
 		}
 
@@ -349,21 +378,20 @@ namespace ConsultaJaDB
 				throw new MailNaoRegistado("[Error] Id de conta inexistente");
 
 			/* Só teremos um item nesta coleção */
-			foreach (DataRow dr in dt.Rows)
+			DataRow dr = dt.Rows[0];
+			/* Estamos perante um médico */
+			if (id.Contains("M"))
 			{
-				/* Estamos perante um médico */
-				if (id.Contains("M"))
-				{
-					c = this.createMedico(id, dr.Field<string>("nome"), dr.Field<string>("password"),
-						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"), connection);
-				}
-				/* Estamos perante um paciente */
-				if (id.Contains("P"))
-				{
-					c = this.createPaciente(id, dr.Field<string>("nome"), dr.Field<string>("password"),
-						dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"),connection);
-				}
+				c = this.createMedico(id, dr.Field<string>("nome"), dr.Field<string>("password"),
+					dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"), connection);
 			}
+			/* Estamos perante um paciente */
+			if (id.Contains("P"))
+			{
+				c = this.createPaciente(id, dr.Field<string>("nome"), dr.Field<string>("password"),
+					dr.Field<string>("email"), dr.Field<DateTime>("dataNascimento"),connection);
+			}
+			
 
 			this.getContactos(id, c, connection);
 
@@ -392,19 +420,17 @@ namespace ConsultaJaDB
 				throw new MailNaoRegistado("[Error] Id de consulta não está atribuido");
 
 			/* Só teremos um item nesta coleção */
-			foreach (DataRow dr in dt.Rows)
-			{
-				Medico m = (Medico)this.getConta(dr.Field<string>("idMedico"), connection);
-				Paciente p = (Paciente)this.getConta(dr.Field<string>("idPaciente"), connection);
-				DateTime dta = dr.Field<DateTime>("data_hora");
-				string obs = dr.Field<string>("observaçoes");
-				if (obs.Equals("Sem observações"))
-					obs = null;
+			DataRow dr = dt.Rows[0];
+			Medico m = (Medico)this.getConta(dr.Field<string>("idMedico"), connection);
+			Paciente p = (Paciente)this.getConta(dr.Field<string>("idPaciente"), connection);
+			DateTime dta = dr.Field<DateTime>("data_hora");
+			string obs = dr.Field<string>("observaçoes");
+			if (obs.Equals("Sem observações"))
+				obs = null;
 
-				ret = new Consulta(dr.Field<int>("idConsulta"),p, m, dr.Field<string>("localidade"), dr.Field<string>("morada"), obs,
-					dta.Year, dta.Month, dta.Day, dta.Hour, dta.Minute, dta.Second);
-			}
-
+			ret = new Consulta(dr.Field<int>("idConsulta"),p, m, dr.Field<string>("localidade"), dr.Field<string>("morada"), obs,
+				dta.Year, dta.Month, dta.Day, dta.Hour, dta.Minute, dta.Second);
+			
 			return ret;
 		}
 

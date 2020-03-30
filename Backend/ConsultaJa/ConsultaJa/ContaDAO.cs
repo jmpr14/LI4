@@ -245,6 +245,74 @@ namespace ConsultaJaDB
 		}
 
 		/**
+		 * Método que nos diz se um dado código 
+		 * postal já existe na base de dados
+		 */
+		private Boolean existeCodigoPostal(string codigo, MySqlConnection connection)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select * from codigo_postal where codigo_postal='");
+			sb.Append(codigo);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			return dt.Rows.Count != 0;
+		}
+
+		/**
+		 * Método que permite adicionar um 
+		 * código postal à base de dados
+		 */
+		private void addCodigoPostal(string codigo, string localidade, MySqlConnection connection)
+		{
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+			sb.Append("insert into codigo_postal (codigo_postal,localidade) values ('");
+			sb.Append(codigo);
+			sb.Append("','");
+			sb.Append(localidade);
+			sb.Append("')");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+		}
+
+		/**
+		 * Método que dado um código postal
+		 * retorna a localidade a si atribuida
+		 */
+		private string getLocalidade(string idConta, MySqlConnection connection)
+		{
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			/* Se o id corresponder a um médico */
+			if(idConta.Contains("M"))
+				sb.Append("select localidade from medico c, codigo_postal cp where c.idMedico='");
+			/* Caso o id corresponda a um paciente */
+			else
+				sb.Append("select localidade from paciente c, codigo_postal cp where c.idPaciente='");
+
+			sb.Append(idConta);
+			sb.Append("' and cp.codigo_postal=c.codigo_postal");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			/* Apenas haverá uma linha que 
+			 * corresponda a esta pesquisa */
+			return dt.Rows[0].Field<string>("localidade");
+		}
+
+		/**
 		 * Método privado que permite adicionar 
 		 * uma conta apenas na tabela Conta da 
 		 * base de dados
@@ -307,6 +375,13 @@ namespace ConsultaJaDB
 		 */
 		private void putTableMedico(string id, Medico value, MySqlConnection connection)
 		{
+			string cp;
+			/* Se não existir o código postal na base 
+			 * de dados teremos que o adicionar 
+			 */
+			if (!this.existeCodigoPostal((cp = value.getCodigo_Postal()), connection))
+				this.addCodigoPostal(cp, value.getLocalidade(), connection);
+
 			DataTable dt = new DataTable();
 
 			StringBuilder sb = new StringBuilder();
@@ -337,6 +412,13 @@ namespace ConsultaJaDB
 		 */
 		private void putTablePaciente(string id, Paciente value, MySqlConnection connection)
 		{
+			string cp;
+			/* Se não existir o código postal na base 
+			 * de dados teremos que o adicionar 
+			 */
+			if (!this.existeCodigoPostal((cp = value.getCodigo_Postal()), connection))
+				this.addCodigoPostal(cp, value.getLocalidade(), connection);
+
 			DataTable dt = new DataTable();
 
 			StringBuilder sb = new StringBuilder();
@@ -411,11 +493,13 @@ namespace ConsultaJaDB
 			 * Apenas existirá, no máximo 1 linha,
 			 * visto que os id's são únicos
 			 */
-			foreach(DataRow dr in dt.Rows)
-			{
-				m = new Medico(dr.Field<string>("idMedico"), email,password, nome, (double)dr.Field<decimal>("classificacao"), 
-					dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<string>("codigo_postal"));
-			}
+			DataRow dr = dt.Rows[0];
+			string localidade = this.getLocalidade(idMedico,connection);
+
+			m = new Medico(dr.Field<string>("idMedico"), email,password, nome, (double)dr.Field<decimal>("classificacao"), 
+				dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<string>("codigo_postal"),
+				localidade);
+			
 			return m;
 		}
 
@@ -440,6 +524,9 @@ namespace ConsultaJaDB
 
 			msda.Fill(dt);
 
+			/* Vamos buscar a localidade do paciente em questão */
+			string localidade = this.getLocalidade(idPaciente, connection);
+
 			/* 
 			 * Apenas existirá, no máximo 1 linha,
 			 * visto que os id's são únicos
@@ -448,7 +535,7 @@ namespace ConsultaJaDB
 			{
 				p = new Paciente(dr.Field<string>("idPaciente"), email, password, nome, dr.Field<string>("morada"), 
 					dr.Field<string>("nif"), dataNascimento, 
-					dr.Field<string>("codigo_postal"));
+					dr.Field<string>("codigo_postal"),localidade);
 			}
 			return p;
 		}
