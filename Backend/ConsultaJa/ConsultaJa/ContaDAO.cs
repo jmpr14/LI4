@@ -413,8 +413,8 @@ namespace ConsultaJaDB
 			 */
 			foreach(DataRow dr in dt.Rows)
 			{
-				m = new Medico(dr.Field<string>("idMedico"), email, password, nome, dr.Field<double>("classificacao"), 
-					dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<String>("codigo_postal"));
+				m = new Medico(dr.Field<string>("idMedico"), email,password, nome, (double)dr.Field<decimal>("classificacao"), 
+					dr.Field<int>("numClassificacao"), dataNascimento, dr.Field<string>("nif"), dr.Field<string>("morada"), dr.Field<string>("codigo_postal"));
 			}
 			return m;
 		}
@@ -614,7 +614,9 @@ namespace ConsultaJaDB
 				/* Atualizamos o valor */
 				this.atualizarClassificacao(id, calc, nClassifs, connection);
 			}
-			Monitor.Exit(this);
+			finally{
+				Monitor.Exit(this);
+			}
 			/* Fechamos a conexão */
 
 			connection.Close();

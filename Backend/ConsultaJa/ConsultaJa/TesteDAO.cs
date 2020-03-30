@@ -49,7 +49,7 @@ namespace ConsultaJa
         public static void registarConsulta(ConsultaDAO consdao, ContaDAO cdao, 
             string idPaciente, string idMedico)
         {
-            Medico m = (Medico)cdao.get("M1");
+            Medico m = (Medico)cdao.get("M0");
             Console.WriteLine("Id do médico da consulta: " + m.getID());
             Paciente p = (Paciente)cdao.get("P0");
             Console.WriteLine("Id do paciente da consulta: " + p.getID());
@@ -91,7 +91,9 @@ namespace ConsultaJa
             {
                 //registaPaciente(cdao,confdao);
                 //registaMedico(cdao,confdao);
+                Console.WriteLine("Médico :");
                 Console.WriteLine(cdao.get("M0").ToString());
+                Console.WriteLine("Paciente :");
                 Console.WriteLine(cdao.get("P0").ToString());
                 Console.WriteLine("Size: " + cdao.size());
                 //registarConsulta(consdao, cdao, "P0", "M0");
@@ -99,7 +101,7 @@ namespace ConsultaJa
 
                 /* Alterar o valor do 
                  * preço por consulta */
-                confdao.setValue("preco", 35000);
+                //confdao.setValue("preco", 35000);
                 int cent = confdao.get("preco");
 
                 /* Obter o valor dos parâmetros 
