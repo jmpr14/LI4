@@ -62,15 +62,18 @@ namespace ConsultaJa
 		 * Método que permite a inscrição de 
 		 * um novo paciente na aplicação
 		 */
-		public string novoPaciente(string nome, string email, string password, DateTime dataNascimento, string morada, string nif, string codigo_postal)
+		public string novoPaciente(string email, string password, string nome, DateTime dataNascimento, string morada, string nif, string codigo_postal, List<string> contactos)
 		{
+			/* Vamos buscar o próximo idPaciente que será atribuido 
+			 * ao novo paciente que está a ser registado */
 			int id = parametros.getAndIncrement("pacientes");
 			string idPaciente = "P" + id;
-			Paciente p = new Paciente(idPaciente, "carlosSilvaa@hotmail.com", "carlosSSilva1994",
-					"Carlos Santos Silva", "Rua de Baixo nº155", "784512231", new DateTime(1994, 5, 24),
-					"4730-280");
-			p.addContacto("935425789");
-			p.addContacto("917747257");
+			Paciente p = new Paciente(idPaciente, email, password, nome, morada, nif,dataNascimento, codigo_postal);
+			/* Adicionamos cada contacto ao perfil do paciente */
+			foreach(string contacto in contactos)
+			{
+				p.addContacto(contacto);
+			}
 			contas.put(idPaciente, p);
 			return idPaciente;
 		}
