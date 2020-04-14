@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import api from './api'
 
 import './Login.css'
 
@@ -25,24 +27,67 @@ export class Login extends Component {
         };
     }
 
-    mySubmitHandler = (event) => {
+    //handlerLogin = (event) => {
+    //    event.preventDefault();
+
+    //    axios.get('https://localhost:49853/login', {
+    //        params: {
+    //            Email: this.state.email,
+    //            Password: this.state.password
+    //        }
+    //    })
+    //        .then(response => {
+    //            alert("Login efetuado com sucesso.");
+    //            console.log(response);
+    //        })
+    //        .catch(response => {
+    //            alert("Credenciais Inválidas!");
+    //            console.log(response);
+    //        })
+    //}
+
+    handlerLogin = (event) => {
+
         event.preventDefault();
-        if (!this.state.email || !this.state.password) {
-            this.setState({ error: "Preencha e-mail e senha para continuar!" });
-        } else {
-            try {
-                //alert("Falta definir as acoes para os eventos");
+
+        api.get('/contas/login', {
+            params: {
+                Email: this.state.email,
+                Password: this.state.password
+            }
+        })
+            .then(response => {
+                alert("Login efetuado com sucesso.");
+                console.log(response);
                 this.state.valido = true;
                 login(this.state.valido);
                 this.props.history.push("/perfil");
-            } catch (err) {
-                this.setState({
-                    error:
-                        "Houve um problema com o login, verifique suas credenciais. T.T"
-                });
-            }
-        }
+            })
+            .catch(error => {
+                alert("Credenciais Inválidas! " + error);
+                console.log(error);
+            })
+        //event.preventDefault();
     }
+
+    //mySubmitHandler = (event) => {
+    //    event.preventDefault();
+    //    if (!this.state.email || !this.state.password) {
+    //        this.setState({ error: "Preencha e-mail e senha para continuar!" });
+    //    } else {
+    //        try {
+    //            //alert("Falta definir as acoes para os eventos");
+    //            this.state.valido = true;
+    //            login(this.state.valido);
+    //            this.props.history.push("/perfil");
+    //        } catch (err) {
+    //            this.setState({
+    //                error:
+    //                    "Houve um problema com o login, verifique suas credenciais. T.T"
+    //            });
+    //        }
+    //    }
+    //}
 
     mySubmitHandler1 = (event) => {
         event.preventDefault();
@@ -69,25 +114,27 @@ export class Login extends Component {
         this.setState({ [nam]: val });
     }
 
-
     render() {
         return (
             <section>
-            <article>
-            <form onSubmit={this.mySubmitHandler}>
+                <article>
+                    <form onSubmit={this.handlerLogin}>
                 <h1> Login </h1>
                 {this.state.error && <p class="log">{this.state.error}</p>}
                 <br />
                 <p>Insira o email:</p>
                 <input
+                    className="form-control"
                     type="email"
                     name='email'
-                    placeholder="email"
+                    icon="envelope"
+                    placeholder="Your e-mail"
                     onChange={this.myChangeHandler}
                 />
                 <br />
                 <p>Insira a password:</p>
                 <input
+                    className="form-control"
                     type="password"
                     name='password'
                     placeholder="password"
@@ -105,6 +152,7 @@ export class Login extends Component {
                     <br />
                     <p>Insira a senha de acesso:</p>
                     <input
+                        className="form-control"
                         type="password"
                         name='senha'
                         placeholder="senha"
