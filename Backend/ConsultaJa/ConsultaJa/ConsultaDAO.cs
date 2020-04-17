@@ -568,6 +568,33 @@ namespace ConsultaJaDB
 		}
 
 		/**
+		 * Método que retorna todas os pedidos de 
+		 * consulta feitos por parte de pacientes
+		 */
+		public List<Consulta> getPedidos()
+		{
+			List<Consulta> ret = new List<Consulta>();
+			Consulta c;
+			/* Vamos buscar o número de consultas */
+			int num = this.size();
+			int i = 0;
+			while (i < num)
+			{
+				/* Caso exista esse id */
+				if (this.contains(i))
+				{
+					c = this.get(i);
+					if (c.isPedido())
+					{
+						ret.Add(c);
+						i++;
+					}
+				}
+			}
+			return ret;
+		}
+
+		/**
 		 * Método que permite marcar uma consulta 
 		 * agendada como realizada
 		 */

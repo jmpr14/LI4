@@ -18,7 +18,7 @@ namespace ConsultaJa
             int id = confdao.getAndIncrement("medicos");
             string idMedico = "M" + id;
             Medico m = new Medico(idMedico,"albertosantos1989@gmail.com", "asantos1989", "Alberto Santos", 0, 0,
-                    new DateTime(1989, 7, 15), "242798140", "Rua da Silva", "4730-280");
+                    new DateTime(1989, 7, 15), "242798140", "Rua da Silva", "4730-280", "Braga");
             m.addContacto("932541002");
             m.addContacto("938912002");
             m.addContacto("911411212");
@@ -35,7 +35,7 @@ namespace ConsultaJa
             string idPaciente = "P" + id;
             Paciente p = new Paciente(idPaciente, "carlosSilvaa@hotmail.com", "carlosSSilva1994",
                     "Carlos Santos Silva", "Rua de Baixo nº155", "784512231", new DateTime(1994, 5, 24),
-                    "4730-280");
+                    "4730-280", "Braga");
             p.addContacto("935425789");
             p.addContacto("917747257");
             cdao.put(idPaciente, p);
@@ -81,6 +81,7 @@ namespace ConsultaJa
          * Método que arranca o programa 
          * de teste
          */
+         /*
         public static void Main(string[] args)
         {
             ContaDAO cdao = ContaDAO.getInstance();
@@ -97,19 +98,20 @@ namespace ConsultaJa
                 Console.WriteLine(cdao.get("P0").ToString());
                 Console.WriteLine("Size: " + cdao.size());
                 //registarConsulta(consdao, cdao, "P0", "M0");
-                //Console.WriteLine(consdao.get(11).ToString());
-
+                Console.WriteLine(consdao.get(1).ToString());
+                */
                 /* Alterar o valor do 
                  * preço por consulta */
-                //confdao.setValue("preco", 35000);
+                 /*
+                confdao.setValue("preco", 35000);
                 int cent = confdao.get("preco");
-
+                */
                 /* Obter o valor dos parâmetros 
                  * da base de dados */
+                 /*
                 Console.WriteLine("Nº de Médicos: " + confdao.get("medicos"));
                 Console.WriteLine("Nº de Pacientes: " + confdao.get("pacientes"));
                 Console.WriteLine("Preço por consulta: " + cent / 100 + "$");
-
                 //igdao.put("P0", "Alergias", "Bruffen");
                 //igdao.put("P0", "Alergias", "Paracetemol");
                 //igdao.put("P0", "Alergias", "Insetos");
@@ -118,8 +120,8 @@ namespace ConsultaJa
             }
             catch(Exception exc)
             {
-                Console.WriteLine("[" + exc.GetType() + "]" + exc.Message);
+                Console.WriteLine("[" + exc.GetType() + "] - [" + exc.GetBaseException() + "] " + exc.Message);
             }
-        }
+        }*/
     }
 }

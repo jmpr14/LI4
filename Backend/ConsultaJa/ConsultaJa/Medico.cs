@@ -243,6 +243,25 @@ namespace ConsultaJa
         }
 
         /**
+         * Método que torna o médico como 
+         * aceite na aplicação
+         */
+        public void aceitaMedico()
+        {
+            if (this.numClassificacoes < 0)
+                this.numClassificacoes = 0;
+        }
+
+        /**
+         * Método que retorna true se e só se o médico 
+         * foi aceite pelo administrador da aplicação
+         */
+        public Boolean aprovado()
+        {
+            return this.numClassificacoes >= 0;
+        }
+
+        /**
          * Implementação do método equals 
          * para objetos da classe Medico
          */

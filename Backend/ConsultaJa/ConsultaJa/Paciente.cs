@@ -20,11 +20,6 @@ namespace ConsultaJa
 		private string nif;
 
 		/**
-		 * Variável que guarda a data de nascimento do paciente 
-		 */
-		private DateTime dataNascimento;
-
-		/**
 		 * Variável que guarda o saldo do paciente 
 		 */
 		private int saldo;
@@ -63,7 +58,6 @@ namespace ConsultaJa
 			this.setID(id);
 			this.morada = morada;
 			this.nif = nif;
-			this.dataNascimento = dataNascimento;
 			this.saldo = 0;
 			this.codigo_postal = codigo_postal;
 			this.consultas = ConsultaDAO.getInstance();

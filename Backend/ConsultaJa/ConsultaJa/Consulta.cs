@@ -251,5 +251,14 @@ namespace ConsultaJa
 
 			return sb.ToString();
 		}
+
+		/**
+		 * Método que retorna true se a 
+		 * consulta ainda só é um pedido
+		 */
+		public Boolean isPedido()
+		{
+			return this.estado == PEDIDO;
+		}
 	}
 }

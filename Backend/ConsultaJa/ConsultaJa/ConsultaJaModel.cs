@@ -38,6 +38,12 @@ namespace ConsultaJa
 		private ConfigsDAO parametros;
 
 		/**
+		 * Variável que guarda os registos de informações 
+		 * gerais de pacientes na base de dados
+		 */
+		private InfoGeralDAO info;
+
+		/**
 		 * Construtor para objetos da classe ConsultaJaModel, 
 		 * classe essa que representa a classe principal 
 		 * da aplicação
@@ -47,15 +53,7 @@ namespace ConsultaJa
 			this.contas = ContaDAO.getInstance();
 			this.consultas = ConsultaDAO.getInstance();
 			this.parametros = ConfigsDAO.getInstance();
-		}
-
-		/**
-		 * Método que permite a inscrição de 
-		 * um novo médico na aplicação
-		 */
-		public string novoMedico(string nome, string email, string password, List<string> contactos, DateTime dataNascimento, string morada, string nif, string codigo_postal)
-		{
-			return "";
+			this.info = InfoGeralDAO.getInstance();
 		}
 
 		/**
@@ -95,6 +93,16 @@ namespace ConsultaJa
 
 			if (!c.getPassword().Equals(password))
 				throw new PasswordErrada("[Error] password errada");
+
+			/* Caso a conta seja de médico mas ainda não tenha sido 
+			 * aprovada pelo administrador também lançamos exceção */
+			if (c.getID().Contains("M"))
+			{
+				Medico m = (Medico)c;
+				if (!m.aprovado())
+					throw new MailNaoRegistado("O seu pedido de inscrição na aplicação " +
+						"como médico ainda não foi aceite pelo administrador. Por favor, tente novamente mais tarde");
+			}
 
 			return c;
 		}
@@ -174,11 +182,11 @@ namespace ConsultaJa
 		 */
 		public void proporConsulta(string idMedico, int idConsulta)
 		{
-			Medico m;
+			Medico m = (Medico)this.contas.get(idMedico);
 			/* Vamos a base de dados buscar o preço por 
 			 * consulta atualmente em vigor */
 			int preco = this.parametros.get(__Const_preco);
-			(m = (Medico)this.contas.get(idMedico)).submeterProposta(idConsulta, preco);
+			m.submeterProposta(idConsulta, preco);
 		}
 
 		/**
@@ -187,8 +195,7 @@ namespace ConsultaJa
 		 */
 		public List<Consulta> getPedidos()
 		{
-			return new List<Consulta>();
-			// TERMINAR
+			return consultas.getPedidos();
 		}
 
 		/**
@@ -224,19 +231,70 @@ namespace ConsultaJa
 		 * Método que permite fazer um novo
 		 * pedido de inscrição de um médico
 		 */
-		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal)
+		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal, string localidade)
 		{
-			//Medico m = new Medico("", email, password, nome, dataNascimento, nif, morada,codigo_postal);
-			// TERMINAR
+			/* Vamos buscar um id para o 
+			 * candidato a médico */
+			int num = parametros.getAndIncrement("medicos");
+			string id = "M" + num;
+			/* Criamos um médico com o número de classificações 
+			 * negativo o que significa que ainda não
+			 * foi aceite como médico na aplicação */
+			Medico m = new Medico(id, email, password, nome, -1, -1, dataNascimento, 
+				nif, morada, codigo_postal, localidade);
+			/* Registamos a conta na 
+			 * base de dados */
+			contas.put(id,m);
 		}
 
 		/**
 		 * Método que permite aceitar ou rejeitar um 
 		 * pedido de inscrição feito por parte de um médico
 		 */
-		public string trataPedido(string email, Boolean action)
+		public string trataPedido(string idProvisorio, Boolean action)
 		{
-			return ""; // TERMINAR 
+			string ret = null;
+			/* Caso o pedido não seja aceite eliminamos 
+			 * o registo da base de dados por completo */
+			if(!action)
+				contas.remove(idProvisorio);
+			/* Caso o pedido seja aceite e o 
+			 * id se refira a um médico */
+			else if (action && idProvisorio.Contains("M"))
+			{
+				Conta c = contas.get(idProvisorio);
+				/* Sabemos que c é um médico */
+				Medico novo = (Medico)c;
+				/* Aceitamos o médico */
+				novo.aceitaMedico();
+				/* Voltamos a adicioná-lo à 
+				 * base de dados */
+				contas.put((ret = novo.getID()), novo);
+			}
+			/* Caso contrário lançamos exceção */
+			else
+				throw new MailNaoRegistado("[Fatal Error] Ocorreu um erro ao tratar o pedido de médico.");
+			/* Se tudo correr bem retornamos o id 
+			 * do novo médico */
+			return ret;
+		}
+
+		/**
+		 * Método que permite registar uma dada informação geral 
+		 * associada a um paciente na base de dados
+		 */
+		public void registarInfoGeralPaciente(string idPaciente, string tipo, string info)
+		{
+			this.info.put(idPaciente, tipo, info);
+		}
+
+		/**
+		 * Método que permite associar um novo contacto 
+		 * à conta cujo id é passado por parâmetro
+		 */
+		public void addNovoContacto(string id, string contacto)
+		{
+			this.contas.addContacto(id, contacto);
 		}
 	}
 }

@@ -708,5 +708,50 @@ namespace ConsultaJaDB
 
 			connection.Close();
 		}
+
+		/**
+		 * Método que altera a password de uma conta 
+		 * no registo da conta, cujo id é passado como 
+		 * parâmetro do método, que se encontra na 
+		 * base de dados
+		 */
+		public void changePassword(string id, string oldPassword, string newPassword)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			// Terminar.....
+
+		}
+
+		/**
+		 * Método que permite associar um contacto ao 
+		 * perfil de um determinado utilizador
+		 */
+		public void addContacto(string id, string contacto)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			connection.Open();
+
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("insert into contactos (telemovel,Conta_idConta) values ('");
+			sb.Append(contacto);
+			sb.Append("','");
+			sb.Append(id);
+			sb.Append("')");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
 	}
 }
