@@ -266,10 +266,7 @@ namespace ConsultaJa
 				/* Sabemos que c é um médico */
 				Medico novo = (Medico)c;
 				/* Aceitamos o médico */
-				novo.aceitaMedico();
-				/* Voltamos a adicioná-lo à 
-				 * base de dados */
-				contas.put((ret = novo.getID()), novo);
+				this.contas.aceitaMedico(idProvisorio);
 			}
 			/* Caso contrário lançamos exceção */
 			else

@@ -756,5 +756,28 @@ namespace ConsultaJaDB
 
 			connection.Close();
 		}
+
+		/**
+		 * Método que permite aceitar um pedido de 
+		 * inscrição na aplicação como médico
+		 */
+		public void aceitaMedico(string idProposto)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("update medico set numClassificacao=0 where idMedico='");
+			sb.Append(idProposto);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
 	}
 }

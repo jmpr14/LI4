@@ -64,8 +64,8 @@ namespace ConsultaJa
             this.setID(id);
             this.nif = nif;
             this.morada = morada;
-            this.classificacao = -1; /* Valor que representa ausência de qualquer classificação */
-            this.numClassificacoes = 0;
+            this.classificacao = classificacao; /* Valor que representa ausência de qualquer classificação */
+            this.numClassificacoes = numClassificacoes;
             this.saldo = 0;
             this.codigo_postal = codigo_postal;
             this.localidade = localidade;

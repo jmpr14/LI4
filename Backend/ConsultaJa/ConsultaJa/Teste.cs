@@ -24,7 +24,10 @@ namespace ConsultaJa
                 //cjm.addNovoContacto("P1", "910257200");
                 //cjm.addNovoContacto("P1", "253645255");
                 //cjm.addNovoContacto("P1", "939100251");
-                cjm.efetuaCarregamento("P1", 15000);
+                //cjm.efetuaCarregamento("P1", 15000);
+                //cjm.fazerPedidoInscricao("migueloliveira985@gmail.com", "miguelito1999", "Miguel Oliveira",
+                //    new DateTime(1999, 08, 07), "266951155", "Rua do Cruzeiro nº38", "4730-280", "Braga");
+                cjm.trataPedido("M1", true);
             }
             catch (Exception exc)
             {
