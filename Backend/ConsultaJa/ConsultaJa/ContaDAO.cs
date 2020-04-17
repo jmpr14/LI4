@@ -108,6 +108,10 @@ namespace ConsultaJaDB
 			sb.Append(id);
 			sb.Append("'");
 
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
 			/* Fechamos a conexão */
 			connection.Close();
 			return dt.Rows.Count != 0;
@@ -635,10 +639,9 @@ namespace ConsultaJaDB
 			if (id.Contains("M"))
 				sb.Append(" where idMedico='");
 			else
-				sb.Append("where idPaciente='");
+				sb.Append(" where idPaciente='");
 			sb.Append(id);
 			sb.Append("'");
-
 			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 			msda.Fill(dt);
 

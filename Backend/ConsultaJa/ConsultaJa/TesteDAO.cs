@@ -120,7 +120,7 @@ namespace ConsultaJa
             }
             catch(Exception exc)
             {
-                Console.WriteLine("[" + exc.GetType() + "] - [" + exc.GetBaseException() + "] " + exc.Message);
+                Console.WriteLine("[" + exc.GetType() + "] - [" + exc.GetBaseException() + "] - " + exc.Message);
             }
         }*/
     }

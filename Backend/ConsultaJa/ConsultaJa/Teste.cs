@@ -21,12 +21,14 @@ namespace ConsultaJa
                 //cjm.registarInfoGeralPaciente(idPaciente, "Alergias", "Paracetemol");
                 //cjm.registarInfoGeralPaciente(idPaciente, "Tipo de Sangue", "O (-)");
 
-                cjm.addNovoContacto("P1", "910257200");
-                cjm.addNovoContacto("P1", "253645255");
+                //cjm.addNovoContacto("P1", "910257200");
+                //cjm.addNovoContacto("P1", "253645255");
+                //cjm.addNovoContacto("P1", "939100251");
+                cjm.efetuaCarregamento("P1", 15000);
             }
             catch (Exception exc)
             {
-                Console.WriteLine("[" + exc.GetType() + "] - "  + exc.Message);
+                Console.WriteLine("[" + exc.GetType() + "] - [" + exc.GetBaseException() + "] - " + exc.Message);
             }
         }
     }
