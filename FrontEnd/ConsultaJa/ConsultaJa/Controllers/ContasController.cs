@@ -2,82 +2,86 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ConsultaJa.Models;
 
 namespace ConsultaJa.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
     [ApiController]
-    //[EnableCors("ReactPolicy")]
+    [Route("[controller]")]
+    [EnableCors("ReactPolicy")]
     public class ContasController : ControllerBase
     {
-        private readonly ContaService userService;
+        private ConsultaJaModel model = ConsultaJaModel.Instance;
 
-        public ContasController(ContaService userService)
+        private readonly ILogger<ContasController> _logger;
+
+        public ContasController(ILogger<ContasController> logger)
         {
-            this.userService = userService;
+            _logger = logger;
         }
 
-        // GET api/contas
+        // GET /contas
         [HttpGet]
         public IEnumerable<Conta> Get()
         {
-            return userService.GetAll();
+            return model.GetAll();
         }
 
-        // GET api/contas/5
+        // GET /contas/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            return Ok(userService.GetById(id));
+            return Ok(model.GetById(id));
         }
 
-        // POST api/contas
+        // POST /contas
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Conta user)
         {
-            return CreatedAtAction("Get", new { id = user.Id }, userService.Create(user));
+            return CreatedAtAction("Get", new { id = user.Id }, model.Create(user));
         }
 
-        // PUT api/contas/5
+        // PUT /contas/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] Conta user)
         {
-            userService.Update(id, user);
+            model.Update(id, user);
 
             return NoContent();
         }
 
-        // DELETE api/contas/5
+        // DELETE /contas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            userService.Delete(id);
+            model.Delete(id);
 
             return NoContent();
+        }
+
+        // /contas/login
+        [HttpGet("login")]
+        public ActionResult Get([FromQuery] string Email,
+                                          [FromQuery] string Password)
+        {
+            try
+            {
+                bool val = this.model.login(Email, Password);
+            }
+            catch (PasswordErrada e)
+            {
+                return Unauthorized();
+            }
+            
+            return Ok();
+
         }
 
         public override NoContentResult NoContent()
         {
             return base.NoContent();
-        }
-
-        // api/contas/login
-        [HttpGet("{login}")]
-        public ActionResult Login([FromQuery] string Email,
-                                          [FromQuery] string Password)
-        {
-            bool val = this.userService.login(Email, Password);
-            
-            if (!val)
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                return Ok();
-            }
         }
     }
 }
@@ -86,48 +90,3 @@ namespace ConsultaJa.Controllers
 
 
 
-
-
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Threading.Tasks;
-//using Microsoft.AspNetCore.Cors;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.Logging;
-//using ConsultaJa.Models;
-
-//namespace ConsultaJa.Controllers
-//{
-//    [ApiController]
-//    [Route("[controller]")]
-//    public class ContaController : ControllerBase
-//    {
-
-//        private readonly ContaService contaService = new ContaService();
-
-//        private readonly ILogger<ContaController> _logger;
-
-//        public ContaController(ILogger<ContaController> logger)
-//        {
-//            _logger = logger;
-//        }
-
-//        [Route("Login")]
-//        [HttpGet]
-//        public ActionResult Login([FromQuery] string Username,
-//                                  [FromQuery] string Password)
-//        {
-//            try
-//            {
-//                this.contaService.login(Username, Password);
-//            }
-//            catch (PasswordErrada e)
-//            {
-//                return Unauthorized();
-//            }
-
-//            return Ok();
-//        }
-//    }
-//}
