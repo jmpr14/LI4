@@ -12,7 +12,7 @@ import { Privacy } from './components/Privacy'
 
 import './custom.css'
 
-export const CONTAS_API_URL = 'https://localhost:5001/api/contas';
+//export const CONTAS_API_URL = 'https://localhost:5001/api/contas';
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (

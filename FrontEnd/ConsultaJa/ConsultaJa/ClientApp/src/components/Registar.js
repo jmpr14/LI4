@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
-
-import { CONTAS_API_URL } from '../App';
+import axios from 'axios';
 
 export class Registar extends Component {
     static displayName = Registar.name;
@@ -21,7 +20,6 @@ export class Registar extends Component {
         };
     }
 
-
     mySubmitHandler = (event) => {
         event.preventDefault();
         alert("Falta definir as acoes para os eventos");
@@ -35,13 +33,10 @@ export class Registar extends Component {
 
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    submitNew = e => {
-        e.preventDefault();
-        fetch(`https://localhost:5000/api/contas`, {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+    submitNew = (event) => {
+        event.preventDefault();
+
+        axios.post(`https://localhost:5001/contas`, {
             body: JSON.stringify({
                 nome: this.state.name,
                 dataNascimento: this.state.dataNascimento,
@@ -60,7 +55,7 @@ export class Registar extends Component {
 
     submitEdit = e => {
         e.preventDefault();
-        fetch(`${CONTAS_API_URL}/${this.state.id}`, {
+        fetch(`https://localhost:5001/contas/${this.state.id}`, {
             method: 'put',
             headers: {
                 'Content-Type': 'application/json'

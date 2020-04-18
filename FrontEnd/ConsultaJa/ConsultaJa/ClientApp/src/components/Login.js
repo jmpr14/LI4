@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import api from './api'
 
 import './Login.css'
 
@@ -27,67 +26,28 @@ export class Login extends Component {
         };
     }
 
-    //handlerLogin = (event) => {
-    //    event.preventDefault();
-
-    //    axios.get('https://localhost:49853/login', {
-    //        params: {
-    //            Email: this.state.email,
-    //            Password: this.state.password
-    //        }
-    //    })
-    //        .then(response => {
-    //            alert("Login efetuado com sucesso.");
-    //            console.log(response);
-    //        })
-    //        .catch(response => {
-    //            alert("Credenciais Inválidas!");
-    //            console.log(response);
-    //        })
-    //}
-
     handlerLogin = (event) => {
 
         event.preventDefault();
 
-        api.get('/contas/login', {
+        axios.get('https://localhost:5001/contas/login', {
             params: {
                 Email: this.state.email,
                 Password: this.state.password
             }
         })
             .then(response => {
-                alert("Login efetuado com sucesso.");
+                alert("Successfully logged in!!!");
                 console.log(response);
                 this.state.valido = true;
                 login(this.state.valido);
                 this.props.history.push("/perfil");
             })
             .catch(error => {
-                alert("Credenciais Inválidas! " + error);
+                alert("ERROR! " + error);
                 console.log(error);
             })
-        //event.preventDefault();
     }
-
-    //mySubmitHandler = (event) => {
-    //    event.preventDefault();
-    //    if (!this.state.email || !this.state.password) {
-    //        this.setState({ error: "Preencha e-mail e senha para continuar!" });
-    //    } else {
-    //        try {
-    //            //alert("Falta definir as acoes para os eventos");
-    //            this.state.valido = true;
-    //            login(this.state.valido);
-    //            this.props.history.push("/perfil");
-    //        } catch (err) {
-    //            this.setState({
-    //                error:
-    //                    "Houve um problema com o login, verifique suas credenciais. T.T"
-    //            });
-    //        }
-    //    }
-    //}
 
     mySubmitHandler1 = (event) => {
         event.preventDefault();
