@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nelso\\Desktop\\Universidade\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {}
+    "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\LI4.git\\trunk\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nelso\\Desktop\\Universidade\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {
+    "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\LI4.git\\trunk\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nelso\\Desktop\\Universidade\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
+        "projectUniqueName": "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\LI4.git\\trunk\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
         "projectName": "ConsultaJa",
-        "projectPath": "C:\\Users\\nelso\\Desktop\\Universidade\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
+        "projectPath": "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\LI4.git\\trunk\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
         "packagesPath": "C:\\Users\\nelso\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nelso\\Desktop\\Universidade\\ConsultaJa\\ConsultaJa\\obj\\",
+        "outputPath": "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\LI4.git\\trunk\\FrontEnd\\ConsultaJa\\ConsultaJa\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nelso\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,7 +38,41 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "EntityFramework": {
+              "target": "Package",
+              "version": "[6.4.0, )"
+            },
             "Microsoft.AspNetCore.SpaServices.Extensions": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.InMemory": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.1.3, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.19, )"
+            },
+            "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[3.1.1, )"
             }

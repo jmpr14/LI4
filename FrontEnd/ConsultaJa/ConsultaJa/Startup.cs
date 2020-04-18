@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using ConsultaJa.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ConsultaJa
 {
@@ -20,6 +22,16 @@ namespace ConsultaJa
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<ConsultaJaModel>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ReactPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
 
             services.AddControllersWithViews();
 
@@ -28,23 +40,25 @@ namespace ConsultaJa
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddRouting(r => r.SuppressCheckForUnhandledSecurityMetadata = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {
+                app.UseExceptionHandler("/Error");
                 app.UseDeveloperExceptionPage();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
+            //app.UseMvc();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
@@ -66,6 +80,8 @@ namespace ConsultaJa
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            app.UseCors("ReactPolicy");
         }
     }
 }
