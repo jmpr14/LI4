@@ -68,10 +68,6 @@
               "target": "Package",
               "version": "[3.1.2, )"
             },
-            "MySql.Data": {
-              "target": "Package",
-              "version": "[8.0.19, )"
-            },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
               "version": "[3.1.1, )"

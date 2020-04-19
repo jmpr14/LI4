@@ -16,7 +16,8 @@ export class Registar extends Component {
             password: '',
             nif: '',
             contactos: '',
-            type: '',
+            localidade: '',
+            type: ''
         };
     }
 
@@ -37,48 +38,30 @@ export class Registar extends Component {
         event.preventDefault();
 
         axios.post(`https://localhost:5001/contas`, {
-            body: JSON.stringify({
-                nome: this.state.name,
-                dataNascimento: this.state.dataNascimento,
-                email: this.state.email,
-                password: this.state.password
-            })
+              type: this.state.type,
+              Nome: this.state.name,
+              Email: this.state.email,
+              Password: this.state.password,
+              DataNascimento: this.state.dataNascimento,
+              Morada: this.state.morada,
+              Nif: this.state.nif,
+              Codigo_postal: this.state.codigo_postal,
+             Contactos: this.state.contactos,
+             Localidade: this.state.localidade
         })
-            .then(res => res.json())
             .then(conta => {
-                this.props.addUserToState(conta);
-                this.props.toggle();
+                //this.props.addUserToState(conta);
+                //this.props.toggle();
                 alert("Novo user " + conta);
             })
             .catch(err => console.log(err));
     }
 
-    submitEdit = e => {
-        e.preventDefault();
-        fetch(`https://localhost:5001/contas/${this.state.id}`, {
-            method: 'put',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                nome: this.state.name,
-                password: this.state.password,
-                email: this.state.email,
-                dataNascimento: this.state.dataNascimento
-            })
-        })
-            .then(() => {
-                this.props.toggle();
-                this.props.updateUserIntoState(this.state.id);
-            })
-            .catch(err => console.log(err));
-    }
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     render() {
         return (
-            <form onSubmit={this.props.user ? this.submitEdit : this.submitNew}>
+            <form onSubmit={this.submitNew}>
                 <h1> Registar {this.state.type}</h1>
                 <p> Tipo de Registo: </p>
                 <div className="radio">
@@ -130,6 +113,12 @@ export class Registar extends Component {
                 <input
                     type="text"
                     name='morada'
+                    onChange={this.myChangeHandler}
+                />
+                <p>Insira a localidade:</p>
+                <input
+                    type="text"
+                    name='localidade'
                     onChange={this.myChangeHandler}
                 />
                 <p>Insira o NIF:</p>
