@@ -228,7 +228,7 @@ namespace ConsultaJa.Models
 		 * Método que permite fazer um novo
 		 * pedido de inscrição de um médico
 		 */
-		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal, string localidade)
+		public string fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal, string localidade)
 		{
 			/* Vamos buscar um id para o 
 			 * candidato a médico */
@@ -242,6 +242,7 @@ namespace ConsultaJa.Models
 			/* Registamos a conta na 
 			 * base de dados */
 			contas.put(id,m);
+			return id;
 		}
 
 		/**

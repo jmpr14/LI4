@@ -42,20 +42,21 @@ namespace ConsultaJa.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ContaModel conta)
         {
-            string idPaciente = "";
+            string id = "";
 
             if (conta.Type!=null && conta.Type.Equals("Paciente"))
             {
                 DateTime data = DateTime.Parse(conta.DataNascimento);
                 List<string> contac = new List<string>();
                 contac.Add(conta.Contactos);
-                idPaciente = model.novoPaciente(conta.Email, conta.Password, conta.Nome, data, conta.Morada, conta.Nif, conta.Codigo_postal, contac, conta.Localidade);
+                id = model.novoPaciente(conta.Email, conta.Password, conta.Nome, data, conta.Morada, conta.Nif, conta.Codigo_postal, contac, conta.Localidade);
             }
             else
             {
-                //string idPaciente = model.novoPaciente(valueOfEmail, valueOfPassword, valueOfNome, valueOfDataNascimento, valueOfMorada, valueOfNIF, valueOfCodigo_Postal, valueOfContactos, valueOfLocalidade);
+                DateTime data = DateTime.Parse(conta.DataNascimento);
+                model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade);
             }
-            return Ok(idPaciente);
+            return Ok(id);
         }
 
         // PUT /contas/5

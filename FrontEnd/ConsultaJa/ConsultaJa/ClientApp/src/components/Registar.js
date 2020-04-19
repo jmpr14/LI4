@@ -52,11 +52,10 @@ export class Registar extends Component {
             .then(conta => {
                 //this.props.addUserToState(conta);
                 //this.props.toggle();
-                alert("Novo user " + conta);
+                alert("Novo user " + conta.data);
             })
             .catch(err => console.log(err));
     }
-
 
 
     render() {
