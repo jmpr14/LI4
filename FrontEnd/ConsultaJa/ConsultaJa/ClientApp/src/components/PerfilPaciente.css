@@ -1,0 +1,38 @@
+﻿body {
+    background: #ffffff no-repeat right center fixed;
+    margin-bottom: 60px;
+}
+
+.perfilB {
+    background-color: #e0dddd;
+    border-radius: 10px;
+}
+
+.container1 {
+    position: relative;
+}
+
+.topright {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font-size: 18px;
+}
+
+.image {
+    width: 50%;
+    height: 50%;
+    border-radius: 20px;
+    opacity: 0.5;
+}
+
+.op3 {
+    width: 35%;
+    display: inline-block;
+}
+
+.op4 {
+    width: 60%;
+    display: inline-block;
+    float: right;
+}

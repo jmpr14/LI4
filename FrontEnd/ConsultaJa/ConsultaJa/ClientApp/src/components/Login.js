@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import './Login.css'
+import { CONTAS_URL } from './Constants';
+import { Layout } from './Layout';
 
 export var TOKEN_KEY = false;
+export var userid = '';
 export const isAuthenticated = () => { return TOKEN_KEY };
-export const login = (varia) => {
-    
+export const userId = () => { return userid };
+export const login = (varia, id) => {
+    userid = id;
     TOKEN_KEY = varia;
 };
 
@@ -30,7 +34,7 @@ export class Login extends Component {
 
         event.preventDefault();
 
-        axios.get('https://localhost:5001/contas/login', {
+        axios.get(`${CONTAS_URL}/login`, {
             params: {
                 Email: this.state.email,
                 Password: this.state.password
@@ -40,8 +44,10 @@ export class Login extends Component {
                 alert("Successfully logged in!!!");
                 console.log(response);
                 this.state.valido = true;
-                login(this.state.valido);
-                this.props.history.push("/perfil");
+                login(this.state.valido, response.data);
+                if (response.data[0] == 'P') {
+                    this.props.history.push("/perfilPaciente");
+                }
             })
             .catch(error => {
                 alert("ERROR! " + error);
@@ -58,7 +64,7 @@ export class Login extends Component {
                 //alert("Falta definir as acoes para os eventos");
                 this.state.valido = true;
                 login(this.state.valido);
-                this.props.history.push("/perfil");
+                this.props.history.push("/perfilAdmin");
             } catch (err) {
                 this.setState({
                     error1:
@@ -76,6 +82,7 @@ export class Login extends Component {
 
     render() {
         return (
+            <Layout>
             <section>
                 <article>
                     <form onSubmit={this.handlerLogin}>
@@ -124,6 +131,7 @@ export class Login extends Component {
             </form>
             </article>
             </section>
+            </Layout>
         );
     }
 }

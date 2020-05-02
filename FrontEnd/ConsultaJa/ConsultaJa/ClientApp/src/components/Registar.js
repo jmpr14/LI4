@@ -1,6 +1,11 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
 
+import { Layout } from './Layout';
+import Medicos from './images/medicos.png';
+
+import './Registar.css';
+
 export class Registar extends Component {
     static displayName = Registar.name;
 
@@ -60,6 +65,12 @@ export class Registar extends Component {
 
     render() {
         return (
+            <Layout>
+            <div class="container">
+            <div class="op2">
+                 <img class="imagem" src={Medicos} width="120" height="120" />
+            </div>
+            <div class="op1">
             <form onSubmit={this.submitNew}>
                 <h1> Registar {this.state.type}</h1>
                 <p> Tipo de Registo: </p>
@@ -143,7 +154,10 @@ export class Registar extends Component {
                 <br />
                 <br />
                 <input type='submit' value="Registar"/>
-            </form>
+                    </form>
+                </div>
+                </div>
+                </Layout>
         );
     }
 }

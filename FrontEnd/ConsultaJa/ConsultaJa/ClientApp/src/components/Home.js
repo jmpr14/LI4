@@ -1,14 +1,17 @@
 ﻿import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 import './Home.css';
+import { Layout } from './Layout';
 
 import Medicos from './images/medicos.png';
 import Casa1 from './images/casas3.png';
 import Casa2 from './images/casas4.jpg';
 import Casa3 from './images/triangulo_casas.png';
 import Estetoscopio from './images/estetoscopio.png';
-import VSLogo from './images/vs_logo.png'
-import Logo from './images/logo_consultaJa.png'
+import Trust from './images/trust.jpg';
+import Logo from './images/logo_consultaJa.png';
 
 
 export class Home extends Component {
@@ -47,6 +50,8 @@ export class Home extends Component {
 
     render() {
         return (
+            <Layout>
+            <div class="wrapper">
             <form>
                 <div>
                     <h1>ConsultaJa</h1>
@@ -114,10 +119,13 @@ export class Home extends Component {
                 </div>
 
                 <div className="img">
-                    <img height={200} src={VSLogo} />
-                    <img height={200} src={Logo} />
+                        <img height={200} width={300} src={Trust} />
+                        <img height={200} src={Logo} />
                 </div>
+
             </form>
+            </div>
+            </Layout>
         );
     }
 }

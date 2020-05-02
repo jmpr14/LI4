@@ -3,11 +3,14 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 
 
+import { Layout } from './Layout';
+
 export class Privacy extends Component {
     static displayName = Privacy.name;
 
     render() {
         return (
+            <Layout >
             <form>
             <h1> Privacy </h1>
             <ol>
@@ -43,6 +46,7 @@ export class Privacy extends Component {
                 </item>
             </ol>
             </form>
+            </Layout>
         );
     }
 }

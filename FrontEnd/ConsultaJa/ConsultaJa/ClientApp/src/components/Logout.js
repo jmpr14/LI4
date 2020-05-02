@@ -2,6 +2,7 @@
 
 import { login } from './Login';
 
+import { Layout } from './Layout';
 
 export class Logout extends Component {
 
@@ -20,12 +21,14 @@ export class Logout extends Component {
 
     render() {
         return (
+            <Layout>
             <form onSubmit={this.handleSubmit}>
                 <label>
                     VOCÊ SAIU DA APLICAÇÃO!!!
                 </label>
                 <input type="submit" value="Voltar à Home" />
             </form>
+            </Layout>
         );
     }
 }
