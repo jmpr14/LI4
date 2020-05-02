@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
 
 import './Home.css';
 import { Layout } from './Layout';
