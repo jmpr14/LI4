@@ -31,14 +31,21 @@ namespace ConsultaJa.Controllers
         //    return model.GetAll();
         //}
 
-        // GET /contas/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Get(int id)
-        //{
-        //    return Ok(model.getConta(id));
-        //}
+        //GET /contas/P5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            Conta c = model.getConta(id);
+            ContaModel cmodel = new ContaModel();
+            cmodel.Type = c.GetType().ToString();
+            cmodel.Email = c.getEmail();
+            cmodel.Nome = c.getNome();
+            return Ok(cmodel);
+        }
 
-        // POST /contas
+        /* POST /contas
+        Criacao de uma nova conta
+        */
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] ContaModel conta)
         {
@@ -77,12 +84,15 @@ namespace ConsultaJa.Controllers
         //    return NoContent();
         //}
 
-        // /contas/login
+        /* /contas/login
+        Login como Paciente ou Medico
+        */
         [HttpGet("login")]
         public ActionResult Get([FromQuery] string Email,
                                           [FromQuery] string Password)
         {
-            Conta c = null;
+            Conta c = null; 
+            int type=-1;
             try
             {
                 c = this.model.login(Email, Password);
