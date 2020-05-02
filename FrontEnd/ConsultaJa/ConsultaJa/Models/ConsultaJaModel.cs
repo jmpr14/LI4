@@ -78,6 +78,8 @@ namespace ConsultaJa.Models
 			return idPaciente;
 		}
 
+		//////////////////////////////////////////////////////////////////////////
+
 		/**
 		 * Método que permite fazer login na aplicação. Throws Exception
 		 */
@@ -103,6 +105,17 @@ namespace ConsultaJa.Models
 
 			return c;
 		}
+
+		/**
+		 * Método que permite obter uma conta dado um id
+		 */
+		 public Conta getConta(string id)
+		{
+			Conta c = contas.get(id);
+			return c;
+		}
+
+		//////////////////////////////////////////////////////////////////////////
 
 		/**
 		 * Método que permite avaliar um médico 
