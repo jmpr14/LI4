@@ -116,6 +116,10 @@ namespace ConsultaJaDB
 			sb.Append("select * from Consulta where idConsulta=");
 			sb.Append(id);
 
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
 			/* Fechamos a conexão */
 			connection.Close();
 			return dt.Rows.Count != 0;
@@ -421,7 +425,11 @@ namespace ConsultaJaDB
 
 			/* Só teremos um item nesta coleção */
 			DataRow dr = dt.Rows[0];
-			Medico m = (Medico)this.getConta(dr.Field<string>("idMedico"), connection);
+			Medico m;
+			if (dr.Field<string>("idMedico") != null)
+				m = (Medico)this.getConta(dr.Field<string>("idMedico"), connection);
+			else
+				m = null;
 			Paciente p = (Paciente)this.getConta(dr.Field<string>("idPaciente"), connection);
 			DateTime dta = dr.Field<DateTime>("data_hora");
 			string obs = dr.Field<string>("observaçoes");
@@ -429,8 +437,7 @@ namespace ConsultaJaDB
 				obs = null;
 
 			ret = new Consulta(dr.Field<int>("idConsulta"),p, m, dr.Field<string>("localidade"), dr.Field<string>("morada"), obs,
-				dta.Year, dta.Month, dta.Day, dta.Hour, dta.Minute, dta.Second);
-			
+				dta.Year, dta.Month, dta.Day, dta.Hour, dta.Minute, dta.Second, Int32.Parse(dr.Field<string>("estado")));
 			return ret;
 		}
 
@@ -577,19 +584,20 @@ namespace ConsultaJaDB
 			Consulta c;
 			/* Vamos buscar o número de consultas */
 			int num = this.size();
-			int i = 0;
+			int i = 0, j = 0;
 			while (i < num)
 			{
 				/* Caso exista esse id */
-				if (this.contains(i))
+				if (this.contains(j))
 				{
-					c = this.get(i);
+					c = this.get(j);
 					if (c.isPedido())
 					{
 						ret.Add(c);
-						i++;
 					}
+					i++;
 				}
+				j++;
 			}
 			return ret;
 		}
@@ -646,7 +654,7 @@ namespace ConsultaJaDB
 		private bool validaAceitacao(int idConsulta)
 		{
 			DateTime consulta, now;
-			bool ret = (consulta = this.getDateOfConsulta(idConsulta)).CompareTo((now = DateTime.Now)) < 0;
+			bool ret = (consulta = this.getDateOfConsulta(idConsulta)).CompareTo((now = DateTime.Now)) > 0;
 			bool minumum2Days = now.Year >= consulta.Year ||
 						(now.Month >= consulta.Month && now.Year == consulta.Year )||
 						(now.Day >= consulta.Day + 2 && now.Month == consulta.Month && now.Year == consulta.Year);
@@ -661,7 +669,7 @@ namespace ConsultaJaDB
 		 */
 		public void submeterProposta(int idConsulta, string idMedico, int precoDB)
 		{
-			MySqlConnection connection = new MySqlConnection();
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
 			connection.Open();
 			DataTable dt = new DataTable();
@@ -672,6 +680,8 @@ namespace ConsultaJaDB
 			sb.Append(idMedico);
 			sb.Append("', preco=");
 			sb.Append(precoDB);
+			sb.Append(" where idConsulta=");
+			sb.Append(idConsulta);
 			
 			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 

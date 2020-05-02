@@ -53,7 +53,7 @@ namespace ConsultaJa
             Console.WriteLine("Id do médico da consulta: " + m.getID());
             Paciente p = (Paciente)cdao.get("P0");
             Console.WriteLine("Id do paciente da consulta: " + p.getID());
-            Consulta c = new Consulta(0, p, m, "Braga", "Rua de Cima", null, 2020, 05, 25, 16, 30, 00);
+            Consulta c = new Consulta(0, p, m, "Braga", "Rua de Cima", null, 2020, 05, 25, 16, 30, 00, Consulta.PEDIDO);
             consdao.put(c);
         }
 

@@ -224,7 +224,7 @@ namespace ConsultaJa
 			 * nada afeta, visto que ao inserir no cdao, 
 			 * esse id é despresado
 			 */
-			Consulta c = new Consulta(-1, this, null, localidade, this.morada, null, ano, mes, dia, hora, minuto, segundo);
+			Consulta c = new Consulta(-1, this, null, localidade, this.morada, null, ano, mes, dia, hora, minuto, segundo, Consulta.PEDIDO);
 			/* Notar que a única maneira de adicionar 
 			 * consultas à aplicação é a partir do paciente*/
 			this.consultas.put(c);

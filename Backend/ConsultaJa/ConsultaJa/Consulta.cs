@@ -9,10 +9,10 @@ namespace ConsultaJa
 		 * Valores que caracterizam o estado
 		 * de uma consulta
 		 */
-		private static readonly int PEDIDO = 3;
-		private static readonly int PENDENTE = 1;
-		private static readonly int AGENDADA = 2;
-		private static readonly int REALIZADA = 0;
+		public static readonly int PEDIDO = 3;
+		public static readonly int PENDENTE = 1;
+		public static readonly int AGENDADA = 2;
+		public static readonly int REALIZADA = 0;
 
 		/**
 		 * Variável que identifica univocamente 
@@ -71,7 +71,7 @@ namespace ConsultaJa
 		 * Construtor para objetos da classe Consulta
 		 */
 		public Consulta(int id, Paciente p, Medico m, string localidade, string morada, string observacoes,
-			int ano, int mes, int dia, int hora, int min, int sec)
+			int ano, int mes, int dia, int hora, int min, int sec, int estado)
 		{
 			this.id = id;
 			this.m = m;
@@ -82,7 +82,7 @@ namespace ConsultaJa
 			this.estado = PEDIDO;
 			this.observacoes = observacoes;
 			this.data_hora = new DateTime(ano, mes, dia, hora, min, sec);
-			this.estado = PEDIDO;
+			this.estado = estado;
 		}
 
 		/**
@@ -245,9 +245,14 @@ namespace ConsultaJa
 			sb.Append("; idPaciente: ");
 			sb.Append(this.p.getID());
 			sb.Append("; idMedico: ");
-			sb.Append(this.m.getID());
+			if (m != null)
+				sb.Append(this.m.getID());
+			else
+				sb.Append("*noDoctor*");
 			sb.Append("; Data: ");
 			sb.Append(this.data_hora);
+			sb.Append("; Status: ");
+			sb.Append(this.getEstado());
 
 			return sb.ToString();
 		}

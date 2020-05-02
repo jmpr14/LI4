@@ -190,6 +190,15 @@ namespace ConsultaJa
 		}
 
 		/**
+		 * Método que permite a um cliente aceitar uma 
+		 * proposta de consulta feita por um médico
+		 */
+		public void aceitaConsulta(int idConsulta)
+		{
+			this.consultas.aceitarProposta(idConsulta);
+		}
+
+		/**
 		 * Método que permite aceder a pedidos enviados 
 		 * por cliente para marcação de consultas
 		 */
