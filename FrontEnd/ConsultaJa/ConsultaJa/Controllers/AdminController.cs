@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using ConsultaJa.Backend;
 using ConsultaJa.Exceptions;
+using System.Linq;
 
 namespace ConsultaJa.Controllers
 {
@@ -95,16 +96,30 @@ namespace ConsultaJa.Controllers
         public ActionResult Get()
         {
             List<Conta> lc = null;
-            try
+            List<ContaModel> lcm = new List<ContaModel>();
+
+            lc = this.model.getCandidatos();
+
+            foreach(Conta c in lc)
             {
-                lc = this.model.getCandidatos();
-            }
-            catch (MailNaoRegistado e)
-            {
-                return Unauthorized();
+                ContaModel m = new ContaModel();
+
+                m.Type = "Medico";
+                m.Nome = c.getNome();
+                m.Email = c.getEmail();
+                m.Password = c.getPassword();
+                m.DataNascimento = c.getDataNascimento().ToString().Substring(0,10);
+                //m.Morada = c.getMorada();
+                //m.Nif = c.getNif();
+                //m.Codigo_postal = c.getCodogoPostal();
+                //m.Contactos = c.getContactos();
+                //m.Localidade = c.getLocalidade();
+
+                lcm.Add(m);
+
             }
 
-            return Ok(lc);
+            return Ok(lcm);
         }
 
         public override NoContentResult NoContent()
