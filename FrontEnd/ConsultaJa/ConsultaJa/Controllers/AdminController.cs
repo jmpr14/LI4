@@ -48,6 +48,24 @@ namespace ConsultaJa.Controllers
             return Ok(cmodel);
         }
 
+        [HttpGet("aceitaMed")]
+        public async Task<IActionResult> aceitaMedico([FromQuery]string id, [FromQuery]string action)
+        {
+            bool med = false;
+            if (action.CompareTo("true") == 0)
+                med = true;
+            try
+            {
+                this.model.trataPedido(id, med);
+            }
+            catch (MailNaoRegistado e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok();
+        }
+
         /* POST /contas
         Criacao de uma nova conta
         */
@@ -105,13 +123,14 @@ namespace ConsultaJa.Controllers
                 ContaModel m = new ContaModel();
 
                 m.Type = "Medico";
+                m.Id = c.getID();
                 m.Nome = c.getNome();
                 m.Email = c.getEmail();
                 m.Password = c.getPassword();
                 m.DataNascimento = c.getDataNascimento().ToString().Substring(0,10);
                 //m.Morada = c.getMorada();
                 //m.Nif = c.getNif();
-                //m.Codigo_postal = c.getCodogoPostal();
+                //m.Codigo_postal = c.getCodigoPostal();
                 //m.Contactos = c.getContactos();
                 //m.Localidade = c.getLocalidade();
 
