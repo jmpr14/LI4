@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using ConsultaJa.Exceptions;
 using ConsultaJa.Backend;
+using System.Collections.Generic;
 
 namespace ConsultaJa.DataBase
 {
@@ -82,6 +83,27 @@ namespace ConsultaJa.DataBase
 			DataTable dt = new DataTable();
 
 			MySqlDataAdapter msda = new MySqlDataAdapter("select * from Conta", connection);
+
+			msda.Fill(dt);
+
+			int ret = dt.Rows.Count;
+
+			/* Fechamos a conexão */
+			connection.Close();
+			return ret;
+		}
+
+		/**
+		 * Método que retorna o número de médicos 
+		 * inscritos na aplicação
+		 */
+		public int sizeMedicos()
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			MySqlDataAdapter msda = new MySqlDataAdapter("select * from Medico", connection);
 
 			msda.Fill(dt);
 
@@ -829,6 +851,41 @@ namespace ConsultaJa.DataBase
 			msda.Fill(dt);
 
 			connection.Close();
+		}
+
+		/**
+		 * Método que retorna uma lista com o conjunto de 
+		 * utilizadores da aplicação que se candidataram a médico
+		 */
+		public List<Conta> getCandidatos()
+		{
+			List<Conta> list = new List<Conta>();
+			Conta c; Medico m;
+			StringBuilder sb = new StringBuilder();
+			string id;
+			/* Vamos buscar o número de contas */
+			int num = this.sizeMedicos();
+			int i = 0, j = 0;
+			while (i < num)
+			{
+				sb.Append("M");
+				sb.Append(j);
+				id = sb.ToString();
+				/* Caso exista esse id */
+				if (this.contains(id))
+				{
+					c = this.get(id);
+					m = (Medico)c;
+					if (!m.aprovado())
+					{
+						list.Add(m);
+					}
+					i++;
+				}
+				j++;
+				sb.Clear();
+			}
+			return list;
 		}
 	}
 }
