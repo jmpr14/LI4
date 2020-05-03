@@ -57,7 +57,7 @@ export class PerfilAdmin extends Component {
                     </div>
                     <div />
                     <div className="perfilAdmin">
-                        <h5> Preço por Consulta: {this.state.dadosAdmin.preco} </h5>
+                        <h5> Preço por Consulta: {this.state.dadosAdmin.preco} € </h5>
                         <h5> Número de Médicos: {this.state.dadosAdmin.numMedicos} </h5>
                         <h5> Número de Pacientes: {this.state.dadosAdmin.numPacientes} </h5>
                     </div>
@@ -70,9 +70,22 @@ export class PerfilAdmin extends Component {
                 <div class="op4Admin">
                     <h1 className="title"> Pedidos de inscrição de Médicos </h1>
                     <div>
-
-                    </div>
-                    <ul>{this.state.medicosPendentes.map(medico => <li>{medico.date}</li>)} </ul>
+                        
+                        </div>
+                        <table>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Data de Nascimento</th>
+                            </tr>
+                            {this.state.medicosPendentes.map(medico =>
+                                <tr>
+                                    <td>{medico.nome}</td>
+                                    <td>{medico.email}</td>
+                                    <td>{medico.dataNascimento}</td>
+                                </tr>)
+                            }
+                        </table>
                     </div>
                 </form>
             </LayoutAdmin >
