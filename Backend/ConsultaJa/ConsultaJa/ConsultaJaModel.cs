@@ -57,6 +57,16 @@ namespace ConsultaJa
 		}
 
 		/**
+		 * Método que retorna um objeto da classe conta 
+		 * registado na base de dados, sendo fornecido o 
+		 * seu id como parâmetro do mesmo método
+		 */
+		public Conta getConta(string idConta)
+		{
+			return this.contas.get(idConta);
+		}
+
+		/**
 		 * Método que permite a inscrição de 
 		 * um novo paciente na aplicação
 		 */
@@ -301,6 +311,11 @@ namespace ConsultaJa
 		public void addNovoContacto(string id, string contacto)
 		{
 			this.contas.addContacto(id, contacto);
+		}
+
+		public string getAdminCode()
+		{
+			return this.parametros.get("admin.code").ToString();
 		}
 	}
 }

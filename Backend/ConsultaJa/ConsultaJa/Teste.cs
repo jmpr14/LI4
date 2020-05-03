@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +38,7 @@ namespace ConsultaJa
                 {
                     Console.WriteLine(c.ToString());
                 }
+                Console.WriteLine("Admin.code: " + cjm.getAdminCode());
                 Console.WriteLine("Test program exited successfully");
             }
             catch (Exception exc)

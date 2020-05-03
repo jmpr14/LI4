@@ -150,16 +150,17 @@ namespace ConsultaJaDB
 			/* Conexão a partir da qual vamos 
 			 * aceder à base de dados */
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
 			/**
 			 * Obtemos a exclusão 
 			 * mútua da conexão
 			 */
 			Monitor.Enter(this);
 
-			/* Abrimos a conexão */
-			connection.Open();
 			try
 			{
+				/* Abrimos a conexão */
+				connection.Open();
 				/* Acedemos e incrementamos o valor 
 				 * do parâmetro pedido */
 				this.increment(param, (value = this.getValue(param, connection)) + 1, connection);
@@ -183,30 +184,49 @@ namespace ConsultaJaDB
 		 */
 		public int get(string param)
 		{
+			int ret = -1;
 			/* Criamos uma nova conexão para a base de dados */
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 
-			/* Abrimos a conexão */
-			connection.Open();
+			/**
+			 * Obtemos a exclusão 
+			 * mútua da conexão
+			 */
+			Monitor.Enter(this);
 
-			DataTable dt = new DataTable();
-			StringBuilder sb = new StringBuilder();
-			sb.Append("select value from configs where parametro='");
-			sb.Append(param);
-			sb.Append("'");
+			try
+			{
+				/* Abrimos a conexão */
+				connection.Open();
 
-			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+				DataTable dt = new DataTable();
+				StringBuilder sb = new StringBuilder();
+				sb.Append("select value from configs where parametro='");
+				sb.Append(param);
+				sb.Append("'");
 
-			msda.Fill(dt);
+				MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
 
-			if (dt.Rows.Count == 0)
-				throw new Exception("[Error] Valor de '" + param + "' inexistente");
+				msda.Fill(dt);
 
-			connection.Close();
+				if (dt.Rows.Count == 0)
+					throw new Exception("[Error] Valor de '" + param + "' inexistente");
 
-			/* Existe apenas uma linha 
-			 * resultante da pesquisa */
-			return dt.Rows[0].Field<int>("Value");
+				connection.Close();
+
+				/* Existe apenas uma linha 
+				 * resultante da pesquisa */
+				ret = dt.Rows[0].Field<int>("Value");
+			}
+			/* Queremos garantir que o lock é 
+			 * cedido mesmo que algo corra mal */
+			finally
+			{
+				/* Cedemos o monitor */
+				Monitor.Exit(this);
+			}
+
+			return ret;
 		}
 
 		/**
