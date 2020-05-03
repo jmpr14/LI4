@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ConsultaJaDB;
+using ConsultaJa.Backend;
+using ConsultaJa.DataBase;
+using ConsultaJa.Exceptions;
 
 namespace ConsultaJa
 {
@@ -91,7 +93,7 @@ namespace ConsultaJa
 		/**
 		 * Método que permite fazer login na aplicação. Throws Exception
 		 */
-		public Conta login(string id, string email, string password)
+		public Conta login(string email, string password)
 		{
 			if (!this.contas.contains(id))
 				throw new MailNaoRegistado("[Error] id '" + id + "' inválido");
