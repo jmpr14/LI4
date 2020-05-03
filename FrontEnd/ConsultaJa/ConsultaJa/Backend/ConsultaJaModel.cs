@@ -95,10 +95,7 @@ namespace ConsultaJa
 		 */
 		public Conta login(string email, string password)
 		{
-			if (!this.contas.contains(id))
-				throw new MailNaoRegistado("[Error] id '" + id + "' inválido");
-
-			Conta c = this.contas.get(id);
+			Conta c = this.contas.getbyEmail(email);
 
 			if (!c.getEmail().Equals(email))
 				throw new MailNaoRegistado("[Error] email '" + email + "' não corresponde ao seu id");
