@@ -44,6 +44,20 @@ export class PerfilAdmin extends Component {
         this.props.history.push("/perfilAdmin");
     }
 
+    aceitar = (event, idMed) => {
+        event.preventDefault();
+
+        axios.get(`${ADMIN_URL}/aceitaMed`, {
+            params: {
+                id: 'M2',
+                action: 'true'
+            }
+        })
+            .then(res => {
+                console.log(res);
+                alert("Novo Medico aceite " + {idMed})})
+    }
+
     render() {
         return (
             <LayoutAdmin >
@@ -74,15 +88,18 @@ export class PerfilAdmin extends Component {
                         </div>
                         <table>
                             <tr>
+                                <th>Id</th>
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Data de Nascimento</th>
                             </tr>
                             {this.state.medicosPendentes.map(medico =>
                                 <tr>
+                                    <td>{medico.id}</td>
                                     <td>{medico.nome}</td>
                                     <td>{medico.email}</td>
                                     <td>{medico.dataNascimento}</td>
+                                    <td> <form params={medico.id} onSubmit={this.aceitar}> <input type='submit' value="Aceitar" /> </form> </td>
                                 </tr>)
                             }
                         </table>
