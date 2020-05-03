@@ -2,7 +2,8 @@
 import axios from 'axios';
 
 import { LayoutPaciente } from './LayoutPaciente';
-import ImgPerfil from './images/profile-placeholder.jpg'
+import ImgPerfil from './images/profile-placeholder.jpg';
+import Medicos from './images/medicos.png';
 import { userId } from './Login';
 import { CONTAS_URL } from './Constants';
 import { CONSULTAS_URL } from './Constants';
@@ -65,10 +66,14 @@ export class PerfilPaciente extends Component {
                     <div className="perfilB">
                         <h5> Nome: {this.state.dadosPerfil.nome} </h5>
                         <h5> Email: {this.state.dadosPerfil.email} </h5>
+                        <h5> DataNascimento: {this.state.dadosPerfil.dataNascimento} </h5>
                     </div>
                 </div>
                 <div class="op4">
-                        <h1> Perfil {this.state.id}</h1>
+                        <h1 className="title"> Perfil </h1>
+                        <div>
+                            
+                        </div>
                         <ul>{this.state.consultasAgendadas.map(consulta => <li>{consulta.date}</li>)} </ul>
                 </div>
                 </div>
