@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using ConsultaJa.DataBase;
-using ConsultaJa.Exceptions;
+using ConsultaJaDB;
 
-namespace ConsultaJa.Backend
+namespace ConsultaJa
 {
 	public class ConsultaJaModel
 	{
@@ -58,6 +57,16 @@ namespace ConsultaJa.Backend
 		}
 
 		/**
+		 * Método que retorna um objeto da classe conta 
+		 * registado na base de dados, sendo fornecido o 
+		 * seu id como parâmetro do mesmo método
+		 */
+		public Conta getConta(string idConta)
+		{
+			return this.contas.get(idConta);
+		}
+
+		/**
 		 * Método que permite a inscrição de 
 		 * um novo paciente na aplicação
 		 */
@@ -107,45 +116,6 @@ namespace ConsultaJa.Backend
 
 			return c;
 		}
-
-		//////////////////////////////////////////////////////////////////////////
-
-		/**
-		 * Método que permite fazer login na aplicação. Throws Exception
-		 */
-		public Conta login(string email, string password)
-		{
-			Conta c = this.contas.getbyEmail(email);
-
-			if (!c.getEmail().Equals(email))
-				throw new MailNaoRegistado("[Error] email '" + email + "' não corresponde ao seu id");
-
-			if (!c.getPassword().Equals(password))
-				throw new PasswordErrada("[Error] password errada");
-
-			/* Caso a conta seja de médico mas ainda não tenha sido 
-			 * aprovada pelo administrador também lançamos exceção */
-			if (c.getID().Contains("M"))
-			{
-				Medico m = (Medico)c;
-				if (!m.aprovado())
-					throw new MailNaoRegistado("O seu pedido de inscrição na aplicação " +
-						"como médico ainda não foi aceite pelo administrador. Por favor, tente novamente mais tarde");
-			}
-
-			return c;
-		}
-
-		/**
-		 * Método que permite obter uma conta dado um id
-		 */
-		 public Conta getConta(string id)
-		{
-			Conta c = contas.get(id);
-			return c;
-		}
-
-		//////////////////////////////////////////////////////////////////////////
 
 		/**
 		 * Método que permite avaliar um médico 
@@ -341,6 +311,45 @@ namespace ConsultaJa.Backend
 		public void addNovoContacto(string id, string contacto)
 		{
 			this.contas.addContacto(id, contacto);
+		}
+
+		/**
+		 * Método que permite aceder ao codigo de 
+		 * acesso do administrador
+		 */
+		public string getAdminCode()
+		{
+			return this.parametros.get("admin.code").ToString();
+		}
+
+		/**
+		 * Método que permite aceder aos parâmetros da base de 
+		 * dados e retornar o numero de médicos/pedidos de médico 
+		 * no sistema
+		 */
+		public string getMedicos()
+		{
+			return this.parametros.get("medicos").ToString();
+		}
+
+		/**
+		 * Método que permite aceder aos parâmetros da base de 
+		 * dados e retornar o numero de médicos/pedidos de médico 
+		 * no sistema
+		 */
+		public string getPacientes()
+		{
+			return this.parametros.get("pacientes").ToString();
+		}
+
+		/**
+		 * Método que permite aceder aos parâmetros da base de 
+		 * dados e retornar o numero de médicos/pedidos de médico 
+		 * no sistema
+		 */
+		public string getPreco()
+		{
+			return this.parametros.get("preco").ToString();
 		}
 	}
 }
