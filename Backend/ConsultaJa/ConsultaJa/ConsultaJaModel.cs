@@ -313,9 +313,43 @@ namespace ConsultaJa
 			this.contas.addContacto(id, contacto);
 		}
 
+		/**
+		 * Método que permite aceder ao codigo de 
+		 * acesso do administrador
+		 */
 		public string getAdminCode()
 		{
 			return this.parametros.get("admin.code").ToString();
+		}
+
+		/**
+		 * Método que permite aceder aos parâmetros da base de 
+		 * dados e retornar o numero de médicos/pedidos de médico 
+		 * no sistema
+		 */
+		public string getMedicos()
+		{
+			return this.parametros.get("medicos").ToString();
+		}
+
+		/**
+		 * Método que permite aceder aos parâmetros da base de 
+		 * dados e retornar o numero de médicos/pedidos de médico 
+		 * no sistema
+		 */
+		public string getPacientes()
+		{
+			return this.parametros.get("pacientes").ToString();
+		}
+
+		/**
+		 * Método que permite aceder aos parâmetros da base de 
+		 * dados e retornar o numero de médicos/pedidos de médico 
+		 * no sistema
+		 */
+		public string getPreco()
+		{
+			return this.parametros.get("preco").ToString();
 		}
 	}
 }
