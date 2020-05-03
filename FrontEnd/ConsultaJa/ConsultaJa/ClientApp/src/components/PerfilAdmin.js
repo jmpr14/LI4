@@ -41,7 +41,7 @@ export class PerfilAdmin extends Component {
     }
 
     handleOnAccept = () => {
-        this.props.history.push("/historicoPaciente");
+        this.props.history.push("/perfilAdmin");
     }
 
     render() {
