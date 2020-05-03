@@ -351,5 +351,14 @@ namespace ConsultaJa
 		{
 			return this.parametros.get("preco").ToString();
 		}
+
+		/**
+		 * Método que permite obter uma lista de contas 
+		 * que pertencem a médicos ainda não aceites pelo administrador
+		 */
+		public List<Conta> getCandidatos()
+		{
+			return this.contas.getCandidatos();
+		}
 	}
 }
