@@ -44,3 +44,52 @@
     border-bottom-style: groove;
     border-left-style: none;
 }
+
+.agendadas {
+    background-color: #becad3;
+    position: center;
+}
+
+.linksdiv {
+    background-color: #c7c5c5;
+    position: center;
+}
+
+.links:link {
+    color: #fff;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+    text-decoration: none;
+}
+
+.links:visited {
+    color: #808080;
+}
+
+.links:hover {
+    color: blue;
+}
+
+.links:active {
+    color: blue;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.hr3 {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, transparent, #CCC, transparent);
+}

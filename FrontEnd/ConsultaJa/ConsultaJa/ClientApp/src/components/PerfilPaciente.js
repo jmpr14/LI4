@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import { LayoutPaciente } from './LayoutPaciente';
@@ -55,7 +56,7 @@ export class PerfilPaciente extends Component {
                 <div class="container1">
                 <div class="op3">
                     <div>
-                            <img class="image" src={ImgPerfil} width="50" height="70" />
+                        <img class="image" src={ImgPerfil} width="50" height="70" />
                     </div>
                     <div>
                         <button variant="outlined" color="primary" onClick={this.handleOnAccept} >
@@ -64,17 +65,57 @@ export class PerfilPaciente extends Component {
                     </div>
                     <div/>
                     <div className="perfilB">
-                        <h5> Nome: {this.state.dadosPerfil.nome} </h5>
-                        <h5> Email: {this.state.dadosPerfil.email} </h5>
-                        <h5> DataNascimento: {this.state.dadosPerfil.dataNascimento} </h5>
+                        <h1> {this.state.dadosPerfil.nome} </h1>
+                        <h5> {this.state.dadosPerfil.email} </h5>
+                        <h5> {this.state.dadosPerfil.dataNascimento} </h5>
                     </div>
                 </div>
                 <div class="op4">
                         <h1 className="title"> Perfil </h1>
-                        <div>
-                            
+                        <div className="linksdiv">
+                            <ul> <h2>Lista de Ações</h2>
+                                <li><Link tag={Link} className="links" to="/perfilPaciente">Perfil</Link></li>
+                                <li><Link tag={Link} className="links" to="/historicoPaciente">Histórico de Consultas</Link></li>
+                                <li><Link tag={Link} className="links" to="/logout">Logout</Link></li>
+                            </ul>
                         </div>
-                        <ul>{this.state.consultasAgendadas.map(consulta => <li>{consulta.date}</li>)} </ul>
+                        <hr className="h3"/>
+                        <div className="agendadas">
+                            <h2 className="agendadas"> Consultas Agendadas </h2>
+                        </div>
+                        <div>
+                        <table>
+                            <tr>
+                                <th>Data</th>
+                                <th>Hora</th>
+                                <th>Médico</th>
+                            </tr>
+                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Dr(a). {consulta.medico}</td></tr>)}
+                            <tr>
+                                <td>06/05/2020</td>
+                                <td>19:25:00</td>
+                                <td>Dr(a). João Henriques</td>
+                            </tr>
+                            <tr>
+                                <td>15/05/2020</td>
+                                <td>14:30:00</td>
+                                <td>Dr(a). Maria Castro</td>
+                            </tr>
+                            <tr>
+                                <td>31/05/2020</td>
+                                <td>09:00:00</td>
+                                <td>Dr(a). José Carlos Santos</td>
+                            </tr>
+                            <tr>
+                                <td>06/06/2020</td>
+                                <td>19:25:00</td>
+                                <td>Dr(a). João Henriques</td>
+                            </tr>
+                        </table>
+                        </div>
+                        <div>
+                            <h3> Total de Consultas Agendadas: {this.state.consultasAgendadas.length} </h3>
+                        </div>
                 </div>
                 </div>
         </LayoutPaciente >
