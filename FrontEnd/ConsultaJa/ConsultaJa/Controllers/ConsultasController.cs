@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using ConsultaJa.Models;
 using Newtonsoft.Json;
 using System;
+using ConsultaJa.Backend;
+using ConsultaJa.Exceptions;
 
 namespace ConsultaJa.Controllers
 {

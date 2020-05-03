@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using ConsultaJa.Models;
 using Newtonsoft.Json;
 using System;
+using ConsultaJa.Backend;
+using ConsultaJa.Exceptions;
 
 namespace ConsultaJa.Controllers
 {
@@ -40,6 +42,7 @@ namespace ConsultaJa.Controllers
             cmodel.Type = c.GetType().ToString();
             cmodel.Email = c.getEmail();
             cmodel.Nome = c.getNome();
+            cmodel.DataNascimento = c.getDataNascimento().ToString().Substring(0,10);
             return Ok(cmodel);
         }
 
