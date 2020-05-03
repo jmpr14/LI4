@@ -8,6 +8,7 @@ namespace ConsultaJa.Models
     public class ContaModel
     {
         public string Type { get; set; }
+        public string Id { get; set; }
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
