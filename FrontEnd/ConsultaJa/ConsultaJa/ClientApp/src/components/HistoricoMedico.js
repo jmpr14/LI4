@@ -2,10 +2,10 @@
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
-import { LayoutPaciente } from './LayoutPaciente';
+import { LayoutMedico } from './LayoutMedico';
 
-export class HistoricoPaciente extends Component {
-    static displayName = HistoricoPaciente.name;
+export class HistoricoMedico extends Component {
+    static displayName = HistoricoMedico.name;
 
     constructor(props) {
         super(props);
@@ -22,11 +22,11 @@ export class HistoricoPaciente extends Component {
 
     render() {
         return (
-            <LayoutPaciente>
+            <LayoutMedico>
             <div>
-                <h1> Histórico Paciente </h1>
+                <h1> Histórico Médico </h1>
                 </div>
-            </LayoutPaciente>
+            </LayoutMedico>
         )
     }
 

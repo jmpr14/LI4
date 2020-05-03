@@ -39,7 +39,7 @@ namespace ConsultaJa.Controllers
         {
             Conta c = model.getConta(id);
             ContaModel cmodel = new ContaModel();
-            cmodel.Type = c.GetType().ToString();
+            cmodel.Type = (c.getID().Substring(0,1).CompareTo("P")==0) ? "Paciente" : "Medico";
             cmodel.Email = c.getEmail();
             cmodel.Nome = c.getNome();
             cmodel.DataNascimento = c.getDataNascimento().ToString().Substring(0,10);

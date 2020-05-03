@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 import logo from './images/logo_consultaJa.png';
 import './NavMenu.css';
 
-export class NavMenu2 extends Component {
-    static displayName = NavMenu2.name;
+export class NavMenuMedico extends Component {
+    static displayName = NavMenuMedico.name;
 
     constructor(props) {
         super(props);
@@ -27,12 +27,15 @@ export class NavMenu2 extends Component {
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
                     <Container>
-                        <NavbarBrand tag={Link} to="/perfil"><img width={120} src={logo} /></NavbarBrand>
+                        <NavbarBrand tag={Link} to="/perfilMedico"><img width={120} src={logo} /></NavbarBrand>
                         <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/perfil">Perfil</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/historicoMedico">Histórico</NavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <NavLink tag={Link} className="text-dark" to="/perfilMedico">Perfil</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/logout">Logout</NavLink>

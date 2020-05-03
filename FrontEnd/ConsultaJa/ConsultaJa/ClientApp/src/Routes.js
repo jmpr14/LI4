@@ -8,6 +8,8 @@ import { HistoricoPaciente } from './components/HistoricoPaciente';
 import { PerfilPaciente } from './components/PerfilPaciente';
 import { PerfilAdmin } from './components/PerfilAdmin';
 import { Privacy } from './components/Privacy';
+import { PerfilMedico } from './components/PerfilMedico';
+import { HistoricoMedico } from './components/HistoricoMedico';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
@@ -33,6 +35,8 @@ const Routes = () => (
             <PrivateRoute path='/logout' component={Logout} />
             <PrivateRoute path='/privacy' component={Privacy} />
             <PrivateRoute path='/perfilAdmin' component={PerfilAdmin} />
+            <PrivateRoute path='/perfilMedico' component={PerfilMedico} />
+            <PrivateRoute path='/historicoMedico' component={HistoricoMedico} />
         </Switch>
     </BrowserRouter>
 );

@@ -47,6 +47,8 @@ export class Login extends Component {
                 login(this.state.valido, response.data);
                 if (response.data[0] == 'P') {
                     this.props.history.push("/perfilPaciente");
+                } else if (response.data[0] == 'M') {
+                    this.props.history.push("/perfilMedico");
                 }
             })
             .catch(error => {

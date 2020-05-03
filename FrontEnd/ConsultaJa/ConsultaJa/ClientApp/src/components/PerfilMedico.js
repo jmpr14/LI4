@@ -2,16 +2,16 @@
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-import { LayoutPaciente } from './LayoutPaciente';
+import { LayoutMedico } from './LayoutMedico';
 import ImgPerfil from './images/profile-placeholder.jpg';
 import { userId } from './Login';
 import { CONTAS_URL } from './Constants';
 import { CONSULTAS_URL } from './Constants';
 
-import './PerfilPaciente.css';
+import './PerfilMedico.css';
 
-export class PerfilPaciente extends Component {
-    static displayName = PerfilPaciente.name;
+export class PerfilMedico extends Component {
+    static displayName = PerfilMedico.name;
 
     constructor(props) {
         super(props);
@@ -25,7 +25,7 @@ export class PerfilPaciente extends Component {
     componentDidMount() {
         this.state.id = userId();
         this.setState({ id: userId() });
-        // Buscar os dados do cliente
+        // Buscar os dados do medico
         axios.get(`${CONTAS_URL}/${this.state.id}`)
             .then(res => { console.log(res); this.setState({ dadosPerfil: res.data }); })
             .catch(error => {
@@ -46,12 +46,12 @@ export class PerfilPaciente extends Component {
     }
 
     handleOnAccept = () => {
-        this.props.history.push("/historicoPaciente");
+        this.props.history.push("/historicoMedico");
     }
 
     render() {
         return (
-            <LayoutPaciente >
+            <LayoutMedico>
                 <div class="container1">
                 <div class="op3">
                     <div>
@@ -73,10 +73,10 @@ export class PerfilPaciente extends Component {
                         <h1 className="title"> Perfil {this.state.dadosPerfil.type}</h1>
                         <div className="linksdiv">
                             <ul> <h2>Lista de Ações</h2>
-                                <li><Link tag={Link} className="links" to="/perfilPaciente">Perfil</Link></li>
-                                <li><Link tag={Link} className="links" to="/historicoPaciente">Histórico de Consultas</Link></li>
-                                <li><Link tag={Link} className="links" to="/historicoPaciente">Marcar Consulta</Link></li>
-                                <li><Link tag={Link} className="links" to="/historicoPaciente">Propostas de Consulta</Link></li>
+                                <li><Link tag={Link} className="links" to="/perfilMedico">Perfil</Link></li>
+                                <li><Link tag={Link} className="links" to="/historicoMedico">Histórico de Consultas</Link></li>
+                                <li><Link tag={Link} className="links" to="/historicoMedico">Marcar Consulta</Link></li>
+                                <li><Link tag={Link} className="links" to="/historicoMedico">Propostas de Consulta</Link></li>
                                 <li><Link tag={Link} className="links" to="/logout">Logout</Link></li>
                             </ul>
                         </div>
@@ -91,26 +91,26 @@ export class PerfilPaciente extends Component {
                                 <th>Hora</th>
                                 <th>Médico</th>
                             </tr>
-                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Dr(a). {consulta.medico}</td></tr>)}
+                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Paciente {consulta.medico}</td></tr>)}
                             <tr>
                                 <td>06/05/2020</td>
                                 <td>19:25:00</td>
-                                <td>Dr(a). João Henriques</td>
+                                <td>Paciente João Henriques</td>
                             </tr>
                             <tr>
                                 <td>15/05/2020</td>
                                 <td>14:30:00</td>
-                                <td>Dr(a). Maria Castro</td>
+                                <td>Paciente Maria Castro</td>
                             </tr>
                             <tr>
                                 <td>31/05/2020</td>
                                 <td>09:00:00</td>
-                                <td>Dr(a). José Carlos Santos</td>
+                                <td>Paciente José Carlos Santos</td>
                             </tr>
                             <tr>
                                 <td>06/06/2020</td>
                                 <td>19:25:00</td>
-                                <td>Dr(a). João Henriques</td>
+                                <td>Paciente João Henriques</td>
                             </tr>
                         </table>
                         </div>
@@ -119,7 +119,7 @@ export class PerfilPaciente extends Component {
                         </div>
                 </div>
                 </div>
-        </LayoutPaciente >
+            </LayoutMedico>
         )
     }
 }
