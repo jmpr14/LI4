@@ -348,7 +348,7 @@ namespace ConsultaJa
 		 */
 		public string getPreco()
 		{
-			return this.parametros.get("preco").ToString();
+			return (((float) this.parametros.get("preco"))/100.0).ToString();
 		}
 
 		/**
