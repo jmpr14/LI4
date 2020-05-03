@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { Layout } from './Layout';
 import Medicos from './images/medicos.png';
+import { CONTAS_URL } from './Constants';
 
 import './Registar.css';
 
@@ -37,12 +38,11 @@ export class Registar extends Component {
         this.setState({ [nam]: val });
     }
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+    // Submeter um novo usuario
     submitNew = (event) => {
         event.preventDefault();
 
-        axios.post(`https://localhost:5001/contas`, {
+        axios.post(`${CONTAS_URL}`, {
               type: this.state.type,
               Nome: this.state.name,
               Email: this.state.email,
@@ -51,8 +51,8 @@ export class Registar extends Component {
               Morada: this.state.morada,
               Nif: this.state.nif,
               Codigo_postal: this.state.codigo_postal,
-             Contactos: this.state.contactos,
-             Localidade: this.state.localidade
+              Contactos: this.state.contactos,
+              Localidade: this.state.localidade
         })
             .then(conta => {
                 //this.props.addUserToState(conta);

@@ -49,6 +49,28 @@ export class PerfilPaciente extends Component {
         this.props.history.push("/historicoPaciente");
     }
 
+    handleEdit = (event) => {
+        event.preventDefault();
+
+        //axios.put(`${CONTAS_URL}/${this.state.id}`, {
+        //    Nome: this.state.dadosPerfil.name,
+        //    Password: this.state.dadosPerfil.password,
+        //    DataNascimento: this.state.dadosPerfil.dataNascimento,
+        //    Morada: this.state.dadosPerfil.morada,
+        //    Nif: this.state.dadosPerfil.nif,
+        //    Codigo_postal: this.state.dadosPerfil.codigo_postal,
+        //    Contactos: this.state.dadosPerfil.contactos,
+        //    Localidade: this.state.dadosPerfil.localidade
+        //})
+        //    .then(res => {
+        //        //this.props.addUserToState(conta);
+        //        //this.props.toggle();
+        //        console.log(res);
+        //        alert("Novo user " + res.data);
+        //    })
+        //    .catch(err => console.log(err));
+    }
+
     render() {
         return (
             <LayoutPaciente >
@@ -62,13 +84,12 @@ export class PerfilPaciente extends Component {
                             Editar Perfil
                         </button>
                     </div>
-                    <div/>
                     <div className="perfilB">
                         <h1> {this.state.dadosPerfil.nome} </h1>
                         <h5> {this.state.dadosPerfil.email} </h5>
                         <h5> {this.state.dadosPerfil.dataNascimento} </h5>
+                        </div>
                     </div>
-                </div>
                     <div class="op4">
                         <h1 className="title"> Perfil {this.state.dadosPerfil.type}</h1>
                         <div className="linksdiv">
@@ -91,7 +112,7 @@ export class PerfilPaciente extends Component {
                                 <th>Hora</th>
                                 <th>Médico</th>
                             </tr>
-                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Dr(a). {consulta.medico}</td></tr>)}
+                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Dr(a). {consulta.medico}</td></tr>)}
                             <tr>
                                 <td>06/05/2020</td>
                                 <td>19:25:00</td>

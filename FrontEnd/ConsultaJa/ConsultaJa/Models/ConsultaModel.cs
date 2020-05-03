@@ -8,9 +8,10 @@ namespace ConsultaJa.Models
     public class ConsultaModel
     {
         public int Id { get; set; }
-        public string IdPaciente { get; set; }
-        public string IdMedico { get; set; }
-        public string Data_hora { get; set; }
+        public string Paciente { get; set; }
+        public string Medico { get; set; }
+        public string Data { get; set; }
+        public string Hora { get; set; }
 		public string Localidade { get; set; }
 		public int PrecoUni { get; set; }
         public string Morada { get; set; }

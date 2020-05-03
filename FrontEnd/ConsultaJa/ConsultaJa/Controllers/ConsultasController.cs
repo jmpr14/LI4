@@ -17,6 +17,7 @@ namespace ConsultaJa.Controllers
     [EnableCors("ReactPolicy")]
     public class ConsultasController : ControllerBase
     {
+        /* API do backend*/
         private ConsultaJaModel model = new ConsultaJaModel();
 
         private readonly ILogger<ConsultasController> _logger;
@@ -85,19 +86,69 @@ namespace ConsultaJa.Controllers
         Obter a lista das consultas agendadas dado o id de um Medico ou Paciente
         */
         [HttpGet("listaAg")]
-        public ActionResult Get([FromQuery] string id)
+        public ActionResult consultasAgendadas([FromQuery] string id)
         {
-            List<Consulta> lc = null; 
+            List<Consulta> lc = null;
+            List<ConsultaModel> lcm = new List<ConsultaModel>();
             try
             {
                 lc = this.model.getConsultasAgendadas(id);
+                foreach (Consulta c in lc)
+                {
+                    ConsultaModel cm = new ConsultaModel();
+                    cm.Id = c.getID();
+                    cm.Medico = c.getMedico().getNome();
+                    cm.Paciente = c.getPaciente().getNome();
+                    cm.Data = c.getData_Hora().ToString().Substring(0, 10);
+                    cm.Hora = c.getData_Hora().ToString().Substring(11);
+                    cm.Localidade = c.getLocalidade();
+                    cm.PrecoUni = c.getPrecoUni();
+                    cm.Morada = c.getLocalidade();
+                    cm.Estado = c.getEstado();
+                    cm.Observacoes = c.getObservacoes();
+                    lcm.Add(cm);
+                }
             }
             catch (MailNaoRegistado e)
             {
                 return Unauthorized();
             }
             
-            return Ok(lc);
+            return Ok(lcm);
+        }
+
+        /* /consultas/listaH
+        Obter a lista do historico de consultas dado o id de um Medico ou Paciente
+        */
+        [HttpGet("listaH")]
+        public ActionResult historicoConsultas([FromQuery] string id)
+        {
+            List<Consulta> lc = null;
+            List<ConsultaModel> lcm = new List<ConsultaModel>();
+            try
+            {
+                lc = this.model.getHistorico(id);
+                foreach(Consulta c in lc)
+                {
+                    ConsultaModel cm = new ConsultaModel();
+                    cm.Id = c.getID();
+                    cm.Medico = c.getMedico().getNome();
+                    cm.Data = c.getData_Hora().ToString().Substring(0, 10);
+                    cm.Hora = c.getData_Hora().ToString().Substring(11);
+                    cm.Localidade = c.getLocalidade();
+                    cm.PrecoUni = c.getPrecoUni();
+                    cm.Morada = c.getLocalidade();
+                    cm.Estado = c.getEstado();
+                    cm.Observacoes = c.getObservacoes();
+                    lcm.Add(cm);
+                }
+            }
+            catch (MailNaoRegistado e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(lcm);
         }
 
         public override NoContentResult NoContent()

@@ -26,13 +26,6 @@ namespace ConsultaJa.Controllers
             _logger = logger;
         }
 
-        // GET /contas
-        //[HttpGet]
-        //public IEnumerable<Conta> Get()
-        //{
-        //    return model.GetAll();
-        //}
-
         //GET /contas/P5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(string id)

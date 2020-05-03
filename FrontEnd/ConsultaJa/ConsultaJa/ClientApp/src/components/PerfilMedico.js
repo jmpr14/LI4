@@ -91,7 +91,7 @@ export class PerfilMedico extends Component {
                                 <th>Hora</th>
                                 <th>Médico</th>
                             </tr>
-                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Paciente {consulta.medico}</td></tr>)}
+                                {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Paciente {consulta.paciente}</td></tr>)}
                             <tr>
                                 <td>06/05/2020</td>
                                 <td>19:25:00</td>
