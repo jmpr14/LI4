@@ -12,6 +12,8 @@ export class PerfilAdmin extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            idMed: [],
+            numPedidos: 0,
             dadosAdmin: [],
             medicosPendentes: []
         };
@@ -44,18 +46,32 @@ export class PerfilAdmin extends Component {
         this.props.history.push("/perfilAdmin");
     }
 
-    aceitar = (event, idMed) => {
+    myHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.text;
+        this.state.numPedidos++;
+        this.setState({ [nam]: val });
+    }
+
+    aceitar = (event) => {
+
+        let val = event.target.dataset.medico;
+
         event.preventDefault();
 
         axios.get(`${ADMIN_URL}/aceitaMed`, {
             params: {
-                id: 'M2',
+                id: val,
                 action: 'true'
             }
         })
             .then(res => {
                 console.log(res);
-                alert("Novo Medico aceite " + {idMed})})
+                alert("Novo Medico aceite ")
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     render() {
@@ -77,9 +93,6 @@ export class PerfilAdmin extends Component {
                     </div>
                     </div>
                 </form>
-                <div>
-
-                </div>
                 <form>
                 <div class="op4Admin">
                     <h1 className="title"> Pedidos de inscrição de Médicos </h1>
@@ -88,21 +101,22 @@ export class PerfilAdmin extends Component {
                         </div>
                         <table>
                             <tr>
-                                <th>Id</th>
                                 <th>Nome</th>
                                 <th>Email</th>
                                 <th>Data de Nascimento</th>
                             </tr>
                             {this.state.medicosPendentes.map(medico =>
                                 <tr>
-                                    <td>{medico.id}</td>
                                     <td>{medico.nome}</td>
                                     <td>{medico.email}</td>
                                     <td>{medico.dataNascimento}</td>
-                                    <td> <form params={medico.id} onSubmit={this.aceitar}> <input type='submit' value="Aceitar" /> </form> </td>
+                                    <td> <button key={medico.id} data-medico={medico.id} onClick={this.aceitar}> Aceitar </button> </td>
                                 </tr>)
                             }
                         </table>
+                        <div>
+                            <h3> Número de Pedidos de Médico: {this.state.numPedidos}</h3>
+                        </div>
                     </div>
                 </form>
             </LayoutAdmin >

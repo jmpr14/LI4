@@ -145,7 +145,7 @@ export class Registar extends Component {
                     required pattern="\d{4}-\d{3}"
                     onChange={this.myChangeHandler}
                 />
-                <p>Insira os seus contactos:</p>
+                <p>Insira o seu contacto telefónico:</p>
                 <input
                     type="text"
                     name='contactos'

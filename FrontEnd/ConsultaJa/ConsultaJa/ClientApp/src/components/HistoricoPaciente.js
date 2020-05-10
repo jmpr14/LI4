@@ -52,22 +52,22 @@ export class HistoricoPaciente extends Component {
                         </tr>
                         {this.state.historicoConsultas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Dr(a). {consulta.medico}</td></tr>)}
                         <tr>
-                            <td>06/05/2020</td>
+                            <td>06/02/2020</td>
                             <td>19:25:00</td>
                             <td>Dr(a). João Henriques</td>
                         </tr>
                         <tr>
-                            <td>15/05/2020</td>
+                            <td>15/03/2020</td>
                             <td>14:30:00</td>
                             <td>Dr(a). Maria Castro</td>
                         </tr>
                         <tr>
-                            <td>31/05/2020</td>
+                            <td>31/03/2020</td>
                             <td>09:00:00</td>
                             <td>Dr(a). José Carlos Santos</td>
                         </tr>
                         <tr>
-                            <td>06/06/2020</td>
+                            <td>06/04/2020</td>
                             <td>19:25:00</td>
                             <td>Dr(a). João Henriques</td>
                         </tr>

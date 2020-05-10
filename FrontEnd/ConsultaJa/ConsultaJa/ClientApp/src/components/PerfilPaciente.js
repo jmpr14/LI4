@@ -113,26 +113,6 @@ export class PerfilPaciente extends Component {
                                 <th>Médico</th>
                             </tr>
                                 {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Dr(a). {consulta.medico}</td></tr>)}
-                            <tr>
-                                <td>06/05/2020</td>
-                                <td>19:25:00</td>
-                                <td>Dr(a). João Henriques</td>
-                            </tr>
-                            <tr>
-                                <td>15/05/2020</td>
-                                <td>14:30:00</td>
-                                <td>Dr(a). Maria Castro</td>
-                            </tr>
-                            <tr>
-                                <td>31/05/2020</td>
-                                <td>09:00:00</td>
-                                <td>Dr(a). José Carlos Santos</td>
-                            </tr>
-                            <tr>
-                                <td>06/06/2020</td>
-                                <td>19:25:00</td>
-                                <td>Dr(a). João Henriques</td>
-                            </tr>
                         </table>
                         </div>
                         <div>
