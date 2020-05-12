@@ -28,7 +28,7 @@ namespace ConsultaJa.Controllers
 
         //GET /contas/P5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> GetConta(string id)
         {
             Conta c = model.getConta(id);
             ContaModel cmodel = new ContaModel();
@@ -43,7 +43,7 @@ namespace ConsultaJa.Controllers
         Criacao de uma nova conta
         */
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ContaModel conta)
+        public async Task<IActionResult> RegistarConta([FromBody] ContaModel conta)
         {
             string id = "";
 
@@ -62,29 +62,36 @@ namespace ConsultaJa.Controllers
             return Ok(id);
         }
 
-        // PUT /contas/5
+        // PUT /contas/P5
         //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put(int id, [FromBody] Conta user)
+        //public async Task<IActionResult> EditarConta(string id, [FromBody] ContaModel conta)
         //{
-        //    model.Update(id, user);
+        //    if (conta.Id.Substring(0, 1).CompareTo("P") == 0)
+        //    {
+        //        Paciente p = (Paciente)model.getConta(id);
+        //        if (conta.DataNascimento.CompareTo("") == 0)
+        //        {
+        //            DateTime data = DateTime.Parse(conta.DataNascimento);
+        //            model.alterarDataNascimento(data);
+        //        }
+        //        List<string> contac = new List<string>();
+        //        contac.Add(conta.Contactos);
 
-        //    return NoContent();
-        //}
+        //    }
+        //    else
+        //    {
+        //        DateTime data = DateTime.Parse(conta.DataNascimento);
+        //        model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade);
+        //    }
+        //    return Ok(id);
 
-        // DELETE /contas/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    model.Delete(id);
-
-        //    return NoContent();
         //}
 
         /* /contas/login
         Login como Paciente ou Medico
         */
         [HttpGet("login")]
-        public ActionResult Get([FromQuery] string Email,
+        public ActionResult Login([FromQuery] string Email,
                                           [FromQuery] string Password)
         {
             Conta c = null; 
@@ -104,6 +111,38 @@ namespace ConsultaJa.Controllers
             
             return Ok(c.getID());
         }
+
+        /* /contas/codReg
+        Verificar o código de registo de uma dada conta
+        */
+        [HttpGet("codReg")]
+        public ActionResult CodigoRegisto([FromQuery] string id,
+                                          [FromQuery] string codigo)
+        {
+            bool val = this.model.checkCod(id,codigo);
+
+            if (val) return Ok();
+            else return Unauthorized();
+        }
+
+        /*
+         * Enviar email aquando do registo na conta
+         */
+        [HttpGet("email")]
+        public ActionResult EnviarEmail([FromQuery] string email)
+        {
+            int codigo = -1;
+            try
+            {
+                codigo = this.model.enviarEmail(email);
+            } catch(Exception e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(codigo);
+        }
+
 
         public override NoContentResult NoContent()
         {

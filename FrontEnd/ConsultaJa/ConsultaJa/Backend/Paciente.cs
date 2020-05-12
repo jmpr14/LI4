@@ -198,6 +198,39 @@ namespace ConsultaJa.Backend
 		}
 
 		/**
+		 * Método que permite obter uma informação 
+		 * sobre o perfil de um paciente 
+		 */
+		public List<string> getInfo(string descricao)
+		{
+			return this.info.get(this.getID(), descricao);
+		}
+
+		/*
+		 * Método que permite adicionar um código gerado aquando ndo registo do paciente
+		 */
+		 public void addCodigoRegisto(int codigo)
+		{
+			// Próvavelmente preciso de um método que me apague os códigos que já possam lá estar
+			this.addInfo("codigo_Registo", codigo.ToString());
+		}
+
+		/*
+		 * Método que permite obter o último código de validação de conta
+		 */
+		 public string getCodigoRegisto()
+		{
+			string info="";
+			List<string> codigos = this.getInfo("codigo_Registo");
+			foreach(string cod in codigos)
+			{
+				info = cod;
+			}
+			return info;
+		}
+
+
+		/**
 		 * Implementação do método ToString 
 		 * para objetos da classe Paciente 
 		 */

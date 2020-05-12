@@ -79,8 +79,10 @@ namespace ConsultaJa
 			 * ao novo paciente que está a ser registado */
 			int id = parametros.getAndIncrement("pacientes");
 			string idPaciente = "P" + id;
+			//int codigo = EnviarEmail.sendEmail(email);
 			Paciente p = new Paciente(idPaciente, email, password, nome, morada, nif,
 				dataNascimento, codigo_postal, localidade);
+			//p.addCodigoRegisto(codigo);
 			/* Adicionamos cada contacto ao perfil do paciente */
 			foreach (string contacto in contactos)
 			{
@@ -88,6 +90,30 @@ namespace ConsultaJa
 			}
 			contas.put(idPaciente, p);
 			return idPaciente;
+		}
+
+		/**
+		 * Método usado para enviar um email para um dado utilizador
+		 */
+		 public int enviarEmail(string email)
+		{
+			return EnviarEmail.sendEmail(email);
+		}
+
+		/*
+		 * Método que a partir de um certo codigo fornecido pelo utilizador aquando do 
+		 * registo no sistema corresponde ao que foi enviado por email.
+		 */
+		 public bool checkCod(string id, string codigo_inserido)
+		{
+			bool val = false;
+			Paciente p = (Paciente) this.contas.get(id);
+
+			string codigo = p.getCodigoRegisto();
+
+			if (codigo.Equals(codigo_inserido)) val = true;
+
+			return val;
 		}
 
 		/**

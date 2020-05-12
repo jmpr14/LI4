@@ -26,7 +26,7 @@ namespace ConsultaJa.Backend
                 // Constrói o MailMessage
                 mailMessage.CC.Add(email);
                 mailMessage.Subject = "Email de Verificação de ConsultaJa";
-                mailMessage.Body = "Bem vindo à plataforma Consultaja!!!\n\n\nCódigo de Verificação: " + codigo;
+                mailMessage.Body = "Bem vindo à plataforma Consultaja!!!\n\n\nCódigo de Verificação: " + codigo + "\n\nObrigado pela preferência!\nEquipa de suporte Consultaja";
 
                 // Configuração com porta
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32("587"));
