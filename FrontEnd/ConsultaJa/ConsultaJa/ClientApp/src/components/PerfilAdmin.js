@@ -13,7 +13,6 @@ export class PerfilAdmin extends Component {
         super(props);
         this.state = {
             idMed: [],
-            numPedidos: 0,
             dadosAdmin: [],
             medicosPendentes: []
         };
@@ -44,13 +43,6 @@ export class PerfilAdmin extends Component {
 
     handleOnAccept = () => {
         this.props.history.push("/perfilAdmin");
-    }
-
-    myHandler = (event) => {
-        let nam = event.target.name;
-        let val = event.target.text;
-        this.state.numPedidos++;
-        this.setState({ [nam]: val });
     }
 
     aceitar = (event) => {
@@ -115,7 +107,7 @@ export class PerfilAdmin extends Component {
                             }
                         </table>
                         <div>
-                            <h3> Número de Pedidos de Médico: {this.state.numPedidos}</h3>
+                            <h3> Número de Pedidos de Médico: {this.state.medicosPendentes.length}</h3>
                         </div>
                     </div>
                 </form>

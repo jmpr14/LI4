@@ -18,7 +18,17 @@ export class PerfilPaciente extends Component {
         this.state = {
             id: '',
             dadosPerfil: [],
-            consultasAgendadas: []
+            consultasAgendadas: [],
+            isToggleOn: false,
+            name: '',
+            dataNascimento: null,
+            morada: '',
+            codigo_postal: '',
+            passwordAntiga: '',
+            passwordNova: '',
+            nif: '',
+            contactos: '',
+            localidade: ''
         };
     }
 
@@ -46,29 +56,35 @@ export class PerfilPaciente extends Component {
     }
 
     handleOnAccept = () => {
-        this.props.history.push("/historicoPaciente");
+        (this.state.isToggleOn) ? this.setState({ isToggleOn: false }) : this.setState({ isToggleOn: true });
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({ [nam]: val });
     }
 
     handleEdit = (event) => {
         event.preventDefault();
 
-        //axios.put(`${CONTAS_URL}/${this.state.id}`, {
-        //    Nome: this.state.dadosPerfil.name,
-        //    Password: this.state.dadosPerfil.password,
-        //    DataNascimento: this.state.dadosPerfil.dataNascimento,
-        //    Morada: this.state.dadosPerfil.morada,
-        //    Nif: this.state.dadosPerfil.nif,
-        //    Codigo_postal: this.state.dadosPerfil.codigo_postal,
-        //    Contactos: this.state.dadosPerfil.contactos,
-        //    Localidade: this.state.dadosPerfil.localidade
-        //})
-        //    .then(res => {
-        //        //this.props.addUserToState(conta);
-        //        //this.props.toggle();
-        //        console.log(res);
-        //        alert("Novo user " + res.data);
-        //    })
-        //    .catch(err => console.log(err));
+        axios.put(`${CONTAS_URL}/${this.state.id}`, {
+            Nome: this.state.dadosPerfil.name,
+            Password: this.state.dadosPerfil.password,
+            DataNascimento: this.state.dadosPerfil.dataNascimento,
+            Morada: this.state.dadosPerfil.morada,
+            Nif: this.state.dadosPerfil.nif,
+            Codigo_postal: this.state.dadosPerfil.codigo_postal,
+            Contactos: this.state.dadosPerfil.contactos,
+            Localidade: this.state.dadosPerfil.localidade
+        })
+            .then(res => {
+                //this.props.addUserToState(conta);
+                //this.props.toggle();
+                console.log(res);
+                alert("Novo user " + res.data);
+            })
+            .catch(err => console.log(err));
     }
 
     render() {
@@ -83,11 +99,83 @@ export class PerfilPaciente extends Component {
                         <button variant="outlined" color="primary" onClick={this.handleOnAccept} >
                             Editar Perfil
                         </button>
-                    </div>
-                    <div className="perfilB">
-                        <h1> {this.state.dadosPerfil.nome} </h1>
-                        <h5> {this.state.dadosPerfil.email} </h5>
-                        <h5> {this.state.dadosPerfil.dataNascimento} </h5>
+                        </div>
+                        <div>{(!this.state.isToggleOn) ?
+                            <div className="perfilB">
+                            <h1> {this.state.dadosPerfil.nome} </h1>
+                            <h5> {this.state.dadosPerfil.email} </h5>
+                            <h5> {this.state.dadosPerfil.dataNascimento} </h5>
+                            </div>
+                            : <div>
+                                <form onSubmit={this.handleEdit}>
+                                    <div>
+                                <input
+                                    type="text"
+                                    name='name'
+                                    placeholder="Nome"
+                                    onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type='date'
+                                    name='dataNascimento'
+                                    placeholder="Data de Nascimento"
+                                    onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="password"
+                                    name='passwordAntiga'
+                                    placeholder="Password Atual"
+                                    onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="password"
+                                    name='passwordNova'
+                                    placeholder="Nova Password"
+                                    onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="text"
+                                    name='morada'
+                                    placeholder="Morada"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="text"
+                                    name='localidade'
+                                    placeholder="Localidade"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="text"
+                                    name='nif'
+                                    placeholder="NIF"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="text"
+                                    name='codigo_postal'
+                                    placeholder="XXXX-XXX"
+                                    required pattern="\d{4}-\d{3}"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                <input
+                                    type="text"
+                                    name='contactos'
+                                    placeholder="Contacto"
+                                    onChange={this.myChangeHandler}
+                                /> </div>
+                                <br />
+                                <br />
+                                <input type='submit' value="Editar" />
+                            </form></div>}
                         </div>
                     </div>
                     <div class="op4">
