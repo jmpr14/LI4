@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nelso\\Desktop\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {}
+    "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\ProjetoGit\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nelso\\Desktop\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {
+    "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\ProjetoGit\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nelso\\Desktop\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
+        "projectUniqueName": "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\ProjetoGit\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
         "projectName": "ConsultaJa",
-        "projectPath": "C:\\Users\\nelso\\Desktop\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
+        "projectPath": "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\ProjetoGit\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\ConsultaJa.csproj",
         "packagesPath": "C:\\Users\\nelso\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nelso\\Desktop\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\obj\\",
+        "outputPath": "C:\\Users\\nelso\\Desktop\\Universidade\\LI4\\ProjetoGit\\LI4\\FrontEnd\\ConsultaJa\\ConsultaJa\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nelso\\AppData\\Roaming\\NuGet\\NuGet.Config",
