@@ -66,6 +66,27 @@ export class PerfilAdmin extends Component {
             })
     }
 
+    rejeitar = (event) => {
+
+        let val = event.target.dataset.medico;
+
+        event.preventDefault();
+
+        axios.get(`${ADMIN_URL}/aceitaMed`, {
+            params: {
+                id: val,
+                action: 'false'
+            }
+        })
+            .then(res => {
+                console.log(res);
+                alert("Novo Médico rejeitado/eliminado")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
     render() {
         return (
             <LayoutAdmin >
@@ -103,6 +124,7 @@ export class PerfilAdmin extends Component {
                                     <td>{medico.email}</td>
                                     <td>{medico.dataNascimento}</td>
                                     <td> <button key={medico.id} data-medico={medico.id} onClick={this.aceitar}> Aceitar </button> </td>
+                                    <td> <button key={medico.id} data-medico={medico.id} onClick={this.rejeitar}> Rejeitar </button> </td>
                                 </tr>)
                             }
                         </table>
