@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { Layout } from './Layout';
 import Medicos from './images/medicos.png';
-import { CONTAS_URL } from './Constants';
+import { CONTAS_URL } from './api';
 
 import './Registar.css';
 
@@ -100,10 +100,10 @@ export class Registar extends Component {
                         </div>
                         <div class="op1">
                             <form onSubmit={this.submitNew}>
-                                <h1> Registar {this.state.type}</h1>
-                                <p> Tipo de Registo: </p>
+                                <h1 class="Regp"> Registar {this.state.type}</h1>
+                                <p class="Regp"> Tipo de Registo: </p>
                                 <div className="radio">
-                                    <label>
+                                    <label class="Regp">
                                         <input
                                             type="radio"
                                             name='type'
@@ -113,7 +113,7 @@ export class Registar extends Component {
                                         Médico &emsp;
                                 </label>
                                     <b />
-                                    <label>
+                                    <label class="Regp">
                                         <input
                                             type="radio"
                                             name='type'
@@ -123,65 +123,74 @@ export class Registar extends Component {
                                         Paciente
                                 </label>
                                 </div>
-                                <p>Insira o nome:</p>
+                                <p class="Regp">Insira o nome:</p>
                                 <input
+                                    class="Regp"
                                     type="text"
                                     name='name'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira a data de nascimento:</p>
+                                <p class="Regp">Insira a data de nascimento:</p>
                                 <input
+                                    class="Regp"
                                     type='date'
                                     name='dataNascimento'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira o email:</p>
+                                <p class="Regp">Insira o email:</p>
                                 <input
+                                    class="Regp"
                                     type="email"
                                     name='email'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira a password:</p>
+                                <p class="Regp">Insira a password:</p>
                                 <input
+                                    class="Regp"
                                     type="password"
                                     name='password'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira a morada:</p>
+                                <p class="Regp">Insira a morada:</p>
                                 <input
+                                    class="Regp"
                                     type="text"
                                     name='morada'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira a localidade:</p>
+                                <p class="Regp">Insira a localidade:</p>
                                 <input
+                                    class="Regp"
                                     type="text"
                                     name='localidade'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira o NIF:</p>
+                                <p class="Regp">Insira o NIF:</p>
                                 <input
+                                    class="Regp"
                                     type="text"
                                     name='nif'
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira a Codigo-Postal:</p>
+                                <p class="Regp">Insira a Codigo-Postal:</p>
                                 <input
+                                    class="Regp"
                                     type="text"
                                     name='codigo_postal'
                                     placeholder="XXXX-XXX"
                                     required pattern="\d{4}-\d{3}"
                                     onChange={this.myChangeHandler}
                                 />
-                                <p>Insira o seu contacto telefónico:</p>
+                                <p class="Regp">Insira o seu contacto telefónico:</p>
                                 <input
+                                    class="Regp"
                                     type="text"
                                     name='contactos'
                                     onChange={this.myChangeHandler}
                                 />
                                 <br />
                                 <br />
-                                <input type='submit' value="Registar" />
+                                <input class="Regs" type='submit' value="Registar" />
                             </form>
                         </div>
                     </div>

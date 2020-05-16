@@ -8,7 +8,9 @@ using Newtonsoft.Json;
 using System;
 using ConsultaJa.Backend;
 using ConsultaJa.Exceptions;
+using ConsultaJa.Services;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultaJa.Controllers
 {
@@ -19,6 +21,7 @@ namespace ConsultaJa.Controllers
     public class AdminController : ControllerBase
     {
         private ConsultaJaModel model = new ConsultaJaModel();
+        private AdminService service = new AdminService();
 
         private readonly ILogger<AdminController> _logger;
 
@@ -34,8 +37,9 @@ namespace ConsultaJa.Controllers
         //    return model.GetAll();
         //}
 
-        //GET /contas/P5
+        //GET /admin
        [HttpGet]
+       [Authorize]
         public async Task<IActionResult> Get([FromQuery]string admin)
         {
 
@@ -49,6 +53,7 @@ namespace ConsultaJa.Controllers
         }
 
         [HttpGet("aceitaMed")]
+        [Authorize]
         public async Task<IActionResult> aceitaMedico([FromQuery]string id, [FromQuery]string action)
         {
             bool med = false;
@@ -66,51 +71,44 @@ namespace ConsultaJa.Controllers
             return Ok();
         }
 
-        /* POST /contas
-        Criacao de uma nova conta
-        */
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody] ContaModel conta)
-        //{
-        //    string id = "";
-
-        //    if (conta.Type!=null && conta.Type.Equals("Paciente"))
-        //    {
-        //        DateTime data = DateTime.Parse(conta.DataNascimento);
-        //        List<string> contac = new List<string>();
-        //        contac.Add(conta.Contactos);
-        //        id = model.novoPaciente(conta.Email, conta.Password, conta.Nome, data, conta.Morada, conta.Nif, conta.Codigo_postal, contac, conta.Localidade);
-        //    }
-        //    else
-        //    {
-        //        DateTime data = DateTime.Parse(conta.DataNascimento);
-        //        model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade);
-        //    }
-        //    return Ok(id);
-        //}
-
-        // PUT /contas/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> Put(int id, [FromBody] Conta user)
-        //{
-        //    model.Update(id, user);
-
-        //    return NoContent();
-        //}
-
-        // DELETE /contas/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> Delete(int id)
-        //{
-        //    model.Delete(id);
-
-        //    return NoContent();
-        //}
+        /* /admin/login */
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public IActionResult Login([FromBody] AdminModel admin)
+        {
+            Conta c = null;
+            try
+            {
+                string code = this.model.getAdminCode();
+                if (code.CompareTo(admin.Senha)==0)
+                {
+                    AdminModel amodel = new AdminModel();
+                    amodel.Type = "Admin";
+                    amodel.Preco = this.model.getPreco();
+                    amodel.NumMedicos = this.model.getMedicos();
+                    amodel.NumPacientes = this.model.getPacientes();
+                    AdminModel adminM = service.Authenticate(amodel);
+                    if (adminM == null)
+                    {
+                        return BadRequest("Erro ao processar login!");
+                    }
+                    return Ok(adminM);
+                } else
+                {
+                    return BadRequest("Senha inserida incorreta!!!!");
+                }
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
 
         /* /admin/listaMed
         Obter a lista das consultas agendadas dado o id de um Medico ou Paciente
         */
         [HttpGet("listaMed")]
+        [Authorize]
         public ActionResult Get()
         {
             List<Conta> lc = null;

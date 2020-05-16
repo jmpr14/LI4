@@ -1,7 +1,11 @@
 ﻿body {
-    background: #ffffff no-repeat right center fixed;
+    /*background: #ffffff no-repeat right center fixed;*/
+    margin: 0;
+    padding: 0;
+    background: #ffffff url("images\\medico_background.jpg") no-repeat fixed 50%;
+    background-size: cover;
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 .container {
@@ -18,16 +22,25 @@
 .imagem {
     width: 100%;
     height: auto;
-    opacity: 0.3;
+    opacity: 0.8;
+}
+
+.Regp {
+    margin-left: 11px;
+}
+
+.Regs {
+    margin-left: 0px;
 }
 
 .op1 {
-    width: 38%;
+    width: 45%;
     display: inline-block;
+    background-color: #f1f1f1;
 }
 
 .op2 {
-    width: 58%;
+    width: 55%;
     display: inline-block;
     float: right;
 }

@@ -1,12 +1,10 @@
 ﻿import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, Redirect } from 'react-router-dom';
 
 import { LayoutPaciente } from './LayoutPaciente';
 import ImgPerfil from './images/profile-placeholder.jpg';
-import { userId } from './Login';
-import { CONTAS_URL } from './Constants';
-import { CONSULTAS_URL } from './Constants';
+import api from './api';
+import decode from 'jwt-decode';
 
 import './PerfilPaciente.css';
 
@@ -15,8 +13,15 @@ export class PerfilPaciente extends Component {
 
     constructor(props) {
         super(props);
+        const token = localStorage.getItem("token")
+
+        let loggedIn = true
+        if (token == null) {
+            loggedIn = false
+        }
         this.state = {
             id: '',
+            loggedIn,
             dadosPerfil: [],
             consultasAgendadas: [],
             isToggleOn: false,
@@ -33,17 +38,20 @@ export class PerfilPaciente extends Component {
     }
 
     componentDidMount() {
-        this.state.id = userId();
-        this.setState({ id: userId() });
+        const token = localStorage.getItem('token');
+        var decoded = decode(token);
+        const idD = decoded.Id;
+        //console.log("Id" + idD);
+        this.state.id = idD;
         // Buscar os dados do cliente
-        axios.get(`${CONTAS_URL}/${this.state.id}`)
+        api.get(`contas/${this.state.id}`)
             .then(res => { console.log(res); this.setState({ dadosPerfil: res.data }); })
             .catch(error => {
                 alert("ERROR! " + error);
                 console.log(error);
             });
         // Buscar a lista de consultas agendadas
-        axios.get(`${CONSULTAS_URL}/listaAg`, {
+        api.get(`consultas/listaAg`, {
             params: {
                 id: this.state.id
             }
@@ -68,7 +76,7 @@ export class PerfilPaciente extends Component {
     handleEdit = (event) => {
         event.preventDefault();
 
-        axios.put(`${CONTAS_URL}/${this.state.id}`, {
+        api.put(`contas/${this.state.id}`, {
             Nome: this.state.dadosPerfil.name,
             Password: this.state.dadosPerfil.password,
             DataNascimento: this.state.dadosPerfil.dataNascimento,
@@ -88,7 +96,10 @@ export class PerfilPaciente extends Component {
     }
 
     render() {
-        return (
+        if (this.state.loggedIn === false) {
+            return (<Redirect to="/login" />);
+        }
+        return(
             <LayoutPaciente >
                 <div class="container1">
                 <div class="op3">

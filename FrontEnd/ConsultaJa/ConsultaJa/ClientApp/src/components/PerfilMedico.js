@@ -1,12 +1,10 @@
 ﻿import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { Link, Redirect } from 'react-router-dom';
+import decode from 'jwt-decode';
 
 import { LayoutMedico } from './LayoutMedico';
 import ImgPerfil from './images/profile-placeholder.jpg';
-import { userId } from './Login';
-import { CONTAS_URL } from './Constants';
-import { CONSULTAS_URL } from './Constants';
+import api from './api';
 
 import './PerfilMedico.css';
 
@@ -15,25 +13,38 @@ export class PerfilMedico extends Component {
 
     constructor(props) {
         super(props);
+        const token = localStorage.getItem("token")
+
+        let loggedIn = true
+        if (token == null) {
+            loggedIn = false
+        }
         this.state = {
             id: '',
+            loggedIn,
             dadosPerfil: [],
             consultasAgendadas: []
         };
     }
 
     componentDidMount() {
-        this.state.id = userId();
-        this.setState({ id: userId() });
+        const token = localStorage.getItem('token');
+        var decoded = decode(token);
+        const idD = decoded.Id;
+        //console.log("Id" + idD);
+        this.state.id = idD;
         // Buscar os dados do medico
-        axios.get(`${CONTAS_URL}/${this.state.id}`)
-            .then(res => { console.log(res); this.setState({ dadosPerfil: res.data }); })
+        api.get(`/contas/${this.state.id}`)
+            .then(res => {
+                console.log(res);
+                this.setState({ dadosPerfil: res.data });
+            })
             .catch(error => {
                 alert("ERROR! " + error);
                 console.log(error);
             });
         // Buscar a lista de consultas agendadas
-        axios.get(`${CONSULTAS_URL}/listaAg`, {
+        api.get(`/consultas/listaAg`, {
             params: {
                 id: this.state.id
             }
@@ -50,6 +61,9 @@ export class PerfilMedico extends Component {
     }
 
     render() {
+        if (this.state.loggedIn === false) {
+            return (<Redirect to="/login" />);
+        }
         return (
             <LayoutMedico>
                 <div class="container1">

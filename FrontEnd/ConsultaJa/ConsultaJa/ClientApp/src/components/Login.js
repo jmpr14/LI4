@@ -2,17 +2,11 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import './Login.css'
-import { CONTAS_URL } from './Constants';
+import { CONTAS_URL } from './api';
+import { ADMIN_URL } from './api';
 import { Layout } from './Layout';
+import { Redirect } from 'react-router-dom';
 
-export var TOKEN_KEY = false;
-export var userid = '';
-export const isAuthenticated = () => { return TOKEN_KEY };
-export const userId = () => { return userid };
-export const login = (varia, id) => {
-    userid = id;
-    TOKEN_KEY = varia;
-};
 
 export class Login extends Component {
     static displayName = Login.name;
@@ -27,52 +21,81 @@ export class Login extends Component {
             senha: '',
             error: '',
             error1: '',
+            dadosConta: []
         };
     }
 
+    // Handler para o login como Paciente ou Medico
     handlerLogin = (event) => {
 
         event.preventDefault();
 
-        axios.get(`${CONTAS_URL}/login`, {
-            params: {
-                Email: this.state.email,
-                Password: this.state.password
-            }
+        axios.post(`${CONTAS_URL}/login`, {
+             Email: this.state.email,
+             Password: this.state.password
         })
             .then(response => {
                 alert("Successfully logged in!!!");
                 console.log(response);
                 this.state.valido = true;
-                login(this.state.valido, response.data);
-                if (response.data[0] == 'P') {
+                this.setState({ dadosConta: response.data });
+                localStorage.clear();
+                localStorage.setItem("token", this.state.dadosConta.token);
+                if (this.state.dadosConta.type[0] == 'P') {
+                    this.state.type = "Paciente";
                     this.props.history.push("/perfilPaciente");
-                } else if (response.data[0] == 'M') {
+                } else if (this.state.dadosConta.type[0] == 'M') {
+                    this.state.type = "Medico";
                     this.props.history.push("/perfilMedico");
+                } else {
+                    this.setState({
+                        error:
+                            "Houve um problema com o login, verifique as suas senhas."
+                    });
                 }
             })
             .catch(error => {
-                alert("ERROR! " + error);
+                this.setState({
+                    error:
+                        "Houve um problema com o login, verifique as suas senhas."
+                });
                 console.log(error);
             })
     }
 
+    // Handler para o login como Administrador
     mySubmitHandler1 = (event) => {
         event.preventDefault();
         if (!this.state.senha) {
-            this.setState({ error1: "Preencha senhas para continuar!" });
+            this.setState({ error1: "Preencha as senhas para continuar!" });
         } else {
-            try {
-                //alert("Falta definir as acoes para os eventos");
-                this.state.valido = true;
-                login(this.state.valido);
-                this.props.history.push("/perfilAdmin");
-            } catch (err) {
-                this.setState({
-                    error1:
-                        "Houve um problema com o login, verifique as suas senhas."
-                });
-            }
+            axios.post(`${ADMIN_URL}/login`, {
+                Senha: this.state.senha
+            })
+                .then(response => {
+                    alert("Successfully logged in!!!");
+                    console.log(response);
+                    this.state.valido = true;
+                    this.setState({ dadosConta: response.data });
+                    localStorage.clear();
+                    localStorage.setItem("token", this.state.dadosConta.token);
+                    if (this.state.dadosConta.type[0] == 'A') {
+                        this.state.type = "Admin";
+                        this.props.history.push("/perfilAdmin");
+                    } else {
+                        this.setState({
+                            error1:
+                                "Houve um problema com o login, verifique as suas senhas."
+                        });
+                    }
+                })
+                .catch(error => {
+                    this.setState({
+                        error1:
+                            "Houve um problema com o login, verifique as suas senhas."
+                    });
+                    console.log(error);
+                })
         }
     }
 
@@ -83,7 +106,12 @@ export class Login extends Component {
     }
 
     render() {
-        return (
+        if (this.state.valido) {
+            if (this.state.type[0] === 'P') return (<Redirect to="/perfilPaciente" />);
+            else if (this.state.type[0] === 'M') return (<Redirect to="/perfilMedico" />);
+            else return (<Redirect to="/perfilAdmin" />);
+        }
+        return(
             <Layout>
             <section>
                 <article>
@@ -91,22 +119,22 @@ export class Login extends Component {
                 <h1> Login </h1>
                 {this.state.error && <p class="log">{this.state.error}</p>}
                 <br />
-                <p>Insira o email:</p>
+                <i class="fas fa-user"></i>
                 <input
                     className="form-control"
                     type="email"
                     name='email'
                     icon="envelope"
-                    placeholder="Your e-mail"
+                    placeholder="Email"
                     onChange={this.myChangeHandler}
                 />
                 <br />
-                <p>Insira a password:</p>
+                <i class="fas fa-lock"></i>
                 <input
                     className="form-control"
                     type="password"
                     name='password'
-                    placeholder="password"
+                    placeholder="Password"
                     onChange={this.myChangeHandler}
                 />
                 <br />
@@ -119,12 +147,12 @@ export class Login extends Component {
                     <h1> Login como Admin </h1>
                     {this.state.error1 && <p class="log">{this.state.error1}</p>}
                     <br />
-                    <p>Insira a senha de acesso:</p>
+                    <i class="fas fa-lock"></i>
                     <input
                         className="form-control"
                         type="password"
                         name='senha'
-                        placeholder="senha"
+                        placeholder="Senha secreta"
                         onChange={this.myChangeHandler}
                     />
                     <br />

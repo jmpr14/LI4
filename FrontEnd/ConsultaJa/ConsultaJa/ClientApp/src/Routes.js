@@ -1,5 +1,4 @@
 ﻿import React from "react";
-import { isAuthenticated } from './components/Login';
 import { Home } from './components/Home';
 import { Registar } from './components/Registar';
 import { Login } from './components/Login';
@@ -12,6 +11,38 @@ import { PerfilMedico } from './components/PerfilMedico';
 import { HistoricoMedico } from './components/HistoricoMedico';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import decode from 'jwt-decode';
+
+//const PrivateRoute = ({ component: Component, ...rest }) => (
+//    <Route {...rest} render={props => (
+//        isAuthenticated() ? (
+//            <Component {...props} />
+//        ) : (
+//                <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+//            )
+//    )} />
+//);
+
+const isAuthenticated = () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        return false;
+    }
+
+    try {
+        // { exp: 56654564 }
+        var decoded = decode(token);
+        console.log(decoded);
+
+        console.log(new Date().getTime() / 1000);
+        if (decoded.exp < new Date().getTime() / 1000) {
+            return false;
+        }
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
@@ -23,13 +54,25 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 );
 
+const AuthRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        !isAuthenticated() ? (
+            <Component {...props} />
+        ) : (
+                (decode(localStorage.getItem('token')).Id[0] == 'P') ?
+                    <Redirect to={{ pathname: '/perfilPaciente', state: { from: props.location } }} />
+                    : <Redirect to={{ pathname: '/perfilMedico', state: { from: props.location } }} />
+            )
+    )} />
+);
+
 const Routes = () => (
     <BrowserRouter>
         <Switch>
-            <Route exact path='/' component={Home} />
-            <Route path='/privacy' component={Privacy} />
-            <Route path='/login' component={Login} />
-            <Route path='/registar' component={Registar} />
+            <AuthRoute exact path='/' component={Home} />
+            <AuthRoute path='/privacy' component={Privacy} />
+            <AuthRoute path='/login' component={Login} />
+            <AuthRoute path='/registar' component={Registar} />
             <PrivateRoute path='/perfilPaciente' component={PerfilPaciente} />
             <PrivateRoute path='/historicoPaciente' component={HistoricoPaciente} />
             <PrivateRoute path='/logout' component={Logout} />

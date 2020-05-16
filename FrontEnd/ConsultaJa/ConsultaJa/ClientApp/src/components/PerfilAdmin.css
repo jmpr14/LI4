@@ -1,5 +1,9 @@
 ﻿body {
-    background: #ffffff no-repeat right center fixed;
+    /*background: #ffffff no-repeat right center fixed;*/
+    margin: 0;
+    padding: 0;
+    background: #ffffff url("images\\medico_background.jpg") no-repeat fixed 50%;
+    background-size: cover;
     margin-bottom: 60px;
 }
 

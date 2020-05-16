@@ -4,6 +4,7 @@
     width: 100%;
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
+    background: #ffffff;
 }
 
 .border-top {
@@ -14,3 +15,4 @@
 a {
     color: #0366d6;
 }
+

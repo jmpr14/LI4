@@ -1,11 +1,15 @@
 ﻿body {
-    background: #ffffff no-repeat right center fixed;
+    /*background: #ffffff no-repeat right center fixed;*/
+    margin: 0;
+    padding: 0;
+    background: #ffffff url("images\\medico_background.jpg") no-repeat fixed 50%;
+    background-size: cover;
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 div {
-    background-color: #ffffff;
+    background: none;
     overflow: auto;
 }
 
@@ -135,6 +139,7 @@ input[type=submit]:hover {
 .wrapper {
     padding: 32px;
 }
+
 
 
 

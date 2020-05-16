@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using ConsultaJa.Backend;
 using ConsultaJa.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ConsultaJa.Controllers
 {
@@ -42,27 +43,22 @@ namespace ConsultaJa.Controllers
         //}
 
         /* POST /contas
-        Criacao de uma nova conta
+        Criacao de uma consulta para um dado paciente 
         */
-        //[HttpPost]
-        //public async Task<IActionResult> Post([FromBody] ContaModel conta)
-        //{
-        //    string id = "";
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> RegistarConsulta([FromBody] ConsultaModel consulta)
+        {
 
-        //    if (conta.Type!=null && conta.Type.Equals("Paciente"))
-        //    {
-        //        DateTime data = DateTime.Parse(conta.DataNascimento);
-        //        List<string> contac = new List<string>();
-        //        contac.Add(conta.Contactos);
-        //        id = model.novoPaciente(conta.Email, conta.Password, conta.Nome, data, conta.Morada, conta.Nif, conta.Codigo_postal, contac, conta.Localidade);
-        //    }
-        //    else
-        //    {
-        //        DateTime data = DateTime.Parse(conta.DataNascimento);
-        //        model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade);
-        //    }
-        //    return Ok(id);
-        //}
+            string idPaciente = consulta.Paciente;
+            int ano = Convert.ToInt32(consulta.Data.Substring(0, 4));
+            int mes = Convert.ToInt32(consulta.Data.Substring(5, 7));
+            int dia = Convert.ToInt32(consulta.Data.Substring(8));
+            int hora = Convert.ToInt32(consulta.Hora.Substring(0, 2));
+            int minuto = Convert.ToInt32(consulta.Hora.Substring(4,6));
+            model.solicitarConsulta(idPaciente, ano, mes, dia, hora, minuto);
+            return Ok();
+        }
 
         // PUT /contas/5
         //[HttpPut("{id}")]
@@ -86,6 +82,7 @@ namespace ConsultaJa.Controllers
         Obter a lista das consultas agendadas dado o id de um Medico ou Paciente
         */
         [HttpGet("listaAg")]
+        [Authorize]
         public ActionResult consultasAgendadas([FromQuery] string id)
         {
             List<Consulta> lc = null;
@@ -121,6 +118,7 @@ namespace ConsultaJa.Controllers
         Obter a lista do historico de consultas dado o id de um Medico ou Paciente
         */
         [HttpGet("listaH")]
+        [Authorize]
         public ActionResult historicoConsultas([FromQuery] string id)
         {
             List<Consulta> lc = null;
@@ -157,6 +155,8 @@ namespace ConsultaJa.Controllers
         }
     }
 }
+
+
 
 
 

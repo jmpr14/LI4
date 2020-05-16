@@ -1,11 +1,10 @@
 ﻿import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import decode from 'jwt-decode';
 
 import { LayoutPaciente } from './LayoutPaciente';
-import { userId } from './Login';
-import { CONSULTAS_URL } from './Constants';
+import api from './api';
 
 export class HistoricoPaciente extends Component {
     static displayName = HistoricoPaciente.name;
@@ -19,10 +18,13 @@ export class HistoricoPaciente extends Component {
     }
 
     componentDidMount() {
-        this.state.id = userId();
-        this.setState({ id: userId() });
+        const token = localStorage.getItem('token');
+        var decoded = decode(token);
+        const idD = decoded.Id;
+        //console.log("Id" + idD);
+        this.state.id = idD;
         // Buscar a lista de consultas agendadas
-        axios.get(`${CONSULTAS_URL}/listaH`, {
+        api.get(`consultas/listaH`, {
             params: {
                 id: this.state.id
             }

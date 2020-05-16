@@ -1,4 +1,5 @@
-﻿.Login-Field {
+﻿@import "https://use.fontawesome.com/releases/v5.5.0/css/all.css";
+.Login-Field {
     border: none;
     background: rgba(0, 0, 0, .25);
     color: #fdfdfd;

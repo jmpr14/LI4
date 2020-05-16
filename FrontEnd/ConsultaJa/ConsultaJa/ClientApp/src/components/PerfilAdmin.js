@@ -1,8 +1,7 @@
 ﻿import React, { Component } from 'react';
-import axios from 'axios';
 
 import { LayoutAdmin } from './LayoutAdmin';
-import { ADMIN_URL } from './Constants';
+import api from './api';
 
 import './PerfilAdmin.css';
 
@@ -11,8 +10,15 @@ export class PerfilAdmin extends Component {
 
     constructor(props) {
         super(props);
+        const token = localStorage.getItem("token")
+
+        let loggedIn = true
+        if (token == null) {
+            loggedIn = false
+        }
         this.state = {
             idMed: [],
+            loggedIn,
             dadosAdmin: [],
             medicosPendentes: []
         };
@@ -20,7 +26,7 @@ export class PerfilAdmin extends Component {
 
     componentDidMount() {
         // Buscar os dados do preco
-        axios.get(`${ADMIN_URL}`, {
+        api.get('admin', {
             params: {
                 admin: 'admin'
             }
@@ -33,7 +39,7 @@ export class PerfilAdmin extends Component {
             });
 
         // Buscar a lista de medicos pendentes
-        axios.get(`${ADMIN_URL}/listaMed`, { })
+        api.get('/admin/listaMed', { })
             .then(res => { console.log(res); this.setState({ medicosPendentes: res.data }); })
             .catch(error => {
                 alert("ERROR! " + error);
@@ -51,7 +57,7 @@ export class PerfilAdmin extends Component {
 
         event.preventDefault();
 
-        axios.get(`${ADMIN_URL}/aceitaMed`, {
+        api.get('/admin/aceitaMed', {
             params: {
                 id: val,
                 action: 'true'
@@ -66,28 +72,10 @@ export class PerfilAdmin extends Component {
             })
     }
 
-    rejeitar = (event) => {
-
-        let val = event.target.dataset.medico;
-
-        event.preventDefault();
-
-        axios.get(`${ADMIN_URL}/aceitaMed`, {
-            params: {
-                id: val,
-                action: 'false'
-            }
-        })
-            .then(res => {
-                console.log(res);
-                alert("Novo Médico rejeitado/eliminado")
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
     render() {
+        if (this.state.loggedIn === false) {
+            return this.props.history.push("/login");
+        }
         return (
             <LayoutAdmin >
                 <h1> Perfil Administrador </h1>
@@ -124,7 +112,6 @@ export class PerfilAdmin extends Component {
                                     <td>{medico.email}</td>
                                     <td>{medico.dataNascimento}</td>
                                     <td> <button key={medico.id} data-medico={medico.id} onClick={this.aceitar}> Aceitar </button> </td>
-                                    <td> <button key={medico.id} data-medico={medico.id} onClick={this.rejeitar}> Rejeitar </button> </td>
                                 </tr>)
                             }
                         </table>
