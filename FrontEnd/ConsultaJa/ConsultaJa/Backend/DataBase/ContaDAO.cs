@@ -793,6 +793,11 @@ namespace ConsultaJa.DataBase
 		 */
 		public void changePassword(string id, string oldPassword, string newPassword)
 		{
+			/* Vamos buscar a password existente 
+			 * na base de dados */
+			string oldcryptedPass = this.get(id).getPassword();
+			if (!PasswordHasher.VerificaHash(oldPassword, oldcryptedPass))
+				throw new PasswordErrada("Password incorreta");
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
 			connection.Open();
@@ -800,8 +805,140 @@ namespace ConsultaJa.DataBase
 
 			StringBuilder sb = new StringBuilder();
 
-			// Terminar.....
+			sb.Append("update conta set password='");
+			sb.Append(newPassword);
+			sb.Append("' where idConta='");
+			sb.Append(id);
+			sb.Append("'");
 
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+
+		}
+
+		/**
+		 * Método que permite alterar a 
+		 * morada de um utilizador
+		 */
+		public void changeMorada(string id, string novaMorada)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			if (id.Contains("M"))
+				sb.Append("update medico set morada='");
+			else 
+				sb.Append("update paciente set morada='");
+			sb.Append(novaMorada);
+			sb.Append("'");
+
+			if (id.Contains("M"))
+				sb.Append(" where idMedico='");
+			else
+				sb.Append(" where idPaciente='");
+
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite alterar o código postal 
+		 * de um utilizador dado o seu id
+		 */
+		public void changeCodigoPostal(string id, string novoCP)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			if (id.Contains("M"))
+				sb.Append("update medico set codigo_postal='");
+			else
+				sb.Append("update paciente set codigo_postal='");
+			sb.Append(novoCP);
+			sb.Append("'");
+
+			if (id.Contains("M"))
+				sb.Append(" where idMedico='");
+			else
+				sb.Append(" where idPaciente='");
+
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite alterar o nome de 
+		 * um utilizador dado o seu id único
+		 */
+		public void changeNome(string id, string nome)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("update conta set nome='");
+			sb.Append(nome);
+			sb.Append("' where id='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite alterar a data de nascimento 
+		 * de um utilizador dado o seu identificador único
+		 */
+		public void changeDataNascimento(string id, DateTime dataNascimento)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("update conta set dataNascimento='");
+			sb.Append(this.criarData(dataNascimento));
+			sb.Append("' where id='");
+			sb.Append(id);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
 		}
 
 		/**

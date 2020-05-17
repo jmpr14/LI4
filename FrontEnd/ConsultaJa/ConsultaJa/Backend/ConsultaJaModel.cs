@@ -390,5 +390,19 @@ namespace ConsultaJa
 		{
 			return this.contas.getCandidatos();
 		}
+
+		/**
+		 * Método que permite editar um perfil. Caso não se queira 
+		 * alterar um dos parâmetros basta colocá-los a null
+		 */
+		public void editarPerfil(string id, string password, string oldpassWord, 
+			string morada, string codigo_postal, string nome, DateTime dataNascimento)
+		{
+			if (password != null) this.contas.changePassword(id, oldpassWord, PasswordHasher.Hash(password));
+			if (morada != null) this.contas.changeMorada(id, morada);
+			if (codigo_postal != null) this.contas.changeCodigoPostal(id, codigo_postal);
+			if (nome != null) this.contas.changeNome(id,nome);
+			if (dataNascimento != null) this.contas.changeDataNascimento(id, dataNascimento);
+		}
 	}
 }
