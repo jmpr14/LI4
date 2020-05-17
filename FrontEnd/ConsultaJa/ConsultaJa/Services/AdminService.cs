@@ -19,9 +19,10 @@ namespace ConsultaJa.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, "admin")
+                    new Claim(ClaimTypes.Name, "admin"),
+                    new Claim("Store",admin.Type)
                 }),
-                Expires = DateTime.UtcNow.AddHours(0.5),
+                Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
