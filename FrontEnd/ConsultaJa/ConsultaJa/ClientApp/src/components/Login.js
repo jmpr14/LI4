@@ -21,7 +21,8 @@ export class Login extends Component {
             senha: '',
             error: '',
             error1: '',
-            dadosConta: []
+            dadosConta: [],
+            dadosContaAdmin: []
         };
     }
 
@@ -76,10 +77,10 @@ export class Login extends Component {
                     alert("Successfully logged in!!!");
                     console.log(response);
                     this.state.valido = true;
-                    this.setState({ dadosConta: response.data });
+                    this.setState({ dadosContaAdmin: response.data });
                     localStorage.clear();
-                    localStorage.setItem("token", this.state.dadosConta.token);
-                    if (this.state.dadosConta.type[0] == 'A') {
+                    localStorage.setItem("token", this.state.dadosContaAdmin.token);
+                    if (this.state.dadosContaAdmin.type[0] == 'A') {
                         this.state.type = "Admin";
                         this.props.history.push("/perfilAdmin");
                     } else {
