@@ -10,7 +10,7 @@ export class PerfilAdmin extends Component {
 
     constructor(props) {
         super(props);
-        const token = localStorage.getItem("token")
+        const token = localStorage.getItem('token')
 
         let loggedIn = true
         if (token == null) {
@@ -26,7 +26,7 @@ export class PerfilAdmin extends Component {
 
     componentDidMount() {
         // Buscar os dados do preco
-        api.get('admin', {
+        api.get(`admin`, {
             params: {
                 admin: 'admin'
             }
@@ -39,7 +39,7 @@ export class PerfilAdmin extends Component {
             });
 
         // Buscar a lista de medicos pendentes
-        api.get('/admin/listaMed', { })
+        api.get(`/admin/listaMed`, { })
             .then(res => { console.log(res); this.setState({ medicosPendentes: res.data }); })
             .catch(error => {
                 alert("ERROR! " + error);
@@ -57,7 +57,7 @@ export class PerfilAdmin extends Component {
 
         event.preventDefault();
 
-        api.get('/admin/aceitaMed', {
+        api.get(`/admin/aceitaMed`, {
             params: {
                 id: val,
                 action: 'true'
