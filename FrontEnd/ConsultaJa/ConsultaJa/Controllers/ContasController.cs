@@ -124,6 +124,10 @@ namespace ConsultaJa.Controllers
             catch (MailNaoRegistado e)
             {
                 return BadRequest(e);
+            } 
+            catch(NotSupportedException e)
+            {
+                return BadRequest(e);
             }
         }
 

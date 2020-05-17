@@ -80,7 +80,8 @@ namespace ConsultaJa
 			int id = parametros.getAndIncrement("pacientes");
 			string idPaciente = "P" + id;
 			//int codigo = EnviarEmail.sendEmail(email);
-			Paciente p = new Paciente(idPaciente, email, password, nome, morada, nif,
+			string hashedpassword = PasswordHasher.Hash(password);
+			Paciente p = new Paciente(idPaciente, email, hashedpassword, nome, morada, nif,
 				dataNascimento, codigo_postal, localidade);
 			//p.addCodigoRegisto(codigo);
 			/* Adicionamos cada contacto ao perfil do paciente */
@@ -126,8 +127,11 @@ namespace ConsultaJa
 			if (!c.getEmail().Equals(email))
 				throw new MailNaoRegistado("[Error] email '" + email + "' não corresponde ao seu id");
 
-			if (!c.getPassword().Equals(password))
+			if (!PasswordHasher.VerificaHash(password, c.getPassword()))
+			{
+				Console.WriteLine("erro na pw;");
 				throw new PasswordErrada("[Error] password errada");
+			}
 
 			/* Caso a conta seja de médico mas ainda não tenha sido 
 			 * aprovada pelo administrador também lançamos exceção */
@@ -284,7 +288,8 @@ namespace ConsultaJa
 			/* Criamos um médico com o número de classificações 
 			 * negativo o que significa que ainda não
 			 * foi aceite como médico na aplicação */
-			Medico m = new Medico(id, email, password, nome, -1, -1, dataNascimento,
+			string hashedpassword = PasswordHasher.Hash(password);
+			Medico m = new Medico(id, email, hashedpassword, nome, -1, -1, dataNascimento,
 				nif, morada, codigo_postal, localidade);
 			/* Registamos a conta na 
 			 * base de dados */
