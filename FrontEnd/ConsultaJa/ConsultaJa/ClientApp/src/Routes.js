@@ -54,14 +54,59 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 );
 
+const PrivateRouteP = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        isAuthenticated() ? (
+            (decode(localStorage.getItem('token')).Store[0] == 'P') ?
+                <Component {...props} />
+                : (decode(localStorage.getItem('token')).Store[0] == 'M') ?
+                    <Redirect to={{ pathname: '/perfilMedico', state: { from: props.location } }} />
+                    : < Redirect to={{ pathname: '/perfilAdmin', state: { from: props.location } }} />
+        ) : (
+                <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+            )
+    )} />
+);
+
+const PrivateRouteA = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        isAuthenticated() ? (
+            (decode(localStorage.getItem('token')).Store[0] == 'A') ?
+                <Component {...props} />
+                : (decode(localStorage.getItem('token')).Store[0] == 'M') ?
+                    <Redirect to={{ pathname: '/perfilMedico', state: { from: props.location } }} />
+                    : < Redirect to={{ pathname: '/perfilPaciente', state: { from: props.location } }} />
+        ) : (
+                <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+            )
+    )} />
+);
+
+const PrivateRouteM = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={props => (
+        isAuthenticated() ? (
+            (decode(localStorage.getItem('token')).Store[0] == 'M') ?
+                <Component {...props} />
+                : (decode(localStorage.getItem('token')).Store[0] == 'P') ?
+                    <Redirect to={{ pathname: '/perfilPaciente', state: { from: props.location } }} />
+                    : < Redirect to={{ pathname: '/perfilAdmin', state: { from: props.location } }} />
+        ) : (
+                <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
+            )
+    )} />
+);
+
+
 const AuthRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={props => (
         !isAuthenticated() ? (
             <Component {...props} />
         ) : (
-                (decode(localStorage.getItem('token')).Id[0] == 'P') ?
+                (decode(localStorage.getItem('token')).Store[0] == 'P') ?
                     <Redirect to={{ pathname: '/perfilPaciente', state: { from: props.location } }} />
-                    : <Redirect to={{ pathname: '/perfilMedico', state: { from: props.location } }} />
+                    : (decode(localStorage.getItem('token')).Store[0] == 'M') ?
+                        <Redirect to={{ pathname: '/perfilMedico', state: { from: props.location } }} />
+                        : < Redirect to={{ pathname: '/perfilAdmin', state: { from: props.location } }} />
             )
     )} />
 );
@@ -73,13 +118,12 @@ const Routes = () => (
             <AuthRoute path='/privacy' component={Privacy} />
             <AuthRoute path='/login' component={Login} />
             <AuthRoute path='/registar' component={Registar} />
-            <PrivateRoute path='/perfilPaciente' component={PerfilPaciente} />
-            <PrivateRoute path='/historicoPaciente' component={HistoricoPaciente} />
+            <PrivateRouteP path='/perfilPaciente' component={PerfilPaciente} />
+            <PrivateRouteP path='/historicoPaciente' component={HistoricoPaciente} />
             <PrivateRoute path='/logout' component={Logout} />
-            <PrivateRoute path='/privacy' component={Privacy} />
-            <PrivateRoute path='/perfilAdmin' component={PerfilAdmin} />
-            <PrivateRoute path='/perfilMedico' component={PerfilMedico} />
-            <PrivateRoute path='/historicoMedico' component={HistoricoMedico} />
+            <PrivateRouteA path='/perfilAdmin' component={PerfilAdmin} />
+            <PrivateRouteM path='/perfilMedico' component={PerfilMedico} />
+            <PrivateRouteM path='/historicoMedico' component={HistoricoMedico} />
         </Switch>
     </BrowserRouter>
 );

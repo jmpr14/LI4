@@ -69,29 +69,19 @@ namespace ConsultaJa.Controllers
         }
 
         // PUT /contas/P5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> EditarConta(string id, [FromBody] ContaModel conta)
-        //{
-        //    if (conta.Id.Substring(0, 1).CompareTo("P") == 0)
-        //    {
-        //        Paciente p = (Paciente)model.getConta(id);
-        //        if (conta.DataNascimento.CompareTo("") == 0)
-        //        {
-        //            DateTime data = DateTime.Parse(conta.DataNascimento);
-        //            model.alterarDataNascimento(data);
-        //        }
-        //        List<string> contac = new List<string>();
-        //        contac.Add(conta.Contactos);
-
-        //    }
-        //    else
-        //    {
-        //        DateTime data = DateTime.Parse(conta.DataNascimento);
-        //        model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade);
-        //    }
-        //    return Ok(id);
-
-        //}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditarConta(string id, [FromBody] ContaModel conta)
+        {
+            try
+            {
+                this.model.editarPerfil(id, conta.PasswordNova, conta.Password, conta.Morada, conta.Codigo_postal, conta.Nome, DateTime.Parse(conta.DataNascimento));
+            }
+            catch(PasswordErrada e)
+            {
+                BadRequest(e);
+            }
+            return Ok(id);
+        }
 
         /* /contas/login
         Login como Paciente ou Medico

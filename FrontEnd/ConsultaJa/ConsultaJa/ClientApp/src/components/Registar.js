@@ -7,26 +7,28 @@ import { CONTAS_URL } from './api';
 
 import './Registar.css';
 
+const InitialState = {
+    codR: -1,
+    codI: -1,
+    isRegistarOn: true,
+    name: '',
+    dataNascimento: null,
+    email: '',
+    morada: '',
+    codigo_postal: '',
+    password: '',
+    nif: '',
+    contactos: '',
+    localidade: '',
+    type: ''
+};
+
 export class Registar extends Component {
     static displayName = Registar.name;
 
     constructor(props) {
         super(props);
-        this.state = {
-            codR: -1,
-            codI: -1,
-            isRegistarOn: true,
-            name: '',
-            dataNascimento: null,
-            email: '',
-            morada: '',
-            codigo_postal: '',
-            password: '',
-            nif: '',
-            contactos: '',
-            localidade: '',
-            type: ''
-        };
+        this.state = InitialState;
     }
 
     mySubmitHandler = (event) => {
@@ -82,13 +84,13 @@ export class Registar extends Component {
                     //this.props.addUserToState(conta);
                     //this.props.toggle();
                     alert("Novo user " + conta.data);
+                    this.setState(InitialState);
                 })
                 .catch(err => console.log(err));
 
             (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
         }
     }
-
 
     render() {
         return (
@@ -210,7 +212,7 @@ export class Registar extends Component {
                                 />
                                 <br />
                                 <br />
-                                <input type='submit' value="Verificar" />
+                                <input type='submit' />
                             </form>
                         </div>
                     </div>

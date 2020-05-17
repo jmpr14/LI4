@@ -13,6 +13,7 @@ namespace ConsultaJa.Models
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string PasswordNova { get; set; }
         public string DataNascimento { get; set; }
         public string Morada { get; set; }
         public string Nif { get; set; }

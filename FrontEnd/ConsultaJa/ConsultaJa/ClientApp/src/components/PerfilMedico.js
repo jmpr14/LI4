@@ -23,7 +23,17 @@ export class PerfilMedico extends Component {
             id: '',
             loggedIn,
             dadosPerfil: [],
-            consultasAgendadas: []
+            consultasAgendadas: [],
+            isToggleOn: false,
+            name: null,
+            dataNascimento: null,
+            morada: null,
+            codigo_postal: null,
+            passwordAntiga: null,
+            passwordNova: null,
+            nif: null,
+            contactos: null,
+            localidade: null
         };
     }
 
@@ -57,7 +67,39 @@ export class PerfilMedico extends Component {
     }
 
     handleOnAccept = () => {
-        this.props.history.push("/historicoMedico");
+        (this.state.isToggleOn) ? this.setState({ isToggleOn: false }) : this.setState({ isToggleOn: true });
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({ [nam]: val });
+    }
+
+    handleEdit = (event) => {
+        event.preventDefault();
+
+        var dataNasc = (this.state.dataNascimento != null) ? this.state.dataNascimento : this.state.dadosPerfil.dataNascimento;
+
+        api.put(`contas/${this.state.id}`, {
+            Password: this.state.passwordAntiga,
+            PasswordNova: this.state.passwordNova,
+            Morada: this.state.morada,
+            Nome: this.state.name,
+            Codigo_postal: this.state.codigo_postal,
+            DataNascimento: dataNasc
+        })
+            .then(res => {
+                console.log(res);
+                alert("Perfil editado com sucesso ");
+                this.setState({ isToggleOn: false });
+                if (this.state.passwordNova != null) this.state.dadosPerfil.password = this.state.passwordNova;
+                if (this.state.morada != null) this.state.dadosPerfil.morada = this.state.morada;
+                if (this.state.nome != null) this.state.dadosPerfil.nome = this.state.nome;
+                if (this.state.dataNascimento != null) this.state.dadosPerfil.dataNascimento = this.state.dataNascimento;
+                if (this.state.codigo_postal != null) this.state.dadosPerfil.codigo_postal = this.state.codigo_postal;
+            })
+            .catch(err => console.log(err));
     }
 
     render() {
@@ -67,22 +109,71 @@ export class PerfilMedico extends Component {
         return (
             <LayoutMedico>
                 <div class="container1">
-                <div class="op3">
-                    <div>
-                        <img class="image" src={ImgPerfil} width="50" height="70" />
-                    </div>
-                    <div>
-                        <button variant="outlined" color="primary" onClick={this.handleOnAccept} >
-                            Editar Perfil
+                    <div class="op3">
+                        <div>
+                            <img class="image" src={ImgPerfil} width="50" height="70" />
+                        </div>
+                        <div>
+                            <button variant="outlined" color="primary" onClick={this.handleOnAccept} >
+                                Editar Perfil
                         </button>
+                        </div>
+                        <div>{(!this.state.isToggleOn) ?
+                            <div className="perfilB">
+                                <h1> {this.state.dadosPerfil.nome} </h1>
+                                <h5> {this.state.dadosPerfil.email} </h5>
+                                <h5> {this.state.dadosPerfil.dataNascimento} </h5>
+                            </div>
+                            : <div>
+                                <form onSubmit={this.handleEdit}>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name='name'
+                                            placeholder="Nome"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            type='date'
+                                            name='dataNascimento'
+                                            placeholder="Data de Nascimento"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            type="password"
+                                            name='passwordAntiga'
+                                            placeholder="Password Atual"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            type="password"
+                                            name='passwordNova'
+                                            placeholder="Nova Password"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name='morada'
+                                            placeholder="Morada"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name='codigo_postal'
+                                            placeholder="XXXX-XXX"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <br />
+                                    <br />
+                                    <input type='submit' value="Editar" />
+                                </form></div>}
+                        </div>
                     </div>
-                    <div/>
-                    <div className="perfilB">
-                        <h1> {this.state.dadosPerfil.nome} </h1>
-                        <h5> {this.state.dadosPerfil.email} </h5>
-                        <h5> {this.state.dadosPerfil.dataNascimento} </h5>
-                    </div>
-                </div>
                     <div class="op4">
                         <h1 className="title"> Perfil {this.state.dadosPerfil.type}</h1>
                         <div className="linksdiv">
@@ -106,26 +197,6 @@ export class PerfilMedico extends Component {
                                 <th>Paciente</th>
                             </tr>
                                 {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Sr(a). {consulta.paciente}</td></tr>)}
-                            <tr>
-                                <td>06/05/2020</td>
-                                <td>19:25:00</td>
-                                <td>Sr(a). João Henriques</td>
-                            </tr>
-                            <tr>
-                                <td>15/05/2020</td>
-                                <td>14:30:00</td>
-                                <td>Sr(a). Maria Castro</td>
-                            </tr>
-                            <tr>
-                                <td>31/05/2020</td>
-                                <td>09:00:00</td>
-                                <td>Sr(a). José Carlos Santos</td>
-                            </tr>
-                            <tr>
-                                <td>06/06/2020</td>
-                                <td>19:25:00</td>
-                                <td>Sr(a). João Henriques</td>
-                            </tr>
                         </table>
                         </div>
                         <div>

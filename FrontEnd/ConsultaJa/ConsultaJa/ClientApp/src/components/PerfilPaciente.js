@@ -25,15 +25,15 @@ export class PerfilPaciente extends Component {
             dadosPerfil: [],
             consultasAgendadas: [],
             isToggleOn: false,
-            name: '',
+            name: null,
             dataNascimento: null,
-            morada: '',
-            codigo_postal: '',
-            passwordAntiga: '',
-            passwordNova: '',
-            nif: '',
-            contactos: '',
-            localidade: ''
+            morada: null,
+            codigo_postal: null,
+            passwordAntiga: null,
+            passwordNova: null,
+            nif: null,
+            contactos: null,
+            localidade: null
         };
     }
 
@@ -76,21 +76,25 @@ export class PerfilPaciente extends Component {
     handleEdit = (event) => {
         event.preventDefault();
 
+        var dataNasc = (this.state.dataNascimento != null) ? this.state.dataNascimento : this.state.dadosPerfil.dataNascimento;
+
         api.put(`contas/${this.state.id}`, {
-            Nome: this.state.dadosPerfil.name,
-            Password: this.state.dadosPerfil.password,
-            DataNascimento: this.state.dadosPerfil.dataNascimento,
-            Morada: this.state.dadosPerfil.morada,
-            Nif: this.state.dadosPerfil.nif,
-            Codigo_postal: this.state.dadosPerfil.codigo_postal,
-            Contactos: this.state.dadosPerfil.contactos,
-            Localidade: this.state.dadosPerfil.localidade
+            Password: this.state.passwordAntiga,
+            PasswordNova: this.state.passwordNova,
+            Morada: this.state.morada,
+            Nome: this.state.name,
+            Codigo_postal: this.state.codigo_postal,
+            DataNascimento: dataNasc
         })
             .then(res => {
-                //this.props.addUserToState(conta);
-                //this.props.toggle();
                 console.log(res);
-                alert("Novo user " + res.data);
+                alert("Perfil editado com sucesso ");
+                this.setState({ isToggleOn: false });
+                if (this.state.passwordNova != null) this.state.dadosPerfil.password = this.state.passwordNova;
+                if (this.state.morada != null) this.state.dadosPerfil.morada = this.state.morada;
+                if (this.state.nome != null) this.state.dadosPerfil.nome = this.state.nome;
+                if (this.state.dataNascimento != null) this.state.dadosPerfil.dataNascimento = this.state.dataNascimento;
+                if (this.state.codigo_postal != null) this.state.dadosPerfil.codigo_postal = this.state.codigo_postal;
             })
             .catch(err => console.log(err));
     }
@@ -157,32 +161,10 @@ export class PerfilPaciente extends Component {
                                     <div>
                                 <input
                                     type="text"
-                                    name='localidade'
-                                    placeholder="Localidade"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                <input
-                                    type="text"
-                                    name='nif'
-                                    placeholder="NIF"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                <input
-                                    type="text"
                                     name='codigo_postal'
                                     placeholder="XXXX-XXX"
-                                    required pattern="\d{4}-\d{3}"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                <input
-                                    type="text"
-                                    name='contactos'
-                                    placeholder="Contacto"
                                     onChange={this.myChangeHandler}
-                                /> </div>
+                                        /> </div>
                                 <br />
                                 <br />
                                 <input type='submit' value="Editar" />

@@ -904,7 +904,7 @@ namespace ConsultaJa.DataBase
 
 			sb.Append("update conta set nome='");
 			sb.Append(nome);
-			sb.Append("' where id='");
+			sb.Append("' where idConta='");
 			sb.Append(id);
 			sb.Append("'");
 
@@ -930,7 +930,7 @@ namespace ConsultaJa.DataBase
 
 			sb.Append("update conta set dataNascimento='");
 			sb.Append(this.criarData(dataNascimento));
-			sb.Append("' where id='");
+			sb.Append("' where idConta='");
 			sb.Append(id);
 			sb.Append("'");
 
