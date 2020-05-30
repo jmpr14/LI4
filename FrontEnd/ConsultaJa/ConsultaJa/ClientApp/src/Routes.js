@@ -4,11 +4,15 @@ import { Registar } from './components/Registar';
 import { Login } from './components/Login';
 import { Logout } from './components/Logout';
 import { HistoricoPaciente } from './components/HistoricoPaciente';
+import { PropostasConsultaP } from './components/PropostasConsultaP';
+import { PropostasConsultaM } from './components/PropostasConsultaM';
 import { PerfilPaciente } from './components/PerfilPaciente';
 import { PerfilAdmin } from './components/PerfilAdmin';
 import { Privacy } from './components/Privacy';
 import { PerfilMedico } from './components/PerfilMedico';
 import { HistoricoMedico } from './components/HistoricoMedico';
+import { AnotarConsultas } from './components/AnotarConsultas';
+import { MarcarConsulta } from './components/MarcarConsulta';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import decode from 'jwt-decode';
@@ -120,10 +124,14 @@ const Routes = () => (
             <AuthRoute path='/registar' component={Registar} />
             <PrivateRouteP path='/perfilPaciente' component={PerfilPaciente} />
             <PrivateRouteP path='/historicoPaciente' component={HistoricoPaciente} />
+            <PrivateRouteP path='/marcarConsulta' component={MarcarConsulta} />
+            <PrivateRouteP path='/propostasConsultaP' component={PropostasConsultaP} />
             <PrivateRoute path='/logout' component={Logout} />
             <PrivateRouteA path='/perfilAdmin' component={PerfilAdmin} />
             <PrivateRouteM path='/perfilMedico' component={PerfilMedico} />
             <PrivateRouteM path='/historicoMedico' component={HistoricoMedico} />
+            <PrivateRouteM path='/anotarConsultas' component={AnotarConsultas} />
+            <PrivateRouteM path='/propostasConsultaM' component={PropostasConsultaM} />
         </Switch>
     </BrowserRouter>
 );

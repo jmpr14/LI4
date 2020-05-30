@@ -238,12 +238,30 @@ namespace ConsultaJa
 		}
 
 		/**
+		 * Método que permite a um cliente rejeitar uma 
+		 * proposta de consulta feita por um médico
+		 */
+		public void rejeitarConsulta(int idConsulta)
+		{
+			this.consultas.rejeitarProposta(idConsulta);
+		}
+
+		/**
 		 * Método que permite aceder a pedidos enviados 
 		 * por cliente para marcação de consultas
 		 */
 		public List<Consulta> getPedidos()
 		{
 			return consultas.getPedidos();
+		}
+
+		/**
+		 * Método que permite aceder as propostas de consultas
+		 * feitas por medicos a um dado paciente
+		 */
+		public List<Consulta> getConsultasPropostas(string idPaciente)
+		{
+			return consultas.getAsPacientePendentes(idPaciente);
 		}
 
 		/**
@@ -379,7 +397,8 @@ namespace ConsultaJa
 		 */
 		public string getPreco()
 		{
-			return (((float) this.parametros.get("preco"))/100.0).ToString();
+			float preco = (float)this.parametros.get("preco");
+			return (preco/100).ToString();
 		}
 
 		/**

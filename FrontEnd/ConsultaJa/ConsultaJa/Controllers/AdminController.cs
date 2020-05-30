@@ -52,6 +52,7 @@ namespace ConsultaJa.Controllers
             return Ok(cmodel);
         }
 
+        /* /admin/aceitaMed */
         [HttpGet("aceitaMed")]
         [Authorize]
         public async Task<IActionResult> aceitaMedico([FromQuery]string id, [FromQuery]string action)
@@ -67,6 +68,18 @@ namespace ConsultaJa.Controllers
             {
                 return Unauthorized();
             }
+
+            return Ok();
+        }
+
+        /* GET /admin/mudarpreco
+         * Mudar preco por consulta
+         */
+        [HttpGet("mudarpreco")]
+        [Authorize]
+        public async Task<IActionResult> MudarPreco([FromQuery] float novopreco)
+        {
+            this.model.mudarPreco((int)(novopreco*100));
 
             return Ok();
         }

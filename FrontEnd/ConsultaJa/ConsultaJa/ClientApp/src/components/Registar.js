@@ -67,7 +67,7 @@ export class Registar extends Component {
         let codReg = this.state.codR;
         let codIns = this.state.codI;
 
-        if ((parseInt(codReg.toString()) - parseInt(codIns.toString()))==0) {
+        if ((parseInt(codReg.toString()) - parseInt(codIns.toString())) == 0) {
             axios.post(`${CONTAS_URL}`, {
                 type: this.state.type,
                 Nome: this.state.name,
@@ -83,13 +83,12 @@ export class Registar extends Component {
                 .then(conta => {
                     //this.props.addUserToState(conta);
                     //this.props.toggle();
-                    alert("Novo user " + conta.data);
-                    this.setState(InitialState);
+                    alert("Nova Conta Registada");
                 })
                 .catch(err => console.log(err));
-
-            (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
-        }
+        } else { alert("Código Inserido Inválido"); }
+        this.setState(InitialState);
+        (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
     }
 
     render() {

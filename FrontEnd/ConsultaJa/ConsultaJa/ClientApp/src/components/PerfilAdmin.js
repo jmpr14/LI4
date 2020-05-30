@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 
 import { LayoutAdmin } from './LayoutAdmin';
 import api from './api';
@@ -19,6 +20,7 @@ export class PerfilAdmin extends Component {
         this.state = {
             idMed: [],
             loggedIn,
+            novopreco: 0.00,
             dadosAdmin: [],
             medicosPendentes: []
         };
@@ -47,8 +49,21 @@ export class PerfilAdmin extends Component {
             });
     }
 
-    handleOnAccept = () => {
-        this.props.history.push("/perfilAdmin");
+    handleSubmit = (event) => {
+        event.preventDefault();
+        api.get(`/admin/mudarpreco`, {
+            params: {
+                novopreco: this.state.novopreco
+            }
+        })
+            .then(res => {
+                console.log(res);
+                alert("Preco mudado ");
+                this.props.history.push("/");
+            })
+            .catch(err => {
+                console.log(err);
+            })
     }
 
     aceitar = (event) => {
@@ -72,29 +87,57 @@ export class PerfilAdmin extends Component {
             })
     }
 
+    rejeitar = (event) => {
+
+        let val = event.target.dataset.medico;
+
+        event.preventDefault();
+
+        api.get(`/admin/aceitaMed`, {
+            params: {
+                id: val,
+                action: 'false'
+            }
+        })
+            .then(res => {
+                console.log(res);
+                alert("Novo Medico rejeitado ")
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({ [nam]: val });
+    }
+
     render() {
-        if (this.state.loggedIn === false) {
-            return this.props.history.push("/login");
-        }
         return (
             <LayoutAdmin >
                 <h1> Perfil Administrador </h1>
-                <form>
-                <div class="op3Admin">
-                    <div>
-                        <button variant="outlined" color="primary" onClick={this.handleOnAccept} >
-                            Alterar Preço por Consulta
-                        </button>
-                    </div>
+                    <div class="op3Admin">
+                        <form onSubmit={this.handleSubmit}>
+                            <input
+                                type='number'
+                                min='0.0'
+                                step='0.01'
+                                name='novopreco'
+                                placeholder="Novo preco"
+                                onChange={this.myChangeHandler}
+                            />
+                        <br />
+                            <input class="Regs" type='submit' value="Alterar Preco Consulta" />
+                            </form>
                     <div />
-                    <div className="perfilAdmin">
+                    <div className="perfilAd">
                         <h5> Preço por Consulta: {this.state.dadosAdmin.preco} € </h5>
                         <h5> Número de Médicos: {this.state.dadosAdmin.numMedicos} </h5>
                         <h5> Número de Pacientes: {this.state.dadosAdmin.numPacientes} </h5>
                     </div>
                     </div>
-                </form>
-                <form>
                 <div class="op4Admin">
                     <h1 className="title"> Pedidos de inscrição de Médicos </h1>
                     <div>
@@ -112,6 +155,7 @@ export class PerfilAdmin extends Component {
                                     <td>{medico.email}</td>
                                     <td>{medico.dataNascimento}</td>
                                     <td> <button key={medico.id} data-medico={medico.id} onClick={this.aceitar}> Aceitar </button> </td>
+                                    <td> <button key={medico.id} data-medico={medico.id} onClick={this.rejeitar}> Rejeitar </button> </td>
                                 </tr>)
                             }
                         </table>
@@ -119,7 +163,6 @@ export class PerfilAdmin extends Component {
                             <h3> Número de Pedidos de Médico: {this.state.medicosPendentes.length}</h3>
                         </div>
                     </div>
-                </form>
             </LayoutAdmin >
         )
     }

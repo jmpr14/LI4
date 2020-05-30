@@ -700,7 +700,10 @@ namespace ConsultaJa.DataBase
 			/* Se a data da consulta for inferior à data atual 
 			 * não é possível aceitar a consulta */
 			if (!this.validaAceitacao(idConsulta))
+			{
+				this.remove(idConsulta);
 				throw new Exception("[Error] Impossível aceitar consulta");
+			}
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
 			connection.Close();
@@ -708,6 +711,35 @@ namespace ConsultaJa.DataBase
 			StringBuilder sb = new StringBuilder();
 			sb.Append("update consulta set estado=");
 			sb.Append(AGENDADA);
+			sb.Append(" where idConsulta=");
+			sb.Append(idConsulta);
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite rejeitar uma 
+		 * proposta de consulta
+		 */
+		public void rejeitarProposta(int idConsulta)
+		{
+			/* Se a data da consulta for inferior à data atual 
+			 * não é possível rejeitar a consulta */
+			if (!this.validaAceitacao(idConsulta))
+			{
+				this.remove(idConsulta);
+				throw new Exception("[Error] Impossível rejeitar consulta");
+			}
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Close();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("update consulta set estado=");
+			sb.Append(PEDIDO);
 			sb.Append(" where idConsulta=");
 			sb.Append(idConsulta);
 			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);

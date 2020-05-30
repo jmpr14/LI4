@@ -2,6 +2,7 @@
 import { Link, Redirect } from 'react-router-dom';
 
 import { LayoutPaciente } from './LayoutPaciente';
+import { MarcarConsulta } from './MarcarConsulta';
 import ImgPerfil from './images/profile-placeholder.jpg';
 import api from './api';
 import decode from 'jwt-decode';
@@ -177,8 +178,8 @@ export class PerfilPaciente extends Component {
                             <ul> <h2>Lista de Ações</h2>
                                 <li><Link tag={Link} className="links" to="/perfilPaciente">Perfil</Link></li>
                                 <li><Link tag={Link} className="links" to="/historicoPaciente">Histórico de Consultas</Link></li>
-                                <li><Link tag={Link} className="links" to="/historicoPaciente">Marcar Consulta</Link></li>
-                                <li><Link tag={Link} className="links" to="/historicoPaciente">Propostas de Consulta</Link></li>
+                                <li><Link tag={Link} className="links" to="/marcarConsulta">Marcar Consulta</Link></li>
+                                <li><Link tag={Link} className="links" to="/propostasConsultaP">Propostas de Consulta</Link></li>
                                 <li><Link tag={Link} className="links" to="/logout">Logout</Link></li>
                             </ul>
                         </div>
