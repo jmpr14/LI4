@@ -212,9 +212,9 @@ namespace ConsultaJa
 		 * Método que permite aceder a pedidos enviados 
 		 * por cliente para marcação de consultas
 		 */
-		public List<Consulta> getPedidos()
+		public List<Consulta> getPedidos(string cod_postal)
 		{
-			return consultas.getPedidos();
+			return consultas.getPedidos(cod_postal);
 		}
 
 		/**

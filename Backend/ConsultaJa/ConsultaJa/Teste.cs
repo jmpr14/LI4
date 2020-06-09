@@ -30,14 +30,15 @@ namespace ConsultaJa
                 //    new DateTime(1999, 08, 07), "266951155", "Rua do Cruzeiro nº38", "4730-280", "Braga");
                 //cjm.trataPedido("M0", true);
                 //cjm.solicitarConsulta("P0", 2020, 08, 15, 19, 45);
+                //cjm.solicitarConsulta("P0", 2020, 09, 28, 14, 45);
                 //cjm.proporConsulta("M0", 1);
                 //cjm.aceitaConsulta(1);
                 //cjm.proporConsulta("M1", 7);
                 //cjm.addPrescricao(1, "Paracetemol 100mg", 2, "1 de manha e 1 antes de deitar");
                 //cjm.addPrescricao(1, "Bruffen 1000mg", 5, "quando sentir dor");
                 Console.WriteLine("Pedidos pendentes:");
-                Receita r = cjm.getReceita(1);
-                foreach(Consulta c in cjm.getPedidos())
+                //Receita r = cjm.getReceita(1);
+                foreach(Consulta c in cjm.getPedidos("4730-280"))
                 {
                     Console.WriteLine(c.ToString());
                 }
