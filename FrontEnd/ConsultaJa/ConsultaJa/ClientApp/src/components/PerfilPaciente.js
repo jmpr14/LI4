@@ -23,6 +23,7 @@ export class PerfilPaciente extends Component {
         this.state = {
             id: '',
             loggedIn,
+            notificacoes: [],
             dadosPerfil: [],
             consultasAgendadas: [],
             isToggleOn: false,
@@ -44,6 +45,25 @@ export class PerfilPaciente extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
+        setInterval(() => {
+            api.get(`consultas/notify`, {
+                params: {
+                    id: this.state.id
+                }
+            })
+                .then(res => {
+                    if (!this.state.notificacoes.includes(res.data)) {
+                        this.setState({
+                            notificacoes: this.state.notificacoes.push(res.data)
+                        });
+                        alert("[NOVA NOTIFICAÇÃO]\n" + res.data);
+                    }
+                })
+                .catch(error => {
+                    //alert(error.data);
+                    console.log(error);
+                });
+        }, 60000);
         // Buscar os dados do cliente
         api.get(`contas/${this.state.id}`)
             .then(res => { console.log(res); this.setState({ dadosPerfil: res.data }); })

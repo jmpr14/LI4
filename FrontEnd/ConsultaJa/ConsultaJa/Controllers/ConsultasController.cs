@@ -9,6 +9,8 @@ using System;
 using ConsultaJa.Backend;
 using ConsultaJa.Exceptions;
 using Microsoft.AspNetCore.Authorization;
+using System.IO;
+using System.Text;
 
 namespace ConsultaJa.Controllers
 {
@@ -101,7 +103,7 @@ namespace ConsultaJa.Controllers
         */
         [HttpGet("listaAg")]
         [Authorize]
-        public ActionResult consultasAgendadas([FromQuery] string id)
+        public ActionResult ConsultasAgendadas([FromQuery] string id)
         {
             List<Consulta> lc = null;
             List<ConsultaModel> lcm = new List<ConsultaModel>();
@@ -132,6 +134,43 @@ namespace ConsultaJa.Controllers
             return Ok(lcm);
         }
 
+        /* GET /consultas/notificacao
+        Obter notificacoes
+        */
+        [HttpGet("notify")]
+        [Authorize]
+        public ActionResult Notificacao([FromQuery] string id)
+        {
+            List<Consulta> lc = null;
+            string message = "Nao tem notificacoes";
+            try
+            {
+                lc = this.model.getConsultasAgendadas(id);
+                foreach (Consulta c in lc)
+                {
+                    DateTime agora = DateTime.Now;
+                    DateTime horaConsulta = c.getData_Hora();
+                    TimeSpan ts = horaConsulta-agora;
+                    if (ts.TotalMinutes <= 30 && ts.TotalMinutes >= 0)
+                    {
+                        if (id.Contains("P"))
+                            message = "Tem consulta a menos de 30 minutos com o médico " + c.getMedico().getNome() + " às " + horaConsulta.TimeOfDay + " horas!";
+                        else
+                            message = "Tem consulta a menos de 30 minutos com o paciente " + c.getPaciente().getNome() + " às " + horaConsulta.TimeOfDay + " horas!";
+                        break;
+                    }
+                }
+                if (message.Contains("Nao tem notificacoes"))
+                    return Unauthorized(message);
+            }
+            catch (MailNaoRegistado e)
+            {
+                return Unauthorized("Mail Invalido");
+            }
+
+            return Ok(message);
+        }
+
         /* /consultas/consPropostas
          * Obter a lista das consultas propostas dado o id de um Paciente
         */
@@ -146,7 +185,8 @@ namespace ConsultaJa.Controllers
                 if (id.Substring(0, 1).CompareTo("P") == 0) {
                     lc = this.model.getConsultasPropostas(id);
                 } else {
-                    lc = this.model.getPedidos();
+                    Medico m = (Medico) model.getConta(id);
+                    lc = this.model.getPedidos(m.getCodigo_Postal());
                 }
                 foreach (Consulta c in lc)
                 {
@@ -207,14 +247,44 @@ namespace ConsultaJa.Controllers
             return Ok(lcm);
         }
 
+
+        /* /consultas/receitas
+        Obter a o pdf de uma receita relativo a uma consulta
+        */
+        [HttpGet("receitas")]
+        [Authorize]
+        public ActionResult Receitas([FromQuery] string file)
+        {
+            ReceitaModel rm = new ReceitaModel();
+            try
+            {
+                StreamReader reader = new StreamReader("C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
+                byte[] bytes;
+                using (var memstream = new MemoryStream())
+                {
+                    reader.BaseStream.CopyTo(memstream);
+                    bytes = memstream.ToArray();
+                }
+                //File(bytes, "C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
+
+                string dados = Encoding.GetEncoding("latin1").GetString(bytes);
+
+                rm.Conteudo = dados;
+                Console.WriteLine(rm.Conteudo);
+            } catch(Exception e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(rm);
+        }
+
         public override NoContentResult NoContent()
         {
             return base.NoContent();
         }
     }
 }
-
-
 
 
 

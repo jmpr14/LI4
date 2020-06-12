@@ -250,9 +250,18 @@ namespace ConsultaJa
 		 * Método que permite aceder a pedidos enviados 
 		 * por cliente para marcação de consultas
 		 */
-		public List<Consulta> getPedidos()
+		//public List<Consulta> getPedidos()
+		//{
+		//	return consultas.getPedidos();
+		//}
+
+		/**
+		 * Método que permite aceder a pedidos enviados 
+		 * por cliente para marcação de consultas
+		*/
+		public List<Consulta> getPedidos(string cod_postal)
 		{
-			return consultas.getPedidos();
+			return consultas.getPedidos(cod_postal);
 		}
 
 		/**
@@ -422,6 +431,25 @@ namespace ConsultaJa
 			if (codigo_postal != null) this.contas.changeCodigoPostal(id, codigo_postal);
 			if (nome != null) this.contas.changeNome(id,nome);
 			if (dataNascimento != null) this.contas.changeDataNascimento(id, dataNascimento);
+		}
+
+		/**
+		 * Método que permite associar um determinado 
+		 * ficheiro .pdf com as receitas da consulta 
+		 * a uma determinada consulta
+		 */
+		public void addPrescricao(int idConsulta, string nomeFarmaco, decimal quantidade, string posologia)
+		{
+			this.consultas.addPrescricao(idConsulta, nomeFarmaco, quantidade, posologia);
+		}
+
+		/**
+		 * Método que permite obter o ficheiro .pdf com 
+		 * as receitas para uma determinada consultaa
+		 */
+		public Receita getReceita(int idConsulta)
+		{
+			return this.consultas.getReceita(idConsulta);
 		}
 	}
 }

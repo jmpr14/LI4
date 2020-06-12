@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using ConsultaJa.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System;
 
 namespace ConsultaJa
 {
