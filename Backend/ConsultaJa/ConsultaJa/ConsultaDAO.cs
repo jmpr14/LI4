@@ -489,7 +489,7 @@ namespace ConsultaJaDB
 			/* Para cada entrada da tabela consulta que 
 			 * resulte da pesquisa, acrescentamos um novo 
 			 * objeto Consulta à lista a retornar*/
-			 foreach(DataRow dr in dt.Rows)
+			foreach(DataRow dr in dt.Rows)
 			{
 				list.Add(this.get(dr.Field<int>("idConsulta")));
 			}
@@ -575,11 +575,38 @@ namespace ConsultaJaDB
 		}
 
 		/**
+		 * Método que permite obter uma determinada localidade 
+		 * tendo fornecido previamente o seu código postal
+		 */
+		private string localidade(string cod_postal)
+        {
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão para a base de dados */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+			sb.Append("select localidade from Codigo_Postal where codigo_postal='");
+			sb.Append(cod_postal);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+
+			return dt.Rows[0].Field<string>("localidade");
+
+		}
+
+		/**
 		 * Método que retorna todas os pedidos de 
 		 * consulta feitos por parte de pacientes
 		 */
-		public List<Consulta> getPedidos()
+		public List<Consulta> getPedidos(string cod_postal)
 		{
+			string distritoMedico = localidade(cod_postal);
+			string distritoConsulta;
 			List<Consulta> ret = new List<Consulta>();
 			Consulta c;
 			/* Vamos buscar o número de consultas */
@@ -593,7 +620,11 @@ namespace ConsultaJaDB
 					c = this.get(j);
 					if (c.isPedido())
 					{
-						ret.Add(c);
+						distritoConsulta = localidade(c.getLocalidade());
+						//Console.WriteLine("Localidade Medico: " + distritoMedico);
+						//Console.WriteLine("Localidade Consulta: " + distritoConsulta);
+						if (distritoConsulta.Equals(distritoMedico))
+							ret.Add(c);
 					}
 					i++;
 				}
@@ -702,7 +733,7 @@ namespace ConsultaJaDB
 				throw new Exception("[Error] Impossível aceitar consulta");
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */
-			connection.Close();
+			connection.Open();
 			DataTable dt = new DataTable();
 			StringBuilder sb = new StringBuilder();
 			sb.Append("update consulta set estado=");
@@ -714,6 +745,102 @@ namespace ConsultaJaDB
 			msda.Fill(dt);
 
 			connection.Close();
+		}
+
+		/**
+		 * Método que retorna o número de prescrições 
+		 * associadas a uma determinada consulta
+		 */
+		private int numPrescricoes(int idConsulta)
+        {
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from Prescricao where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			int ret = dt.Rows.Count;
+
+			/* Fechamos a conexão */
+			connection.Close();
+			return ret;
+		}
+
+		/**
+		 * Método que permite anexar um determinado 
+		 * ficheiro pdf a uma consulta na base de dados
+		 */
+		public void addPrescricao(int idConsulta, string nomeFarmaco, decimal quantidade, string posologia)
+        {
+			int how = this.numPrescricoes(idConsulta);
+
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("insert into prescricao (idPrescricao, idConsulta, nomeFarmaco, quantidade, posologia) values (");
+			sb.Append(how);
+			sb.Append(",");
+			sb.Append(idConsulta);
+			sb.Append(",'");
+			sb.Append(nomeFarmaco);
+			sb.Append("',");
+			sb.Append(quantidade);
+			sb.Append(",'");
+			sb.Append(posologia);
+			sb.Append("')");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
+
+		/**
+		 * Método que permite obter o pdf anexado a uma 
+		 * dada consulta e gerá-lo para ser visualizado
+		 */
+		public Receita getReceita(int idConsulta)
+        {
+			List<Prescricao> list = new List<Prescricao>();
+
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from Prescricao where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+
+			foreach(DataRow dr in dt.Rows)
+            {
+				Prescricao nova = new Prescricao(dr.Field<int>("idPrescricao"), dr.Field<int>("idConsulta"), dr.Field<string>("nomeFarmaco"),
+					dr.Field<decimal>("quantidade"), dr.Field<string>("posologia"));
+
+				list.Add(nova);
+            }
+
+			Consulta c = this.get(idConsulta);
+			Paciente p = c.getPaciente();
+			Medico m = c.getMedico();
+
+			return new Receita(list, idConsulta, p.getNome(), p.getContactos(), p.getNif(), m.getNome(), m.getContactos(), m.getNif());
 		}
 	}
 }

@@ -68,6 +68,12 @@ namespace ConsultaJa
 		private string observacoes;
 
 		/**
+		 * Variável que permite anexar um ficheiro pdf 
+		 * através de um array de bytes a uma consulta
+		 */
+		private byte[] pdf;
+
+		/**
 		 * Construtor para objetos da classe Consulta
 		 */
 		public Consulta(int id, Paciente p, Medico m, string localidade, string morada, string observacoes,
@@ -83,6 +89,7 @@ namespace ConsultaJa
 			this.observacoes = observacoes;
 			this.data_hora = new DateTime(ano, mes, dia, hora, min, sec);
 			this.estado = estado;
+			this.pdf = null;
 		}
 
 		/**
@@ -235,6 +242,24 @@ namespace ConsultaJa
 		{
 			this.m = m;
 		}
+
+		/**
+		 * Método que permite colocar um valor
+		 * no campo pdf de uma consulta
+		 */
+		public void setPdf(byte[] pdf)
+        {
+			this.pdf = pdf;
+        }
+
+		/**
+		 * Método que permite aceder ao 
+		 * pdf de uma dada consulta
+		 */
+		public byte[] getPdf()
+        {
+			return this.pdf;
+        }
 
 		public override string ToString()
 		{
