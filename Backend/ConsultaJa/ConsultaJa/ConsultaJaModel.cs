@@ -8,7 +8,7 @@ namespace ConsultaJa
 	public class ConsultaJaModel
 	{
 		/**
-		 * Variável de leitura que guarda o nome do 
+		 * Variável de leitura que guarda o nome do
 		 * parâmetro que guarda o preço da consulta na base de dados
 		 */
 		private static readonly string __Const_preco = "preco";
@@ -378,6 +378,25 @@ namespace ConsultaJa
 		public Receita getReceita(int idConsulta)
         {
 			return this.consultas.getReceita(idConsulta);
+        }
+
+		/**
+		 * Método que nos permite saber se uma dada consulta 
+		 * possui uma receita a si associada
+		 */
+		public bool consultaContainsReceita(int idConsulta)
+        {
+			return this.consultas.constainsPrescricao(idConsulta);
+        }
+
+		/**
+		 * Método que permite adicionar um conjunto de observações 
+		 * a uma determinada consulta cujo id se encontra especificado 
+		 * como parâmetro do método
+		 */
+		public void addObsToConsulta(int idConsulta, string obs)
+        {
+			this.consultas.addObservavoes(idConsulta,obs);
         }
 	}
 }
