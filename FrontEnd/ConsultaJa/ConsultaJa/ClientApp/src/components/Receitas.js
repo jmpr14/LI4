@@ -19,8 +19,8 @@ function bin2String(array) {
     return String.fromCharCode.apply(String, array);
 }
 
-export class AnotarConsultas extends Component {
-    static displayName = AnotarConsultas.name;
+export class Receitas extends Component {
+    static displayName = Receitas.name;
 
     constructor(props) {
         super(props);
@@ -65,7 +65,8 @@ export class AnotarConsultas extends Component {
                         var downloadLink = document.createElement('a')
                         downloadLink.target = '_blank'
                         downloadLink.download = 'receita'
-                        var blob = new Blob([this.state.recebido], { type: 'application/pdf', charset: 'default' } )
+                        downloadLink.size = response.data.size
+                        var blob = new Blob([this.state.recebido], { type: 'application/pdf', charset: 'default', size: response.data.size })
                         var URL = window.URL || window.webkitURL
                         var downloadUrl = URL.createObjectURL(blob)
                         downloadLink.href = downloadUrl
@@ -99,7 +100,7 @@ export class AnotarConsultas extends Component {
             <LayoutMedico>
                 <form onSubmit={this.handleSubmit}>
                 <div>
-                    <h1> Anotar Consultas </h1>
+                    <h1> Receitas </h1>
                 </div>
                 {(errors)
                     ? (<div className="form-group">

@@ -270,6 +270,7 @@ namespace ConsultaJa.Controllers
                 string dados = Encoding.GetEncoding("latin1").GetString(bytes);
 
                 rm.Conteudo = dados;
+                rm.Size = rm.Conteudo.Length;
                 Console.WriteLine(rm.Conteudo);
             } catch(Exception e)
             {

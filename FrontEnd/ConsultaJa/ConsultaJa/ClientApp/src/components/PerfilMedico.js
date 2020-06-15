@@ -200,7 +200,7 @@ export class PerfilMedico extends Component {
                             <ul> <h2>Lista de Ações</h2>
                                 <li><Link tag={Link} className="links" to="/perfilMedico">Perfil</Link></li>
                                 <li><Link tag={Link} className="links" to="/historicoMedico">Histórico de Consultas</Link></li>
-                                <li><Link tag={Link} className="links" to="/anotarConsultas">Anotar Consulta</Link></li>
+                                <li><Link tag={Link} className="links" to="/posconsulta">Pôs Consulta</Link></li>
                                 <li><Link tag={Link} className="links" to="/propostasConsultaM">Propostas de Consulta</Link></li>
                                 <li><Link tag={Link} className="links" to="/logout">Logout</Link></li>
                             </ul>

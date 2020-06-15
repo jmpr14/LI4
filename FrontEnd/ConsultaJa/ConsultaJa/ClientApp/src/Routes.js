@@ -11,7 +11,7 @@ import { PerfilAdmin } from './components/PerfilAdmin';
 import { Privacy } from './components/Privacy';
 import { PerfilMedico } from './components/PerfilMedico';
 import { HistoricoMedico } from './components/HistoricoMedico';
-import { AnotarConsultas } from './components/AnotarConsultas';
+import { PosConsulta } from './components/PosConsulta';
 import { MarcarConsulta } from './components/MarcarConsulta';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -130,7 +130,7 @@ const Routes = () => (
             <PrivateRouteA path='/perfilAdmin' component={PerfilAdmin} />
             <PrivateRouteM path='/perfilMedico' component={PerfilMedico} />
             <PrivateRouteM path='/historicoMedico' component={HistoricoMedico} />
-            <PrivateRouteM path='/anotarConsultas' component={AnotarConsultas} />
+            <PrivateRouteM path='/posconsulta' component={PosConsulta} />
             <PrivateRouteM path='/propostasConsultaM' component={PropostasConsultaM} />
         </Switch>
     </BrowserRouter>

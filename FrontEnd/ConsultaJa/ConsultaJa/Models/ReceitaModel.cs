@@ -7,6 +7,7 @@ namespace ConsultaJa.Models
 {
     public class ReceitaModel
     {
+        public int Size { get; set; }
         public string Conteudo { get; set; }
     }
 }
