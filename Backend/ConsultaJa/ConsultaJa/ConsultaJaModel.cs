@@ -398,5 +398,13 @@ namespace ConsultaJa
         {
 			this.consultas.addObservavoes(idConsulta,obs);
         }
-	}
+
+		/**
+		 * Método que permite marcar uma consulta 
+		 * agendada como realizada
+		 */
+		public void marcarRealizada(int idConsulta)
+		{
+			this.consultas.marcarRealizada(idConsulta);
+		}
 }
