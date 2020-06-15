@@ -332,8 +332,8 @@ namespace ConsultaJaDB
 		}
 
 		/**
-		 * Método que carrega os contactos associados 
-		 * à conta na base de dados para a respetiva 
+		 * Método que carrega os contactos associados
+		 * à conta na base de dados para a respetiva
 		 * conta
 		 */
 		private void getContactos(string id, Conta c, MySqlConnection connection)
@@ -806,6 +806,35 @@ namespace ConsultaJaDB
 		}
 
 		/**
+		 * Método que nos indica se uma dada consulta 
+		 * possui alguma receita associada
+		 */
+		public bool constainsPrescricao(int idConsulta)
+        {
+			bool ret = true;
+
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from Prescricao where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			if (dt.Rows.Count == 0)
+				ret = false;
+
+			connection.Close();
+
+			return ret;
+		}
+
+		/**
 		 * Método que permite obter o pdf anexado a uma 
 		 * dada consulta e gerá-lo para ser visualizado
 		 */
@@ -841,6 +870,33 @@ namespace ConsultaJaDB
 			Medico m = c.getMedico();
 
 			return new Receita(list, idConsulta, p.getNome(), p.getContactos(), p.getNif(), m.getNome(), m.getContactos(), m.getNif());
+		}
+
+		/**
+		 * Método que permite adicionar 
+		 * observações a uma consulta
+		 */
+		public void addObservavoes(int idConsulta, string observacoes)
+        {
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("update consulta set observaçoes='");
+			if (observacoes.Equals(""))
+				sb.Append("Sem observações");
+			else
+				sb.Append(observacoes);
+			sb.Append("' where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
 		}
 	}
 }

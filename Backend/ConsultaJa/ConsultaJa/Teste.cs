@@ -36,8 +36,9 @@ namespace ConsultaJa
                 //cjm.proporConsulta("M1", 7);
                 //cjm.addPrescricao(1, "Paracetemol 100mg", 2, "1 de manha e 1 antes de deitar");
                 //cjm.addPrescricao(1, "Bruffen 1000mg", 5, "quando sentir dor");
-                Console.WriteLine("Pedidos pendentes:");
+                //Console.WriteLine("Pedidos pendentes:");
                 //Receita r = cjm.getReceita(1);
+                //cjm.addObsToConsulta(1, "Consulta de rotina\nProxima consulta será em 2022");
                 foreach(Consulta c in cjm.getPedidos("4730-280"))
                 {
                     Console.WriteLine(c.ToString());
