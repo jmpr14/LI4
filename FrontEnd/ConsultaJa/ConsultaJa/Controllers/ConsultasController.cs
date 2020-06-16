@@ -251,33 +251,62 @@ namespace ConsultaJa.Controllers
         /* /consultas/receitas
         Obter a o pdf de uma receita relativo a uma consulta
         */
-        [HttpGet("receitas")]
+        //[HttpGet("receitas")]
+        //[Authorize]
+        //public ActionResult Receitas([FromQuery] string file)
+        //{
+        //    ReceitaModel rm = new ReceitaModel();
+        //    try
+        //    {
+        //        StreamReader reader = new StreamReader("C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
+        //        byte[] bytes;
+        //        using (var memstream = new MemoryStream())
+        //        {
+        //            reader.BaseStream.CopyTo(memstream);
+        //            bytes = memstream.ToArray();
+        //        }
+        //        //File(bytes, "C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
+
+        //        string dados = Encoding.GetEncoding("latin1").GetString(bytes);
+
+        //        rm.Conteudo = dados;
+        //        rm.Size = rm.Conteudo.Length;
+        //        Console.WriteLine(rm.Conteudo);
+        //    } catch(Exception e)
+        //    {
+        //        return Unauthorized();
+        //    }
+
+        //    return Ok(rm);
+        //}
+
+        /* /consultas/posconsulta
+        Marcar consulta Realizada, sendo que se recebe uma receita, as observacoes e marcar consulta
+        */
+        [HttpPost("posconsulta")]
         [Authorize]
-        public ActionResult Receitas([FromQuery] string file)
+        public ActionResult PosConsulta([FromBody] PosConsultaModel posconsulta)
         {
-            ReceitaModel rm = new ReceitaModel();
             try
             {
-                StreamReader reader = new StreamReader("C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
-                byte[] bytes;
-                using (var memstream = new MemoryStream())
+                foreach (ReceitaModel rm in posconsulta.Prescricoes)
                 {
-                    reader.BaseStream.CopyTo(memstream);
-                    bytes = memstream.ToArray();
+                    model.addPrescricao(Int32.Parse(posconsulta.IdConsulta), rm.Nome, Decimal.Parse(rm.Quantidade), rm.Posologia);
                 }
-                //File(bytes, "C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
-
-                string dados = Encoding.GetEncoding("latin1").GetString(bytes);
-
-                rm.Conteudo = dados;
-                rm.Size = rm.Conteudo.Length;
-                Console.WriteLine(rm.Conteudo);
-            } catch(Exception e)
+                Consulta c = model.getConsulta(Int32.Parse(posconsulta.IdConsulta));
+                Paciente p = c.getPaciente(); Medico m = c.getMedico();
+                Console.WriteLine("PosConsulta");
+                CriarPDFVertical.criaPDF(Int32.Parse(posconsulta.IdConsulta), p.getNome(),p.getContactos(), p.getNif(),
+                    m.getNome(), m.getContactos(), m.getNif(), model.getReceita(Int32.Parse(posconsulta.IdConsulta)).getPrescricoes());
+                model.addObsToConsulta(Int32.Parse(posconsulta.IdConsulta), posconsulta.Observacoes);
+                model.marcarRealizada(Int32.Parse(posconsulta.IdConsulta));
+            }
+            catch (Exception e)
             {
                 return Unauthorized();
             }
 
-            return Ok(rm);
+            return Ok();
         }
 
         public override NoContentResult NoContent()

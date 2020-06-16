@@ -7,6 +7,9 @@ export class Logout extends Component {
     constructor(props) {
         super(props);
         localStorage.removeItem("token");
+        const inter = localStorage.getItem('intervalo');
+        localStorage.removeItem("intervalo");
+        clearInterval(inter);
     }
 
     handleSubmit = () => {

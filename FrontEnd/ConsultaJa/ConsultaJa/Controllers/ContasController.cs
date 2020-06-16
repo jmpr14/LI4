@@ -35,7 +35,6 @@ namespace ConsultaJa.Controllers
         [Authorize]
         public async Task<IActionResult> GetConta(string id)
         {
-            Console.WriteLine("Ola\n\n\n");
             Conta c = model.getConta(id);
             ContaModel cmodel = new ContaModel();
             cmodel.Type = (c.getID().Substring(0,1).CompareTo("P")==0) ? "Paciente" : "Medico";
@@ -154,8 +153,6 @@ namespace ConsultaJa.Controllers
 
             return Ok(codigo);
         }
-
-
 
 
         public override NoContentResult NoContent()

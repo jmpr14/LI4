@@ -904,5 +904,61 @@ namespace ConsultaJa.DataBase
 
 			return new Receita(list, idConsulta, p.getNome(), p.getContactos(), p.getNif(), m.getNome(), m.getContactos(), m.getNif());
 		}
+
+		/**
+		 * Método que nos indica se uma dada consulta 
+		 * possui alguma receita associada
+		 */
+		public bool containsPrescricao(int idConsulta)
+		{
+			bool ret = true;
+
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from Prescricao where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			if (dt.Rows.Count == 0)
+				ret = false;
+
+			connection.Close();
+
+			return ret;
+		}
+
+		/**
+		 * Método que permite adicionar 
+		 * observações a uma consulta
+		 */
+		public void addObservavoes(int idConsulta, string observacoes)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("update consulta set observaçoes='");
+			if (observacoes.Equals(""))
+				sb.Append("Sem observações");
+			else
+				sb.Append(observacoes);
+			sb.Append("' where idConsulta=");
+			sb.Append(idConsulta);
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			connection.Close();
+		}
 	}
 }

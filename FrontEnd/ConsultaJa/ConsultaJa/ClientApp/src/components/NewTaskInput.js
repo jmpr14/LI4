@@ -34,16 +34,19 @@ const NewTaskInput = ({ onSubmit }) => {
                     type='text'
                     onChange={setNewTask}
                 />
+                <br/>
                 <input
                     placeholder="Quantidade"
                     type='number'
                     onChange={setNewTask1}
                 />
+                <br />
                 <input
                     placeholder="Posologia"
                     type='text'
                     onChange={setNewTask2}
                 />
+                <br />
                 <button type="submit">
                     Adicionar
                 </button>

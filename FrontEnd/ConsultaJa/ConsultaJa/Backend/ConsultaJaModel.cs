@@ -451,5 +451,41 @@ namespace ConsultaJa
 		{
 			return this.consultas.getReceita(idConsulta);
 		}
+
+		/**
+		 * Método que obtem uma consulta pelo seu Id
+		 */
+		public Consulta getConsulta(int idConsulta)
+		{
+			return this.consultas.get(idConsulta);
+		}
+
+		/**
+		 * Método que nos permite saber se uma dada consulta 
+		 * possui uma receita a si associada
+		 */
+		public bool consultaContainsReceita(int idConsulta)
+		{
+			return this.consultas.containsPrescricao(idConsulta);
+		}
+
+		/**
+		 * Método que permite adicionar um conjunto de observações 
+		 * a uma determinada consulta cujo id se encontra especificado 
+		 * como parâmetro do método
+		 */
+		public void addObsToConsulta(int idConsulta, string obs)
+		{
+			this.consultas.addObservavoes(idConsulta, obs);
+		}
+
+		/**
+		 * Método que permite marcar uma consulta 
+		 * agendada como realizada
+		 */
+		public void marcarRealizada(int idConsulta)
+		{
+			this.consultas.marcarRealizada(idConsulta);
+		}
 	}
 }

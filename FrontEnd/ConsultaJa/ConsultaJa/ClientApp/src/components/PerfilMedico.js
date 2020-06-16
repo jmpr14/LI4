@@ -44,7 +44,7 @@ export class PerfilMedico extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
-        setInterval(() => {
+        const idIntervalo = setInterval(() => {
             api.get(`consultas/notify`, {
                 params: {
                     id: this.state.id
@@ -63,6 +63,7 @@ export class PerfilMedico extends Component {
                     console.log(error);
                 });
         }, 60000);
+        localStorage.setItem('intervalo', idIntervalo);
         // Buscar os dados do medico
         api.get(`/contas/${this.state.id}`)
             .then(res => {
