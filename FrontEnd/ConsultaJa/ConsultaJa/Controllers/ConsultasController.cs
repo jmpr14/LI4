@@ -229,8 +229,9 @@ namespace ConsultaJa.Controllers
                     ConsultaModel cm = new ConsultaModel();
                     cm.Id = c.getID();
                     cm.Medico = c.getMedico().getNome();
+                    cm.Paciente = c.getPaciente().getNome();
                     cm.Data = c.getData_Hora().ToString().Substring(0, 10);
-                    cm.Hora = c.getData_Hora().ToString().Substring(11);
+                    cm.Hora = c.getData_Hora().ToString().Substring(11,5);
                     cm.Localidade = c.getLocalidade();
                     cm.PrecoUni = c.getPrecoUni();
                     cm.Morada = c.getLocalidade();
@@ -251,37 +252,55 @@ namespace ConsultaJa.Controllers
         /* /consultas/receitas
         Obter a o pdf de uma receita relativo a uma consulta
         */
-        //[HttpGet("receitas")]
-        //[Authorize]
-        //public ActionResult Receitas([FromQuery] string file)
-        //{
-        //    ReceitaModel rm = new ReceitaModel();
-        //    try
-        //    {
-        //        StreamReader reader = new StreamReader("C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
-        //        byte[] bytes;
-        //        using (var memstream = new MemoryStream())
-        //        {
-        //            reader.BaseStream.CopyTo(memstream);
-        //            bytes = memstream.ToArray();
-        //        }
-        //        //File(bytes, "C:\\Users\\nelso\\Downloads\\texteVertical.pdf");
+        [HttpGet("receitas")]
+        [Authorize]
+        public ActionResult Receitas([FromQuery] int id)
+        {
+            ReceitaModel rm = new ReceitaModel();
+            try
+            {
+                Receita r = this.model.getReceita(id);
+                rm.Id = id;
+                rm.Observacoes = this.model.getObservacoesConsulta(id);
+                rm.Utente = r.getNomePaciente();
+                rm.NIFUt = r.getNifPaciente();
+                if (r.getContactosPaciente() != null)
+                {
+                    rm.ContactoUt = r.getContactosPaciente()[0];
+                } else
+                {
+                    rm.ContactoUt = "";
+                }
+                rm.Medico = r.getNomeMedico();
+                rm.NIFMed = r.getNifMedico();
+                if (r.getContactosMedico().Count>0)
+                {
+                    rm.ContactoMed = r.getContactosMedico()[0];
+                }
+                else
+                {
+                    rm.ContactoMed = "";
+                }
+                List<PrescricaoModel> ps = new List<PrescricaoModel>();
+                foreach (Prescricao p in r.getPrescricoes()){
+                    PrescricaoModel pm = new PrescricaoModel();
+                    pm.Nome = p.getNomeFarmaco();
+                    pm.Posologia = p.getPosologia();
+                    pm.Quantidade = p.getQuantidade().ToString();
+                    ps.Add(pm);
+                }
+                rm.Prescricoes = ps;
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
 
-        //        string dados = Encoding.GetEncoding("latin1").GetString(bytes);
-
-        //        rm.Conteudo = dados;
-        //        rm.Size = rm.Conteudo.Length;
-        //        Console.WriteLine(rm.Conteudo);
-        //    } catch(Exception e)
-        //    {
-        //        return Unauthorized();
-        //    }
-
-        //    return Ok(rm);
-        //}
+            return Ok(rm);
+        }
 
         /* /consultas/posconsulta
-        Marcar consulta Realizada, sendo que se recebe uma receita, as observacoes e marcar consulta
+         * Marcar consulta Realizada, sendo que se recebe uma receita, as observacoes e marcar consulta
         */
         [HttpPost("posconsulta")]
         [Authorize]
@@ -289,15 +308,12 @@ namespace ConsultaJa.Controllers
         {
             try
             {
-                foreach (ReceitaModel rm in posconsulta.Prescricoes)
+                foreach (PrescricaoModel rm in posconsulta.Prescricoes)
                 {
                     model.addPrescricao(Int32.Parse(posconsulta.IdConsulta), rm.Nome, Decimal.Parse(rm.Quantidade), rm.Posologia);
                 }
                 Consulta c = model.getConsulta(Int32.Parse(posconsulta.IdConsulta));
                 Paciente p = c.getPaciente(); Medico m = c.getMedico();
-                Console.WriteLine("PosConsulta");
-                CriarPDFVertical.criaPDF(Int32.Parse(posconsulta.IdConsulta), p.getNome(),p.getContactos(), p.getNif(),
-                    m.getNome(), m.getContactos(), m.getNif(), model.getReceita(Int32.Parse(posconsulta.IdConsulta)).getPrescricoes());
                 model.addObsToConsulta(Int32.Parse(posconsulta.IdConsulta), posconsulta.Observacoes);
                 model.marcarRealizada(Int32.Parse(posconsulta.IdConsulta));
             }

@@ -13,7 +13,8 @@ export class PropostasConsultaP extends Component {
         super(props);
         this.state = {
             id: '',
-            propostasConsultas: []
+            propostasConsultas: [],
+            notificacoes: []
         };
     }
 
@@ -23,6 +24,10 @@ export class PropostasConsultaP extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
+        const notify = localStorage.getItem('notify')
+        if (notify != null) {
+            this.state.notificacoes.push(notify)
+        }
         // Buscar a lista de consultas agendadas
         api.get(`consultas/consPropostas`, {
             params: {

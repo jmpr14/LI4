@@ -7,6 +7,7 @@ import { LayoutMedico } from './LayoutMedico';
 import api from './api';
 import ListItem from './ListItem'
 import NewTaskInput from './NewTaskInput'
+import Download from './Download'
 
 
 //<div>
@@ -15,6 +16,7 @@ import NewTaskInput from './NewTaskInput'
 //        }
 //    </pre>
 //</div>
+
 
 export class PosConsulta extends Component {
     static displayName = PosConsulta.name;

@@ -46,16 +46,19 @@ export class PerfilPaciente extends Component {
         //console.log("Id" + idD);
         this.state.id = idD;
         const idIntervalo = setInterval(() => {
+            var notifications = localStorage.getItem('notify')
+            if (notifications == null) {
+                notifications = []
+            }
             api.get(`consultas/notify`, {
                 params: {
                     id: this.state.id
                 }
             })
                 .then(res => {
-                    if (!this.state.notificacoes.includes(res.data)) {
-                        this.setState({
-                            notificacoes: this.state.notificacoes.push(res.data)
-                        });
+                    if (!notifications.includes(res.data)) {
+                        notifications.push(res.data)
+                        localStorage.setItem('notify', notifications)
                         alert("[NOVA NOTIFICAÇÃO]\n" + res.data);
                     }
                 })

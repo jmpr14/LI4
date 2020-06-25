@@ -8,7 +8,7 @@ namespace ConsultaJa.Models
     public class PosConsultaModel
     {
         public string IdConsulta { get; set; }
-        public List<ReceitaModel> Prescricoes { get; set; }
+        public List<PrescricaoModel> Prescricoes { get; set; }
         public string Observacoes { get; set; }
     }
 }

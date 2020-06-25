@@ -63,7 +63,7 @@ namespace ConsultaJa.Controllers
             else
             {
                 DateTime data = DateTime.Parse(conta.DataNascimento);
-                model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade);
+                model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade, conta.Contactos);
             }
             return Ok(id);
         }

@@ -7,11 +7,14 @@ namespace ConsultaJa.Models
 {
     public class ReceitaModel
     {
-        //public int Size { get; set; }
-        //public string Conteudo { get; set; }
-        public string Nome { get; set; }
         public int Id { get; set; }
-        public string Posologia { get; set; }
-        public string Quantidade { get; set; }
+        public string Observacoes { get; set; }
+        public List<PrescricaoModel> Prescricoes { get; set; }
+        public string Utente { get; set; }
+        public string ContactoUt { get; set; }
+        public string NIFUt { get; set; }
+        public string Medico { get; set; }
+        public string ContactoMed { get; set; }
+        public string NIFMed { get; set; }
     }
 }

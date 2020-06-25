@@ -153,11 +153,11 @@ namespace ConsultaJa.Backend
 
 		/**
 		 * Método que permite aceder ao histórico de 
-		 * consultas de um médico
+		 * consultas de um paciente
 		 */
 		public override List<Consulta> getHistorico()
 		{
-			return consultas.getAsMedicoHistorico(this.getID());
+			return consultas.getAsPacienteHistorico(this.getID());
 		}
 
 		/**

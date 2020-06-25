@@ -85,5 +85,4 @@ export class PropostasConsultaM extends Component {
             </LayoutMedico>
         )
     }
-
 }

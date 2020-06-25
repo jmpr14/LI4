@@ -306,7 +306,7 @@ namespace ConsultaJa
 		 * Método que permite fazer um novo
 		 * pedido de inscrição de um médico
 		 */
-		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal, string localidade)
+		public void fazerPedidoInscricao(string email, string password, string nome, DateTime dataNascimento, string nif, string morada, string codigo_postal, string localidade, string contacto)
 		{
 			/* Vamos buscar um id para o 
 			 * candidato a médico */
@@ -318,6 +318,7 @@ namespace ConsultaJa
 			string hashedpassword = PasswordHasher.Hash(password);
 			Medico m = new Medico(id, email, hashedpassword, nome, -1, -1, dataNascimento,
 				nif, morada, codigo_postal, localidade);
+			m.addContacto(contacto);
 			/* Registamos a conta na 
 			 * base de dados */
 			contas.put(id, m);
@@ -486,6 +487,15 @@ namespace ConsultaJa
 		public void marcarRealizada(int idConsulta)
 		{
 			this.consultas.marcarRealizada(idConsulta);
+		}
+
+		/*
+		 * Método que devolve as observações de 
+		 * uma consulta, dado um id
+		 */
+		public string getObservacoesConsulta(int idConsulta)
+		{
+			return this.consultas.get(idConsulta).getObservacoes();
 		}
 	}
 }

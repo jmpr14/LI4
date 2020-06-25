@@ -2,9 +2,13 @@
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import decode from 'jwt-decode';
+import { PDFDownloadLink, Document, Page } from '@react-pdf/renderer'
+import ReactDOM from 'react-dom'
 
 import { LayoutPaciente } from './LayoutPaciente';
 import api from './api';
+import { Receita } from './Receita';
+import Download from './Download';
 
 export class HistoricoPaciente extends Component {
     static displayName = HistoricoPaciente.name;
@@ -13,7 +17,9 @@ export class HistoricoPaciente extends Component {
         super(props);
         this.state = {
             id: '',
-            historicoConsultas: []
+            historicoConsultas: [],
+            clicked: false,
+            currentId: 0
         };
     }
 
@@ -36,8 +42,24 @@ export class HistoricoPaciente extends Component {
             });
     }
 
-    handleOnAccept = () => {
+    downloader = (event) => {
+
+        let val = event.target.dataset.id;
+
+        event.preventDefault();
+
+        localStorage.setItem('consulta', val)
+
+        this.setState({ clicked: true });
+
+        this.setState({ currentId: val });
+
+        //ReactDOM.render(Download, document.getElementById(val));
     }
+
+    condicaoPdf = (id) => (
+        !this.state.clicked && id == this.state.currentId
+    );
 
     render() {
         return (
@@ -45,34 +67,25 @@ export class HistoricoPaciente extends Component {
             <div>
                 <h1> Histórico Consultas </h1>
                 </div>
+                {this.state.clicked ? <Download /> : <div/>}
                 <div>
                     <table>
                         <tr>
                             <th>Data</th>
                             <th>Hora</th>
                             <th>Médico</th>
+                            <th>Receita</th>
                         </tr>
-                        {this.state.historicoConsultas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Dr(a). {consulta.medico}</td></tr>)}
-                        <tr>
-                            <td>06/02/2020</td>
-                            <td>19:25:00</td>
-                            <td>Dr(a). João Henriques</td>
-                        </tr>
-                        <tr>
-                            <td>15/03/2020</td>
-                            <td>14:30:00</td>
-                            <td>Dr(a). Maria Castro</td>
-                        </tr>
-                        <tr>
-                            <td>31/03/2020</td>
-                            <td>09:00:00</td>
-                            <td>Dr(a). José Carlos Santos</td>
-                        </tr>
-                        <tr>
-                            <td>06/04/2020</td>
-                            <td>19:25:00</td>
-                            <td>Dr(a). João Henriques</td>
-                        </tr>
+                        {this.state.historicoConsultas.map(consulta => <tr>
+                            <td>{consulta.data}</td>
+                            <td>{consulta.hora}</td>
+                            <td>Dr(a). {consulta.medico}</td>
+                            <td> {
+                                !this.state.clicked ?
+                                    < button key={consulta.id} data-id={consulta.id} onClick={this.downloader}> Seleciona </button>
+                                    : <button disabled='disabled'> Seleciona </button> }
+                            </td>
+                        </tr>)}
                     </table>
                 </div>
             </LayoutPaciente>

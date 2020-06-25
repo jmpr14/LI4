@@ -36,9 +36,6 @@ export class HistoricoMedico extends Component {
             });
     }
 
-    handleOnAccept = () => {
-    }
-
     render() {
         return (
             <LayoutMedico>
@@ -52,12 +49,7 @@ export class HistoricoMedico extends Component {
                             <th>Hora</th>
                             <th>Paciente</th>
                         </tr>
-                        {this.state.historicoConsultas.map(consulta => <tr><td>{consulta.date}</td><td>{consulta.date}</td><td>Sr(a). {consulta.paciente}</td></tr>)}
-                        <tr>
-                            <td>06/02/2020</td>
-                            <td>19:25:00</td>
-                            <td>Sr(a). João Henriques</td>
-                        </tr>
+                        {this.state.historicoConsultas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Sr(a). {consulta.paciente}</td></tr>)}
                     </table>
                 </div>
             </LayoutMedico>
