@@ -30,13 +30,6 @@ namespace ConsultaJa.Controllers
             _logger = logger;
         }
 
-        // GET /contas
-        //[HttpGet]
-        //public IEnumerable<Conta> Get()
-        //{
-        //    return model.GetAll();
-        //}
-
         //GET /admin
        [HttpGet]
        [Authorize]

@@ -40,7 +40,7 @@ export class PosConsulta extends Component {
         //console.log("Id" + idD);
         this.state.id = idD;
         // Buscar a lista de consultas agendadas
-        api.get(`consultas/listaAg`, {
+        api.get(`consultas/listaPos`, {
             params: {
                 id: this.state.id
             }

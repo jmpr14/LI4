@@ -44,14 +44,14 @@ export class PerfilMedico extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
-        const idIntervalo = setInterval(() => {
+        if (localStorage.getItem('intervalo') == null) {
             var notifications = localStorage.getItem('notify')
             if (notifications == null) {
                 notifications = []
             }
             api.get(`consultas/notify`, {
                 params: {
-                    id: this.state.id
+                    id: idD
                 }
             })
                 .then(res => {
@@ -62,11 +62,35 @@ export class PerfilMedico extends Component {
                     }
                 })
                 .catch(error => {
-                    //alert(error.data);
                     console.log(error);
                 });
-        }, 60000);
-        localStorage.setItem('intervalo', idIntervalo);
+            const idIntervalo = setInterval(() => {
+                var notifications = localStorage.getItem('notify')
+                if (notifications == null) {
+                    notifications = []
+                }
+                const token = localStorage.getItem('token');
+                var decoded = decode(token);
+                const idD = decoded.Id;
+                api.get(`consultas/notify`, {
+                    params: {
+                        id: idD
+                    }
+                })
+                    .then(res => {
+                        if (!notifications.includes(res.data)) {
+                            notifications.push(res.data)
+                            localStorage.setItem('notify', notifications)
+                            alert("[NOVA NOTIFICAÇÃO]\n" + res.data);
+                        }
+                    })
+                    .catch(error => {
+                        //alert(error.data);
+                        console.log(error);
+                    });
+            }, 60000);
+            localStorage.setItem('intervalo', idIntervalo);
+        }
         // Buscar os dados do medico
         api.get(`/contas/${this.state.id}`)
             .then(res => {

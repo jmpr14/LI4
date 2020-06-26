@@ -45,7 +45,7 @@ export class PerfilPaciente extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
-        const idIntervalo = setInterval(() => {
+        if (localStorage.getItem('intervalo') == null) {
             var notifications = localStorage.getItem('notify')
             if (notifications == null) {
                 notifications = []
@@ -63,11 +63,35 @@ export class PerfilPaciente extends Component {
                     }
                 })
                 .catch(error => {
-                    //alert(error.data);
                     console.log(error);
                 });
-        }, 60000);
-        localStorage.setItem('intervalo',idIntervalo);
+            const idIntervalo = setInterval(() => {
+                var notifications = localStorage.getItem('notify')
+                if (notifications == null) {
+                    notifications = []
+                }
+                const token = localStorage.getItem('token');
+                var decoded = decode(token);
+                const idD = decoded.Id;
+                api.get(`consultas/notify`, {
+                    params: {
+                        id: idD
+                    }
+                })
+                    .then(res => {
+                        if (!notifications.includes(res.data)) {
+                            notifications.push(res.data)
+                            localStorage.setItem('notify', notifications)
+                            alert("[NOVA NOTIFICAÇÃO]\n" + res.data);
+                        }
+                    })
+                    .catch(error => {
+                        //alert(error.data);
+                        console.log(error);
+                    });
+            }, 60000);
+            localStorage.setItem('intervalo', idIntervalo);
+        }
         // Buscar os dados do cliente
         api.get(`contas/${this.state.id}`)
             .then(res => { console.log(res); this.setState({ dadosPerfil: res.data }); })

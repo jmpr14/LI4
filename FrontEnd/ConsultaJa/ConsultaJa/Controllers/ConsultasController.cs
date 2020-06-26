@@ -30,20 +30,6 @@ namespace ConsultaJa.Controllers
             _logger = logger;
         }
 
-        // GET /contas
-        //[HttpGet]
-        //public IEnumerable<Conta> Get()
-        //{
-        //    return model.GetAll();
-        //}
-
-        // GET /contas/P5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> Get(int id)
-        //{
-        //    return Ok(model.getConta(id));
-        //}
-
         /* POST /consultas/regCons
          * Método que permite a um paciente solicitar 
 		 * uma consulta na aplicação ConsultaJa
@@ -84,6 +70,17 @@ namespace ConsultaJa.Controllers
             return Ok();
         }
 
+        /* GET /consultas/precoCons
+         * Método que permite enviar o preço de
+         * uma consulta para ser mostrado ao cliente
+        */
+        [HttpGet("precoCons")]
+        [Authorize]
+        public async Task<IActionResult> PrecoCons()
+        {
+            return Ok(model.getPreco());
+        }
+
         /* GET /consultas/aceitarCons
          * Método que permite a um cliente aceitar uma 
 		 * proposta de consulta feita por um médico
@@ -112,18 +109,24 @@ namespace ConsultaJa.Controllers
                 lc = this.model.getConsultasAgendadas(id);
                 foreach (Consulta c in lc)
                 {
-                    ConsultaModel cm = new ConsultaModel();
-                    cm.Id = c.getID();
-                    cm.Medico = c.getMedico().getNome();
-                    cm.Paciente = c.getPaciente().getNome();
-                    cm.Data = c.getData_Hora().ToString().Substring(0, 10);
-                    cm.Hora = c.getData_Hora().ToString().Substring(11);
-                    cm.Localidade = c.getLocalidade();
-                    cm.PrecoUni = c.getPrecoUni();
-                    cm.Morada = c.getLocalidade();
-                    cm.Estado = c.getEstado();
-                    cm.Observacoes = c.getObservacoes();
-                    lcm.Add(cm);
+                    DateTime agora = DateTime.Now;
+                    DateTime horaConsulta = c.getData_Hora();
+                    TimeSpan ts = horaConsulta - agora;
+                    if (ts.TotalMinutes >= 0)
+                    {
+                        ConsultaModel cm = new ConsultaModel();
+                        cm.Id = c.getID();
+                        cm.Medico = c.getMedico().getNome();
+                        cm.Paciente = c.getPaciente().getNome();
+                        cm.Data = c.getData_Hora().ToString().Substring(0, 10);
+                        cm.Hora = c.getData_Hora().ToString().Substring(11);
+                        cm.Localidade = c.getLocalidade();
+                        cm.PrecoUni = c.getPrecoUni();
+                        cm.Morada = c.getLocalidade();
+                        cm.Estado = c.getEstado();
+                        cm.Observacoes = c.getObservacoes();
+                        lcm.Add(cm);
+                    }
                 }
             }
             catch (MailNaoRegistado e)
@@ -323,6 +326,48 @@ namespace ConsultaJa.Controllers
             }
 
             return Ok();
+        }
+
+        /* GET /consultas/listaPos
+        Obter a lista das consultas que ja estao prontas a serem concluídas
+        dado o id de um Medico ou Paciente
+        */
+        [HttpGet("listaPos")]
+        [Authorize]
+        public ActionResult ConsultasPos([FromQuery] string id)
+        {
+            List<Consulta> lc = null;
+            List<ConsultaModel> lcm = new List<ConsultaModel>();
+            try
+            {
+                lc = this.model.getConsultasAgendadas(id);
+                foreach (Consulta c in lc)
+                {
+                    DateTime agora = DateTime.Now;
+                    DateTime horaConsulta = c.getData_Hora();
+                    TimeSpan ts = horaConsulta - agora;
+                    if (ts.TotalMinutes <= 10) {
+                        ConsultaModel cm = new ConsultaModel();
+                        cm.Id = c.getID();
+                        cm.Medico = c.getMedico().getNome();
+                        cm.Paciente = c.getPaciente().getNome();
+                        cm.Data = c.getData_Hora().ToString().Substring(0, 10);
+                        cm.Hora = c.getData_Hora().ToString().Substring(11);
+                        cm.Localidade = c.getLocalidade();
+                        cm.PrecoUni = c.getPrecoUni();
+                        cm.Morada = c.getLocalidade();
+                        cm.Estado = c.getEstado();
+                        cm.Observacoes = c.getObservacoes();
+                        lcm.Add(cm);
+                    }
+                }
+            }
+            catch (MailNaoRegistado e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(lcm);
         }
 
         public override NoContentResult NoContent()

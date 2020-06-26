@@ -38,6 +38,7 @@ const NewTaskInput = ({ onSubmit }) => {
                 <input
                     placeholder="Quantidade"
                     type='number'
+                    min='0.0'
                     onChange={setNewTask1}
                 />
                 <br />

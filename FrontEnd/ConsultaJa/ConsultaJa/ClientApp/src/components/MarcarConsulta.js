@@ -16,7 +16,8 @@ export class MarcarConsulta extends Component {
         this.state = {
             id: '',
             data: '',
-            hora: ''
+            hora: '',
+            precoCons: ''
         };
     }
 
@@ -26,6 +27,11 @@ export class MarcarConsulta extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
+        api.get(`consultas/precoCons`)
+            .then(res => {
+                this.setState({ precoCons: res.data })
+            })
+            .catch(err => { console.log(err) });
     }
 
     handleSubmit = (event) => {
@@ -59,7 +65,10 @@ export class MarcarConsulta extends Component {
                         </div>
                         <div class="op1">
                             <form onSubmit={this.handleSubmit}>
-                                <h1 class="Regp"> Marcar Consulta </h1>
+                            <h1 class="Regp"> Marcar Consulta </h1>
+                            <div>
+                                <p class="Regp"> Preco da Consulta = {this.state.precoCons}€ </p>
+                            </div>
                                 <p class="Regp">Insira a data:</p>
                                 <input
                                    class="Regp"
