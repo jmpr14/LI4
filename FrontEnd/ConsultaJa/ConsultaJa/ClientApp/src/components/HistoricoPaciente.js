@@ -19,7 +19,9 @@ export class HistoricoPaciente extends Component {
             id: '',
             historicoConsultas: [],
             clicked: false,
-            currentId: 0
+            currentId: 0,
+            tamanhoPag: 9,
+            numPagina: 0
         };
     }
 
@@ -57,6 +59,20 @@ export class HistoricoPaciente extends Component {
         //ReactDOM.render(Download, document.getElementById(val));
     }
 
+    nextPage = () => {
+        var num = this.state.numPagina
+        if ((this.state.numPagina + 1) < this.state.historicoConsultas.length / this.state.tamanhoPag) {
+            this.setState({ numPagina: num + 1 })
+        }
+    }
+
+    previousPage = () => {
+        var num = this.state.numPagina
+        if (this.state.numPagina != 0) {
+            this.setState({ numPagina: num - 1 })
+        }
+    }
+
     condicaoPdf = (id) => (
         !this.state.clicked && id == this.state.currentId
     );
@@ -76,7 +92,7 @@ export class HistoricoPaciente extends Component {
                             <th>Médico</th>
                             <th>Receita</th>
                         </tr>
-                        {this.state.historicoConsultas.map(consulta => <tr>
+                        {this.state.historicoConsultas.slice(this.state.numPagina * this.state.tamanhoPag, this.state.numPagina * this.state.tamanhoPag + this.state.tamanhoPag - 1).map(consulta => <tr>
                             <td>{consulta.data}</td>
                             <td>{consulta.hora}</td>
                             <td>Dr(a). {consulta.medico}</td>
@@ -87,6 +103,10 @@ export class HistoricoPaciente extends Component {
                             </td>
                         </tr>)}
                     </table>
+                </div>
+                <div>
+                    < button onClick={this.previousPage}> Previous </button>
+                    < button onClick={this.nextPage}> Next </button>
                 </div>
             </LayoutPaciente>
         )

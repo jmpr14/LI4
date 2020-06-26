@@ -14,7 +14,9 @@ export class PropostasConsultaM extends Component {
         this.state = {
             idMedico: '',
             id:-1,
-            propostasConsultas: []
+            propostasConsultas: [],
+            tamanhoPag: 9,
+            numPagina: 0
         };
     }
 
@@ -59,6 +61,20 @@ export class PropostasConsultaM extends Component {
             })
     }
 
+    nextPage = () => {
+        var num = this.state.numPagina
+        if ((this.state.numPagina + 1) < this.state.propostasConsultas.length / this.state.tamanhoPag) {
+            this.setState({ numPagina: num + 1 })
+        }
+    }
+
+    previousPage = () => {
+        var num = this.state.numPagina
+        if (this.state.numPagina != 0) {
+            this.setState({ numPagina: num - 1 })
+        }
+    }
+
     render() {
         return (
             <LayoutMedico>
@@ -72,7 +88,7 @@ export class PropostasConsultaM extends Component {
                             <th>Data</th>
                             <th>Hora</th>
                         </tr>
-                        {this.state.propostasConsultas.map(consulta =>
+                        {this.state.propostasConsultas.slice(this.state.numPagina * this.state.tamanhoPag, this.state.numPagina * this.state.tamanhoPag + this.state.tamanhoPag - 1).map(consulta =>
                             <tr>
                                 <td>{consulta.paciente}</td>
                                 <td>{consulta.data}</td>
@@ -81,6 +97,10 @@ export class PropostasConsultaM extends Component {
                             </tr>)
                         }
                     </table>
+                </div>
+                <div>
+                    < button onClick={this.previousPage}> Previous </button>
+                    < button onClick={this.nextPage}> Next </button>
                 </div>
             </LayoutMedico>
         )

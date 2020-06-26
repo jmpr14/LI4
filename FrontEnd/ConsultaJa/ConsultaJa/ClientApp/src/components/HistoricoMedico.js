@@ -13,7 +13,9 @@ export class HistoricoMedico extends Component {
         super(props);
         this.state = {
             id: '',
-            historicoConsultas: []
+            historicoConsultas: [],
+            tamanhoPag: 9,
+            numPagina: 0
         };
     }
 
@@ -36,6 +38,20 @@ export class HistoricoMedico extends Component {
             });
     }
 
+    nextPage = () => {
+        var num = this.state.numPagina
+        if ((this.state.numPagina + 1) < this.state.historicoConsultas.length / this.state.tamanhoPag) {
+            this.setState({ numPagina: num + 1 })
+        }
+    }
+
+    previousPage = () => {
+        var num = this.state.numPagina
+        if (this.state.numPagina != 0) {
+            this.setState({ numPagina: num - 1 })
+        }
+    }
+
     render() {
         return (
             <LayoutMedico>
@@ -49,8 +65,17 @@ export class HistoricoMedico extends Component {
                             <th>Hora</th>
                             <th>Paciente</th>
                         </tr>
-                        {this.state.historicoConsultas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Sr(a). {consulta.paciente}</td></tr>)}
+                        {this.state.historicoConsultas.slice(this.state.numPagina * this.state.tamanhoPag, this.state.numPagina * this.state.tamanhoPag + this.state.tamanhoPag - 1).map(consulta =>
+                            <tr>
+                                <td>{consulta.data}</td>
+                                <td>{consulta.hora}</td>
+                                <td>Sr(a). {consulta.paciente}</td>
+                            </tr>)}
                     </table>
+                </div>
+                <div>
+                    < button onClick={this.previousPage}> Previous </button>
+                    < button onClick={this.nextPage}> Next </button>
                 </div>
             </LayoutMedico>
         )
