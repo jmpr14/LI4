@@ -168,11 +168,36 @@ export class Registar extends Component {
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 mb-3">
-                                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
-                                            Distrito
-                                        </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" name='localidade' placeholder="Distrito" onChange={this.myChangeHandler} />
+                                            <div class="w-full md:w-1/2 px-3">
+                                                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-cidade">
+                                                    Distrito:
+                                                    </label>
+                                                <select class="block tracking-wide bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 mt-2 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-cidade" type="text" name='localidade' onChange={this.myChangeHandler}>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="">Selecione uma opção</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Aveiro">Aveiro</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Beja">Beja</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Braga">Braga</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Bragança">Bragança</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Castelo Branco">Castelo Branco</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Coimbra">Coimbra</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Évora">Évora</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Faro">Faro</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Guarda">Guarda</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Leiria">Leiria</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Lisboa">Lisboa</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Portalegre">Portalegre</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Porto">Porto</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Santarém">Santarém</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Setúbal">Setúbal</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Viana do Castelo">Viana do Castelo</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Vila Real">Vila Real</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Viseu">Viseu</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Angra do Heroísmo">Angra do Heroísmo</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Funchal">Funchal</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Horta">Horta</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Lamego">Lamego</option>
+                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Ponta Delgada">Ponta Delgada</option>
+                                                    </select>
                                     </div>
                                     <div class="w-full md:w-1/2 px-3 md:mb-0">
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">

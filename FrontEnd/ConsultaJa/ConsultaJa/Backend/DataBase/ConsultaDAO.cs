@@ -715,10 +715,10 @@ namespace ConsultaJa.DataBase
 		{
 			DateTime consulta, now;
 			bool ret = (consulta = this.getDateOfConsulta(idConsulta)).CompareTo((now = DateTime.Now)) > 0;
-			bool minumum2Days = now.Year >= consulta.Year ||
-						(now.Month >= consulta.Month && now.Year == consulta.Year )||
-						(now.Day >= consulta.Day + 2 && now.Month == consulta.Month && now.Year == consulta.Year);
-			return ret && minumum2Days;
+			//bool minumum2Days = now.Year >= consulta.Year ||
+			//			(now.Month >= consulta.Month && now.Year == consulta.Year )||
+			//			(now.Day >= consulta.Day + 2 && now.Month == consulta.Month && now.Year == consulta.Year);
+			return ret;
 
 		}
 
