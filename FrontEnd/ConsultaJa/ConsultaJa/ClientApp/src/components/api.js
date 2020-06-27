@@ -17,7 +17,7 @@ api.interceptors.request.use(async (config) => {
         }
         return config;
     } catch (err) {
-        console.log(err);
+        console.log("erro api");
     }
 });
 

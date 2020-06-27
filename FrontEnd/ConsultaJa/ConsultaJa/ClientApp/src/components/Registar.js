@@ -1,11 +1,10 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
 
-import { Layout } from './Layout';
+import { NavBarOut } from './NavBarOut';
 import Medicos from './images/medicos.png';
 import { CONTAS_URL } from './api';
-
-import './Registar.css';
+import { Rodape } from './Rodape';
 
 const InitialState = {
     codR: -1,
@@ -93,130 +92,147 @@ export class Registar extends Component {
 
     render() {
         return (
-            <Layout>
+            <>
+                <NavBarOut />
+                <main>
                 {(this.state.isRegistarOn) ?
-                    <div class="container">
-                        <div class="op2">
-                            <img class="imagem" src={Medicos} width="120" height="120" />
+
+                    <section class="pb-20 bg-gray-300">
+                            <div class="flex md:flex-row-reverse flex-wrap container mx-auto px-4 pt-32 pb-1 mb-auto">
+                        <div class="w-full md:w-1/2">
+                            <img class="w-full align-middle rounded-t-lg" src={Medicos} width="120" height="120" />
                         </div>
-                        <div class="op1">
-                            <form onSubmit={this.submitNew}>
-                                <h1 class="Regp"> Registar {this.state.type}</h1>
-                                <p class="Regp"> Tipo de Registo: </p>
+
+                        <div class="w-full md:w-1/2">
+                            <form class="w-full max-w-lg" onSubmit={this.submitNew}>
+                                    <p class="uppercase text-2xl tracking-wide text-gray-700 text-xs font-bold"> Tipo de Registo: </p>
                                 <div className="radio">
-                                    <label class="Regp">
-                                        <input
+                                        <label class="text-xl tracking-wide text-gray-700 text-xs cursor-pointer font-semibold">
+                                            <input
                                             type="radio"
                                             name='type'
                                             value="Medico"
                                             onChange={this.myChangeHandler}
                                         />
-                                        Médico &emsp;
+                                        &ensp; Médico &emsp;
                                 </label>
                                     <b />
-                                    <label class="Regp">
+                                        <label class="text-xl tracking-wide text-gray-700 cursor-pointer text-xs font-semibold">
                                         <input
                                             type="radio"
                                             name='type'
                                             value="Paciente"
                                             onChange={this.myChangeHandler}
                                         />
-                                        Paciente
+                                        &ensp; Paciente
                                 </label>
                                 </div>
-                                <p class="Regp">Insira o nome:</p>
-                                <input
-                                    class="Regp"
-                                    type="text"
-                                    name='name'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira a data de nascimento:</p>
-                                <input
-                                    class="Regp"
-                                    type='date'
-                                    name='dataNascimento'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira o email:</p>
-                                <input
-                                    class="Regp"
-                                    type="email"
-                                    name='email'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira a password:</p>
-                                <input
-                                    class="Regp"
-                                    type="password"
-                                    name='password'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira a morada:</p>
-                                <input
-                                    class="Regp"
-                                    type="text"
-                                    name='morada'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira a localidade:</p>
-                                <input
-                                    class="Regp"
-                                    type="text"
-                                    name='localidade'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira o NIF:</p>
-                                <input
-                                    class="Regp"
-                                    type="text"
-                                    name='nif'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira a Codigo-Postal:</p>
-                                <input
-                                    class="Regp"
-                                    type="text"
-                                    name='codigo_postal'
-                                    placeholder="XXXX-XXX"
-                                    required pattern="\d{4}-\d{3}"
-                                    onChange={this.myChangeHandler}
-                                />
-                                <p class="Regp">Insira o seu contacto telefónico:</p>
-                                <input
-                                    class="Regp"
-                                    type="text"
-                                    name='contactos'
-                                    onChange={this.myChangeHandler}
-                                />
-                                <br />
-                                <br />
-                                <input class="Regs" type='submit' value="Registar" />
+                                <div class="flex flex-wrap -mx-3 ">
+                                    <div class="w-full px-3 mb-6 md:mb-0">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name">
+                                            Nome
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-name" name='name' type="text" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 ">
+                                    <div class="w-full px-3 mb-6 md:mb-0">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-date">
+                                            Data de Nascimento
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-date" name='dataNascimento' type="date" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 ">
+                                    <div class="w-full px-3">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email">
+                                            Email
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-email" name='email' type="email" placeholder="exemplo@email.com" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 ">
+                                    <div class="w-full px-3">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                                            Password
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" name='password' type="password" placeholder="******************" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 ">
+                                    <div class="w-full px-3">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-morada">
+                                            Morada
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-morada" name='morada' type="text" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 mb-3">
+                                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
+                                            Distrito
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text" name='localidade' placeholder="Distrito" onChange={this.myChangeHandler} />
+                                    </div>
+                                    <div class="w-full md:w-1/2 px-3 md:mb-0">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
+                                            Código-Postal
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="XXXX-XXX" name='codigo_postal' required pattern="\d{4}-\d{3}" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 mb-2">
+                                    <div class="w-full md:w-1/2 px-3">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-nif">
+                                            NIF
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-nif" name='nif' type="text" onChange={this.myChangeHandler} />
+                                    </div>
+                                    <div class="w-full md:w-1/2 px-3">
+                                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-contacto">
+                                            Contacto
+                                        </label>
+                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-contacto" name='contactos' type="text" onChange={this.myChangeHandler} />
+                                    </div>
+                                </div>
+
+                                <button class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded mb-10" type="submit">
+                                    Registar
+                                </button>
                             </form>
+                            </div>
                         </div>
-                    </div>
-                    : 
-                    <div class="container">
-                        <div class="op2">
-                            <img class="imagem" src={Medicos} width="120" height="120" />
-                        </div>
-                        <div class="op1">
-                            <form onSubmit={this.handleCheck}>
-                                <h1> Insira o Código de Registo enviado para o seu email {this.state.codR}</h1>
-                                <input
-                                    type="text"
-                                    name='codI'
-                                    placeholder="Insira o código..."
-                                    onChange={this.myChangeHandler}
-                                />
-                                <br />
-                                <br />
-                                <input type='submit' />
-                            </form>
-                        </div>
-                    </div>
+                    </section>
+                        :
+                        <section class="pb-20 bg-gray-300">
+                            <div class="flex md:flex-row-reverse flex-wrap container mx-auto px-4 pt-32 pb-1 mb-auto">
+                                <div class="w-full md:w-6/12">
+                                    <img class="w-full align-middle rounded-t-lg" src={Medicos} width="120" height="120" />
+                                </div>
+                                <div class="w-full md:w-1/12"/>
+                                <div class="w-full md:w-5/12">
+                                <form onSubmit={this.handleCheck}>
+                                    <p class="text-2xl tracking-wide text-gray-700 text-xs font-semibold"> Insira o Código de Registo enviado para o seu email {this.state.codR}</p>
+                                    <input
+                                        type="text"
+                                        name='codI'
+                                        class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        placeholder="Insira o código..."
+                                        onChange={this.myChangeHandler}
+                                    />
+                                    <br />
+                                    <br />
+                                        <button class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded mb-10" type="submit">
+                                            Submeter
+                                        </button>
+                                </form>
+                            </div>
+                            </div>
+                        </section>
                     }
-                </Layout>
+                    </main>
+                <Rodape />
+            </>
         );
     }
 }

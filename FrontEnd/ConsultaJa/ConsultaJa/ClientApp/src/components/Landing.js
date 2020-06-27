@@ -13,6 +13,9 @@ import LogoS from './images/logo.png';
 import Fundo from './images/fundo.jpg'
 import { NavMenu } from './NavMenu';
 import { Rodape } from './Rodape.js';
+import { NavBarOut } from './NavBarOut.js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 export class Landing extends Component {
     static displayName = Landing.name;
@@ -51,7 +54,7 @@ export class Landing extends Component {
     render() {
         return (
             <>
-                <NavMenu/>
+                <NavBarOut />
                 <main>
                     <div className="relative pt-16 pb-32 flex content-center items-center justify-center"
                         style={{
@@ -112,7 +115,7 @@ export class Landing extends Component {
                                     <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                                         <div className="px-4 py-5 flex-auto">
                                             <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-500">
-                                                <i className="fas fa-briefcase-medical"></i>
+                                                <FontAwesomeIcon icon="briefcase-medical" />
                                             </div>
                                             <h6 className="text-xl font-semibold">Os Nossos Serviços</h6>
                                             <p className="mt-2 mb-4 text-gray-600">
@@ -123,11 +126,11 @@ export class Landing extends Component {
                                     </div>
                                 </div>
 
-                                <div className="w-full md:w-4/12 px-4 text-center">
+                                <div className="w-4/12 px-4 text-center">
                                     <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                                         <div className="px-4 py-5 flex-auto">
                                             <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-700">
-                                                <i className="fas fa-user-md"></i>
+                                                <FontAwesomeIcon icon="user-md" />
                                             </div>
                                             <h6 className="text-xl font-semibold">
                                                 Quem Somos?
@@ -144,7 +147,7 @@ export class Landing extends Component {
                                     <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                                         <div className="px-4 py-5 flex-auto">
                                             <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-green-500">
-                                                <i className="fas fa-fingerprint"></i>
+                                                <FontAwesomeIcon icon="fingerprint" />
                                             </div>
                                             <h6 className="text-xl font-semibold">
                                                 O que fazemos?
@@ -161,7 +164,7 @@ export class Landing extends Component {
                             <div className="flex flex-wrap items-center mt-32">
                                 <div className="w-full md:w-5/12 px-4 mr-auto ml-auto">
                                     <div className="text-gray-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-gray-100">
-                                        <i className="fas fa-user-friends text-xl"></i>
+                                        <FontAwesomeIcon icon="user-friends" />
                                     </div>
                                     <h3 className="text-3xl mb-2 font-semibold leading-normal">
                                         O Médico vai à sua casa!
@@ -208,7 +211,7 @@ export class Landing extends Component {
                                 </div>
 
                             </div>
-                        </div>
+                            </div>
                     </section>
 
                     <section className="pb-20 relative block bg-gray-900">
@@ -232,8 +235,7 @@ export class Landing extends Component {
                             </svg>
                         </div>
 
-                        
-                    </section>
+                        </section>
                 </main>
                 <Rodape />
             </>

@@ -1,5 +1,5 @@
 ﻿import React from "react";
-import { Home } from './components/Home';
+import { Landing } from './components/Landing';
 import { Registar } from './components/Registar';
 import { Login } from './components/Login';
 import { Logout } from './components/Logout';
@@ -118,7 +118,7 @@ const AuthRoute = ({ component: Component, ...rest }) => (
 const Routes = () => (
     <BrowserRouter>
         <Switch>
-            <AuthRoute exact path='/' component={Home} />
+            <AuthRoute exact path='/' component={Landing} />
             <AuthRoute path='/privacy' component={Privacy} />
             <AuthRoute path='/login' component={Login} />
             <AuthRoute path='/registar' component={Registar} />

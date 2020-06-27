@@ -1,9 +1,11 @@
 ﻿import React, { Component } from 'react';
 import axios from 'axios';
 
-import { Layout } from './Layout';
+import { NavBarOut } from './NavBarOut';
 import Medicos from './images/medicos.png';
 import { CONTAS_URL } from './api';
+import { NavBarOut } from './NavBarOut';
+import { Rodape } from './Rodape';
 
 const InitialState = {
     codR: -1,
@@ -65,7 +67,7 @@ export class Regi extends Component {
         let codReg = this.state.codR;
         let codIns = this.state.codI;
 
-        if ((parseInt(codReg.toString()) - parseInt(codIns.toString()))==0) {
+        if ((parseInt(codReg.toString()) - parseInt(codIns.toString())) == 0) {
             axios.post(`${CONTAS_URL}`, {
                 type: this.state.type,
                 Nome: this.state.name,
@@ -81,18 +83,18 @@ export class Regi extends Component {
                 .then(conta => {
                     //this.props.addUserToState(conta);
                     //this.props.toggle();
-                    alert("Novo user " + conta.data);
-                    this.setState(InitialState);
+                    alert("Nova Conta Registada");
                 })
                 .catch(err => console.log(err));
-
-            (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
-        }
+        } else { alert("Código Inserido Inválido"); }
+        this.setState(InitialState);
+        (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
     }
 
     render() {
         return (
-            <Layout>
+            <>
+            <NavBarOut/>
                 {(this.state.isRegistarOn) ?
                     
                     <section class="relative w-full h-full ">
@@ -111,7 +113,7 @@ export class Regi extends Component {
                                             value="Medico"
                                             onChange={this.myChangeHandler}
                                         />
-                                        Médico &emsp;
+                                        &ensp; Médico &emsp;
                                 </label>
                                     <b />
                                     <label class="uppercase tracking-wide text-gray-700 text-xs font-bold">
@@ -121,7 +123,7 @@ export class Regi extends Component {
                                             value="Paciente"
                                             onChange={this.myChangeHandler}
                                         />
-                                        Paciente
+                                        &ensp; Paciente
                                 </label>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 ">
@@ -194,7 +196,7 @@ export class Regi extends Component {
                                 </div>
 
                                 <button class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-3 px-4 rounded mb-10" type="submit">
-                                    Sign Up
+                                    Registar
                                 </button>
                             </form>
                         </div>
@@ -219,8 +221,9 @@ export class Regi extends Component {
                             </form>
                         </div>
                     </div>
-                    }
-                </Layout>
+                }
+                <Rodape/>
+                </>
         );
     }
 }

@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 
-import './Login.css'
 import { CONTAS_URL } from './api';
 import { ADMIN_URL } from './api';
 import { Layout } from './Layout';
+import { Rodape } from './Rodape';
 import { Redirect } from 'react-router-dom';
-
+import { NavMenu } from './NavMenu';
+import { NavBarOut } from './NavBarOut.js';
 
 export class Login extends Component {
+
     static displayName = Login.name;
 
     constructor(props) {
@@ -25,15 +27,13 @@ export class Login extends Component {
             dadosContaAdmin: []
         };
     }
-
     // Handler para o login como Paciente ou Medico
     handlerLogin = (event) => {
-
         event.preventDefault();
 
         axios.post(`${CONTAS_URL}/login`, {
-             Email: this.state.email,
-             Password: this.state.password
+            Email: this.state.email,
+            Password: this.state.password
         })
             .then(response => {
                 alert("Successfully logged in!!!");
@@ -112,57 +112,133 @@ export class Login extends Component {
             else if (this.state.type[0] === 'M') return (<Redirect to="/perfilMedico" />);
             else return (<Redirect to="/perfilAdmin" />);
         }
-        return(
-            <Layout>
-            <section>
-                <article>
-                    <form onSubmit={this.handlerLogin}>
-                <h1> Login </h1>
-                {this.state.error && <p class="log">{this.state.error}</p>}
-                <br />
-                <i class="fas fa-user"></i>
-                <input
-                    className="form-control"
-                    type="email"
-                    name='email'
-                    icon="envelope"
-                    placeholder="Email"
-                    onChange={this.myChangeHandler}
-                />
-                <br />
-                <i class="fas fa-lock"></i>
-                <input
-                    className="form-control"
-                    type="password"
-                    name='password'
-                    placeholder="Password"
-                    onChange={this.myChangeHandler}
-                />
-                <br />
-                <br />
-                <input type='submit' value="ENTRAR" />
-            </form>
-            </article>
-            <article>
-            <form onSubmit={this.mySubmitHandler1}>
-                    <h1> Login como Admin </h1>
-                    {this.state.error1 && <p class="log">{this.state.error1}</p>}
-                    <br />
-                    <i class="fas fa-lock"></i>
-                    <input
-                        className="form-control"
-                        type="password"
-                        name='senha'
-                        placeholder="Senha secreta"
-                        onChange={this.myChangeHandler}
-                    />
-                    <br />
-                    <br />
-                    <input type='submit' value="ENTRAR" />
-            </form>
-            </article>
-            </section>
-            </Layout>
+        return (
+            <>
+                <NavBarOut />
+                <main>
+                    <section className="relative block" style={{ height: "670px" }}>
+                    <section className="absolute w-full h-full">
+                        <div
+                            className="absolute top-20 w-full h-full bg-gray-900"
+                            style={{
+                                backgroundImage:
+                                    "url(" + require("./images/este.png") + ")",
+                                backgroundSize: "40%",
+                                backgroundRepeat: "no-repeat"
+                            }}
+                        ></div>
+                        <div className="container mx-auto px-4 h-full">
+                            <div className="flex content-center items-center justify-center h-full">
+                                <div className="w-1/2 lg:w-5/12 px-6">
+                                    <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
+                                        
+                                        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+                                            <div className="text-gray-600 text-center mb-3 font-bold">
+                                                <small>Insira as suas credenciais</small>
+                                            </div>
+
+                                            <form onSubmit={this.handlerLogin}>
+                                                <div className="relative w-full mb-3">
+                                                    <label
+                                                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                                                        htmlFor="grid-password"
+                                                    >
+                                                        Email
+                            </label>
+                                                    <input
+                                                        className="form-control"
+                                                        type="email"
+                                                        name="email"
+                                                        placeholder="Email"
+                                                        style={{ transition: "all .15s ease" }}
+                                                        onChange={this.myChangeHandler}
+                                                    />
+                                                </div>
+                                                <div className="relative w-full mb-3">
+                                                    <label
+                                                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                                                        htmlFor="grid-password"
+                                                    >
+                                                        Password
+                            </label>
+                                                    <input
+                                                        className="form-control"
+                                                        type="password"
+                                                        name="password"
+                                                        placeholder="Password"
+                                                        style={{ transition: "all .15s ease" }}
+                                                        onChange={this.myChangeHandler}
+                                                    />
+                                                </div>
+
+
+                                                <div className="text-center mt-6">
+                                                    <button
+                                                        className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                                                        type="submit"
+                                                        style={{ transition: "all .15s ease" }}
+                                                    >
+                                                        Login
+                            </button>
+                                                </div>
+
+                                                {this.state.error && <p class="text-red-500 text-xs italic">{this.state.error}</p>}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="w-1/2 lg:w-5/12 px-4">
+                                    <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
+
+                                        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+                                            <div className="text-gray-600 text-center mb-3 font-bold">
+                                                <small>Insira a sua password de Administrador</small>
+                                            </div>
+
+                                            <form onSubmit={this.mySubmitHandler1}>
+
+                                                <div className="relative w-full mb-3">
+                                                    <label
+                                                        className="block uppercase text-gray-700 text-xs font-bold mb-2"
+                                                        htmlFor="grid-password"
+                                                    >
+                                                        Password
+                            </label>
+                                                    <input
+                                                        className="form-control"
+                                                        type="password"
+                                                        name="senha"
+                                                        placeholder="Senha secreta"
+                                                        style={{ transition: "all .15s ease" }}
+                                                        onChange={this.myChangeHandler}
+                                                    />
+                                                </div>
+
+
+                                                <div className="text-center mt-6">
+                                                    <button
+                                                        className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
+                                                        type="submit"
+                                                        style={{ transition: "all .15s ease" }}
+                                                    >
+                                                        Login como Administrador
+                            </button>
+                                                </div>
+
+                                                {this.state.error1 && <p class="text-red-500 text-xs italic">{this.state.error1}</p>}
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        </section>
+                        </section>
+                </main>
+                <Rodape />
+            </>
         );
     }
 }

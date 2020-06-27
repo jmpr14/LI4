@@ -7,7 +7,8 @@ import { LayoutMedico } from './LayoutMedico';
 import api from './api';
 import ListItem from './ListItem'
 import NewTaskInput from './NewTaskInput'
-import Download from './Download'
+import { NavMenuMedico } from './NavMenuMedico'
+import { RodapeConta } from './RodapeConta'
 
 
 //<div>
@@ -109,62 +110,123 @@ export class PosConsulta extends Component {
 
     render() {
         return (
-            <LayoutMedico>
-                <div>
-                    <h1> Pós-Consulta </h1>
-                </div>
-                {(this.state.escolheCons) ?
-                    <div>
-                        <div>
-                            <br />
-                            <h3> Adicionar Receita </h3>
+            <>
+                <NavMenuMedico />
+                <main className="historico-page">
+                    <section className="relative block" style={{ height: "500px" }}>
+                        <div
+                            className="absolute top-0 w-full h-full bg-center bg-cover"
+                            style={{
+                                backgroundImage:
+                                    "url('https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1189&q=80')"
+                            }}
+                        >
+                            <span
+                                id="blackOverlay"
+                                className="w-full h-full absolute opacity-50 bg-black"
+                            ></span>
                         </div>
-                        <div>
-                            <div>
-                                <NewTaskInput onSubmit={this.addNewTask} />
-                                <form onSubmit={this.onSubmitHandler}>
-                                    {this.state.tasks.map(({ id, nome, quantidade, posologia }, index) => (
-                                        <ListItem
-                                            key={id}
-                                            value={nome}
-                                            value1={quantidade}
-                                            value2={posologia}
-                                            onChange={(event) => this.updateTask(event, index)}
-                                            onDelete={() => this.deleteTask(index)}
-                                        />
-                                    ))}
-                                    <br />
-                                    <div>
-                                        <br />
-                                        <h3> Adicionar Observações </h3>
-                                        <textarea rows="10" cols="40" maxlength="400" onChange={this.myChangeHandler}></textarea>
+                        <div
+                            className="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
+                            style={{ height: "70px", transform: "translateZ(0)" }}
+                        >
+                            <svg
+                                className="absolute bottom-0 overflow-hidden"
+                                preserveAspectRatio="none"
+                                version="1.1"
+                                viewBox="0 0 2560 100"
+                                x="0"
+                                y="0"
+                            >
+                                <polygon
+                                    className="text-gray-300 fill-current"
+                                    points="2560 0 2560 100 0 100"
+                                ></polygon>
+                            </svg>
+                        </div>
+                    </section>
+                    <section className="relative py-16 bg-gray-300">
+                        <div className="container mx-auto px-4">
+                            <div className="relative flex flex-col min-w-0 break-words mb-54 bg-white w-full mb-10 shadow-xl rounded-lg -mt-64">
+                                <div className="px-6">
+                                    <div className=" py-10 border-t border-gray-300 text-center">
+                                        <div className="flex flex-wrap justify-center">
+                                            <div className="w-full lg:w-9/12 px-4">
+                                                <h1 className="text-4xl font-semibold leading-normal mb-4 text-gray-800 mb-2">
+                                                    Pós-Consulta
+                                                </h1>
+                                                {(this.state.escolheCons) ?
+                                                    <div>
+                                                        <div className="text-2xl font-semibold leading-normal mb-4 text-gray-800 mb-2">
+                                                            <br />
+                                                            <h3> Adicionar Receita </h3>
+                                                        </div>
+                                                        <div>
+                                                            <div className="w-full font-semibold leading-normal text-gray-800">
+                                                                <NewTaskInput onSubmit={this.addNewTask} />
+                                                                <form onSubmit={this.onSubmitHandler}>
+                                                                    {this.state.tasks.map(({ id, nome, quantidade, posologia }, index) => (
+                                                                        <ListItem
+                                                                            key={id}
+                                                                            value={nome}
+                                                                            value1={quantidade}
+                                                                            value2={posologia}
+                                                                            onChange={(event) => this.updateTask(event, index)}
+                                                                            onDelete={() => this.deleteTask(index)}
+                                                                        />
+                                                                    ))}
+                                                                    <br />
+                                                                    <div className="text-xl font-semibold leading-normal text-gray-800 -mt-8 mb-2">
+                                                                        <br />
+                                                                        <h3 className="text-xl font-semibold leading-normal mb-4 text-gray-800 mb-2"> Adicionar Observações </h3>
+                                                                        <textarea class="bg-gray-200 border border-gray-300" rows="10" cols="40" maxlength="400" onChange={this.myChangeHandler}></textarea>
+                                                                    </div>
+                                                                    <button
+                                                                        className="bg-blue-500 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-auto"
+                                                                        type="submit"
+                                                                        style={{ transition: "all .15s ease" }}
+                                                                        >
+                                                                        Finalizar Consulta
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    :
+                                                    <div>
+                                                        <table class="border-collapse w-full">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Data</th>
+                                                                <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Hora</th>
+                                                                <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Paciente</th>
+                                                                <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell"></th>
+                                                            </tr>
+                                                            </thead>
+                                                            {this.state.consultasAgendadas.map(consulta =>
+                                                                <tr>
+                                                                    <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{consulta.data}</td>
+                                                                    <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{consulta.hora}</td>
+                                                                    <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">Sr(a). {consulta.paciente}</td>
+                                                                    <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">
+                                                                        <button class="hover:bg-blue-500 bg-blue-400 text-blue-dark font-semibold text-white py-2 px-3 border rounded" key={consulta.id} data-consulta={consulta.id} onClick={this.handlerChoose}> Marcar como Efetuada </button>
+                                                                    </td>
+                                                                </tr>)
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type='submit' value="FINALIZAR CONSULTA" />
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    :
-                    <div>
-                        <table>
-                            <tr>
-                                <th>Data</th>
-                                <th>Hora</th>
-                                <th>Paciente</th>
-                                <th>Marcar como Efetuada</th>
-                            </tr>
-                            {this.state.consultasAgendadas.map(consulta =>
-                                <tr>
-                                    <td>{consulta.data}</td>
-                                    <td>{consulta.hora}</td>
-                                    <td>Sr(a). {consulta.paciente}</td>
-                                    <td> <button key={consulta.id} data-consulta={consulta.id} onClick={this.handlerChoose}> Marcar como Efetuada </button> </td>
-                                </tr>)
-                            }
-                        </table>
-                    </div>
-                    }
-            </LayoutMedico>
+                    </section>
+                </main>
+
+                <RodapeConta />
+            </>
         )
     }
 

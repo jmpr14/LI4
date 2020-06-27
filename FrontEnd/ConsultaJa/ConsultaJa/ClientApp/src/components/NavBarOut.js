@@ -23,7 +23,6 @@ export class NavBarOut extends Component {
 
   render () {
     return (
-
         <>
             <nav
                 className="top-0 absolute z-50 w-full items-center justify-between px-2 py-3 navbar-expand-sm" 
@@ -35,7 +34,8 @@ export class NavBarOut extends Component {
                         <a
                             className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
                         >
-                                ConsultaJa
+                                <img className="bg-white text-gray-800 active:bg-gray-100 text-xs font-bold uppercase px-1 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                                    width={160} src={logo} />
             </a>
                         </Link>
                     </div>
