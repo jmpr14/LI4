@@ -41,7 +41,6 @@ export class Receitas extends Component {
         this.state.id = idD;
     }
 
-
     handleSubmit = (event) => {
         event.preventDefault();
 

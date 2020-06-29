@@ -24,6 +24,7 @@ export class PerfilMedico extends Component {
         this.state = {
             id: '',
             loggedIn,
+            firstName: '',
             dadosPerfil: [],
             consultasAgendadas: [],
             notificacoes: [],
@@ -98,6 +99,10 @@ export class PerfilMedico extends Component {
             .then(res => {
                 console.log(res);
                 this.setState({ dadosPerfil: res.data });
+                this.setState({ firstName: res.data.nome });
+                if (localStorage.getItem("nome") == null) {
+                    localStorage.setItem("nome", this.state.firstName);
+                }
             })
             .catch(error => {
                 alert("ERROR! " + error);
@@ -145,18 +150,23 @@ export class PerfilMedico extends Component {
                 this.setState({ isToggleOn: false });
                 if (this.state.passwordNova != null) this.state.dadosPerfil.password = this.state.passwordNova;
                 if (this.state.morada != null) this.state.dadosPerfil.morada = this.state.morada;
-                if (this.state.nome != null) this.state.dadosPerfil.nome = this.state.nome;
+                if (this.state.nome != null) this.state.dadosPerfil.nome = this.state.name;
                 if (this.state.dataNascimento != null) this.state.dadosPerfil.dataNascimento = this.state.dataNascimento;
                 if (this.state.codigo_postal != null) this.state.dadosPerfil.codigo_postal = this.state.codigo_postal;
+                if (this.state.name != null) {
+                    localStorage.setItem("nome", this.state.name);
+                    this.setState({ firstName: this.state.name });
+                }
+                this.props.history.push("/");
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.log(err)
+                alert("Não foi possível editar perfil");
+                this.props.history.push("/perfilMedico");
+            });
     }
 
-
     render() {
-        if (this.state.loggedIn === false) {
-            return (<Redirect to="/login" />);
-        }
         return (
             <>
                 <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -165,11 +175,20 @@ export class PerfilMedico extends Component {
                     <div
                         className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
                     >
-                        Bem Vindo!
+                        Bem Vindo <br /> {this.state.firstName.split(' ',1)}!
                         </div>
 
                     {/* Propostas de Consulta */}
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+                        <li className="items-center">
+                            <Link
+                                className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+                                to="/perfilMedico"
+                            >
+                                <FontAwesomeIcon icon="user" /><i className="text-gray-500 mr-2 text-sm"></i> Perfil
+                                    </Link>
+                        </li>
+
                         <li className="items-center">
                             <Link
                                 className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
@@ -212,6 +231,7 @@ export class PerfilMedico extends Component {
                                 <form onSubmit={this.handleEdit}>
                                     <div>
                                         <input
+                                            class="w-full mb-1 rounded"
                                             type="text"
                                             name='name'
                                             placeholder="Nome"
@@ -219,6 +239,7 @@ export class PerfilMedico extends Component {
                                         /> </div>
                                     <div>
                                         <input
+                                            class="w-full mb-1 rounded"
                                             type='date'
                                             name='dataNascimento'
                                             placeholder="Data de Nascimento"
@@ -226,13 +247,16 @@ export class PerfilMedico extends Component {
                                         /> </div>
                                     <div>
                                         <input
+                                            class="w-full mb-1 rounded"
                                             type="password"
                                             name='passwordAntiga'
                                             placeholder="Password Atual"
                                             onChange={this.myChangeHandler}
+                                            required
                                         /> </div>
                                     <div>
                                         <input
+                                            class="w-full mb-1 rounded"
                                             type="password"
                                             name='passwordNova'
                                             placeholder="Nova Password"
@@ -240,6 +264,7 @@ export class PerfilMedico extends Component {
                                         /> </div>
                                     <div>
                                         <input
+                                            class="w-full mb-1 rounded"
                                             type="text"
                                             name='morada'
                                             placeholder="Morada"
@@ -247,6 +272,7 @@ export class PerfilMedico extends Component {
                                         /> </div>
                                     <div>
                                         <input
+                                            class="w-full mb-1 rounded"
                                             type="text"
                                             name='codigo_postal'
                                             placeholder="XXXX-XXX"
@@ -254,7 +280,7 @@ export class PerfilMedico extends Component {
                                         /> </div>
                                     <br />
                                     <br />
-                                    <input type='submit' value="Editar" />
+                                    <input class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mb-2" type='submit' value="Editar" />
                                 </form></div>}
                         </div>
                     </ul>
@@ -349,7 +375,6 @@ export class PerfilMedico extends Component {
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

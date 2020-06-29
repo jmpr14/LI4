@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import decode from 'jwt-decode';
 import { NavMenuMedico } from './NavMenuMedico';
 import { RodapeConta } from './RodapeConta';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { LayoutMedico } from './LayoutMedico';
 import api from './api';
@@ -15,9 +16,20 @@ export class HistoricoMedico extends Component {
         super(props);
         this.state = {
             id: '',
+            firstName: '',
             historicoConsultas: [],
             tamanhoPag: 9,
-            numPagina: 0
+            numPagina: 0,
+            isToggleOn: false,
+            name: null,
+            dataNascimento: null,
+            morada: null,
+            codigo_postal: null,
+            passwordAntiga: null,
+            passwordNova: null,
+            nif: null,
+            contactos: null,
+            localidade: null
         };
     }
 
@@ -38,6 +50,7 @@ export class HistoricoMedico extends Component {
                 alert("ERROR! " + error);
                 console.log(error);
             });
+        this.setState({ firstName: localStorage.getItem("nome") });
     }
 
     nextPage = () => {
@@ -54,11 +67,168 @@ export class HistoricoMedico extends Component {
         }
     }
 
+    handleOnAccept = () => {
+        (this.state.isToggleOn) ? this.setState({ isToggleOn: false }) : this.setState({ isToggleOn: true });
+    }
+
+    handleEdit = (event) => {
+        event.preventDefault();
+
+        api.put(`contas/${this.state.id}`, {
+            Password: this.state.passwordAntiga,
+            PasswordNova: this.state.passwordNova,
+            Morada: this.state.morada,
+            Nome: this.state.name,
+            Codigo_postal: this.state.codigo_postal,
+            DataNascimento: this.state.dataNascimento
+        })
+            .then(res => {
+                console.log(res);
+                alert("Perfil editado com sucesso ");
+                this.setState({ isToggleOn: false });
+                if (this.state.name != null) {
+                    localStorage.setItem("nome", this.state.name);
+                    this.setState({ firstName: this.state.name });
+                }
+                this.props.history.push("/perfilMedico");
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Não foi possível editar perfil");
+                this.props.history.push("/perfilMedico");
+            });
+    }
+
+    myChangeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({ [nam]: val });
+    }
+
     render() {
         return (
             <>
+                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+
+                    {/* Bem-Vindo */}
+                    <div
+                        className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
+                    >
+                        Bem Vindo <br /> {this.state.firstName.split(' ', 1)}!
+                        </div>
+
+                    {/* Propostas de Consulta */}
+                    <ul className="md:flex-col md:min-w-full flex flex-col list-none">
+                        <li className="items-center">
+                            <Link
+                                className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+                                to="/perfilMedico"
+                            >
+                                <FontAwesomeIcon icon="user" /><i className="text-gray-500 mr-2 text-sm"></i> Perfil
+                                    </Link>
+                        </li>
+
+                        <li className="items-center">
+                            <Link
+                                className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+                                to="/propostasConsultaM"
+                            >
+                                <FontAwesomeIcon icon="syringe" /> <i className="opacity-75 mr-2 text-sm"></i> Propostas de Consulta
+                                    </Link>
+                        </li>
+
+                        <li className="items-center">
+                            <Link
+                                className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+                                to="/posconsulta"
+                            >
+                                <FontAwesomeIcon icon="paste" /><i className="text-gray-500 mr-2 text-sm"></i> Pos Consulta
+                                    </Link>
+                        </li>
+
+                        <li className="items-center">
+                            <Link
+                                className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+                                to="/historicoMedico"
+                            >
+                                <FontAwesomeIcon icon="clipboard-list" /><i className="text-gray-500 mr-2 text-sm"></i> Histórico de Consultas
+                                    </Link>
+                        </li>
+
+                        <li className="items-center">
+
+                            <button
+                                className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
+                                type="button"
+                                onClick={this.handleOnAccept}
+                            >
+                                <FontAwesomeIcon icon="edit" /> Editar Perfil
+                                    </button>
+                        </li>
+                        <div>{(!this.state.isToggleOn) ? ""
+                            : <div>
+                                <form onSubmit={this.handleEdit}>
+                                    <div>
+                                        <input
+                                            class="w-full mb-1 rounded"
+                                            type="text"
+                                            name='name'
+                                            placeholder="Nome"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            class="w-full mb-1 rounded"
+                                            type='date'
+                                            name='dataNascimento'
+                                            placeholder="Data de Nascimento"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            class="w-full mb-1 rounded"
+                                            type="password"
+                                            name='passwordAntiga'
+                                            placeholder="Password Atual"
+                                            onChange={this.myChangeHandler}
+                                            required
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            class="w-full mb-1 rounded"
+                                            type="password"
+                                            name='passwordNova'
+                                            placeholder="Nova Password"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            class="w-full mb-1 rounded"
+                                            type="text"
+                                            name='morada'
+                                            placeholder="Morada"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <div>
+                                        <input
+                                            class="w-full mb-1 rounded"
+                                            type="text"
+                                            name='codigo_postal'
+                                            placeholder="XXXX-XXX"
+                                            onChange={this.myChangeHandler}
+                                        /> </div>
+                                    <br />
+                                    <br />
+                                    <input class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mb-2" type='submit' value="Editar" />
+                                </form></div>}
+                        </div>
+                    </ul>
+                    {/* Divider */}
+                    <hr className="my-4 md:min-w-full" />
+
+                </nav>
+                <main className="relative md:ml-64 historico-page">
                 <NavMenuMedico />
-                <main className="historico-page">
                 <section className="relative block" style={{ height: "500px" }}>
                     <div
                         className="absolute top-0 w-full h-full bg-center bg-cover"
@@ -138,9 +308,8 @@ export class HistoricoMedico extends Component {
                             </div>
                         </div>
                     </section>
+                    <RodapeConta />
                 </main>
-
-                <RodapeConta />
                 </>
         )
     }

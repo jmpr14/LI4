@@ -497,5 +497,13 @@ namespace ConsultaJa
 		{
 			return this.consultas.get(idConsulta).getObservacoes();
 		}
+
+		/*
+		 * Método que remove uma consulta dado o seu id
+		 */
+		public void removeConsulta(int idConsulta)
+		{
+			this.consultas.remove(idConsulta);
+		}
 	}
 }

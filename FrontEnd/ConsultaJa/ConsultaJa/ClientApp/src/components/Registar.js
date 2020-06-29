@@ -132,7 +132,7 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-name">
                                             Nome
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-name" name='name' type="text" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-name" name='name' type="text" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 ">
@@ -140,7 +140,7 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-date">
                                             Data de Nascimento
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-date" name='dataNascimento' type="date" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-date" name='dataNascimento' type="date" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 ">
@@ -148,7 +148,7 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-email">
                                             Email
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-email" name='email' type="email" placeholder="exemplo@email.com" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-email" name='email' type="email" placeholder="exemplo@email.com" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 ">
@@ -156,7 +156,7 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                                             Password
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" name='password' type="password" placeholder="******************" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" name='password' type="password" placeholder="******************" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 ">
@@ -164,7 +164,7 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-morada">
                                             Morada
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-morada" name='morada' type="text" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-morada" name='morada' type="text" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 mb-3">
@@ -172,8 +172,8 @@ export class Registar extends Component {
                                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-cidade">
                                                     Distrito:
                                                     </label>
-                                                <select class="block tracking-wide bg-gray-200 text-gray-700 border border-gray-200 py-3 px-4 mb-3 mt-2 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-cidade" type="text" name='localidade' onChange={this.myChangeHandler}>
-                                                        <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="">Selecione uma opção</option>
+                                                <select class="block tracking-wide bg-gray-200 text-gray-700 border border-gray-200 py-3 px-3 mb-3 mt-2 focus:outline-none focus:bg-white focus:border-gray-500" id="grid-cidade" type="text" name='localidade' onChange={this.myChangeHandler} required>
+                                                        <option className="block uppercase text-gray-700 text-l font-semibold mb-2" value="" disabled>Selecione uma opção</option>
                                                         <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Aveiro">Aveiro</option>
                                                         <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Beja">Beja</option>
                                                         <option className="block uppercase text-gray-700 text-l font-bold mb-2" value="Braga">Braga</option>
@@ -203,7 +203,7 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
                                             Código-Postal
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="XXXX-XXX" name='codigo_postal' required pattern="\d{4}-\d{3}" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-zip" type="text" placeholder="XXXX-XXX" name='codigo_postal' required pattern="\d{4}-\d{3}" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
                                 <div class="flex flex-wrap -mx-3 mb-2">
@@ -211,13 +211,13 @@ export class Registar extends Component {
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-nif">
                                             NIF
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-nif" name='nif' type="text" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-nif" name='nif' type="text" onChange={this.myChangeHandler} required/>
                                     </div>
                                     <div class="w-full md:w-1/2 px-3">
                                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-contacto">
                                             Contacto
                                         </label>
-                                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-contacto" name='contactos' type="text" onChange={this.myChangeHandler} />
+                                                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-contacto" name='contactos' type="text" onChange={this.myChangeHandler} required/>
                                     </div>
                                 </div>
 

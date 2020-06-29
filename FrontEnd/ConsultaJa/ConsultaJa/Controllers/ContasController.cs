@@ -74,7 +74,16 @@ namespace ConsultaJa.Controllers
         {
             try
             {
-                this.model.editarPerfil(id, conta.PasswordNova, conta.Password, conta.Morada, conta.Codigo_postal, conta.Nome, DateTime.Parse(conta.DataNascimento));
+                DateTime dataNasc;
+                if (conta.DataNascimento == null)
+                {
+                    dataNasc = this.model.getConta(id).getDataNascimento();
+                }
+                else
+                {
+                    dataNasc = DateTime.Parse(conta.DataNascimento);
+                }
+                this.model.editarPerfil(id, conta.PasswordNova, conta.Password, conta.Morada, conta.Codigo_postal, conta.Nome, dataNasc);
             }
             catch(PasswordErrada e)
             {

@@ -41,16 +41,21 @@ namespace ConsultaJa.Controllers
             string idPaciente = consulta.Paciente;
             try
             {
-                Console.WriteLine((string)consulta.Data.Substring(0, 4));
-                int ano = Int32.Parse((string)consulta.Data.Substring(0, 4));              
-                int mes = Int32.Parse((string)consulta.Data.Substring(5, 2));              
-                int dia = Int32.Parse((string)consulta.Data.Substring(8, 2));              
-                int hora = Int32.Parse((string)consulta.Hora.Substring(0, 2));             
-                int minuto = Int32.Parse((string)consulta.Hora.Substring(3, 2));           
-                model.solicitarConsulta(idPaciente, ano, mes, dia, hora, minuto);          
+                if (DateTime.Compare(DateTime.Parse(consulta.Data), DateTime.Now.AddDays(1)) > 0)
+                {
+                    int ano = Int32.Parse((string)consulta.Data.Substring(0, 4));
+                    int mes = Int32.Parse((string)consulta.Data.Substring(5, 2));
+                    int dia = Int32.Parse((string)consulta.Data.Substring(8, 2));
+                    int hora = Int32.Parse((string)consulta.Hora.Substring(0, 2));
+                    int minuto = Int32.Parse((string)consulta.Hora.Substring(3, 2));
+                    model.solicitarConsulta(idPaciente, ano, mes, dia, hora, minuto);
+                }
+                else
+                {
+                    return Unauthorized();
+                }
             } catch(FormatException e)                                                     
             {
-                Console.WriteLine(e.Message);
                 return Unauthorized();
             }
             return Ok();
@@ -89,7 +94,6 @@ namespace ConsultaJa.Controllers
         [Authorize]
         public async Task<IActionResult> AceitarConsulta([FromQuery] int id, [FromQuery] bool action)
         {
-            Console.WriteLine(id);
             if (action) model.aceitaConsulta(id);
             else model.rejeitarConsulta(id);
             return Ok();
@@ -193,18 +197,24 @@ namespace ConsultaJa.Controllers
                 }
                 foreach (Consulta c in lc)
                 {
-                    ConsultaModel cm = new ConsultaModel();
-                    cm.Id = c.getID();
-                    if(c.getMedico()!=null) cm.Medico = c.getMedico().getNome();
-                    cm.Paciente = c.getPaciente().getNome();
-                    cm.Data = c.getData_Hora().ToString().Substring(0, 10);
-                    cm.Hora = c.getData_Hora().ToString().Substring(11);
-                    cm.Localidade = c.getLocalidade();
-                    cm.PrecoUni = c.getPrecoUni();
-                    cm.Morada = c.getLocalidade();
-                    cm.Estado = c.getEstado();
-                    cm.Observacoes = c.getObservacoes();
-                    lcm.Add(cm);
+                    if (DateTime.Compare(c.getData_Hora(), DateTime.Now) > 0)
+                    {
+                        ConsultaModel cm = new ConsultaModel();
+                        cm.Id = c.getID();
+                        if (c.getMedico() != null) cm.Medico = c.getMedico().getNome();
+                        cm.Paciente = c.getPaciente().getNome();
+                        cm.Data = c.getData_Hora().ToString().Substring(0, 10);
+                        cm.Hora = c.getData_Hora().ToString().Substring(11);
+                        cm.Localidade = c.getLocalidade();
+                        cm.PrecoUni = c.getPrecoUni();
+                        cm.Morada = c.getLocalidade();
+                        cm.Estado = c.getEstado();
+                        cm.Observacoes = c.getObservacoes();
+                        lcm.Add(cm);
+                    } else
+                    {
+                        this.model.removeConsulta(c.getID());
+                    }
                 }
             }
             catch (MailNaoRegistado e)

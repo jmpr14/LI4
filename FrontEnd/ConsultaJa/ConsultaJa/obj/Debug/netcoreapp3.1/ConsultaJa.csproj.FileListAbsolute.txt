@@ -599,4 +599,3 @@ C:\Users\nelso\Desktop\Universidade\LI4\ProjetoGit\LI4\FrontEnd\ConsultaJa\Consu
 C:\Users\nelso\Desktop\Universidade\LI4\ProjetoGit\LI4\FrontEnd\ConsultaJa\ConsultaJa\bin\Debug\netcoreapp3.1\itextsharp.dll
 C:\Users\nelso\Desktop\Universidade\LI4\ProjetoGit\LI4\FrontEnd\ConsultaJa\ConsultaJa\obj\Debug\netcoreapp3.1\ConsultaJa.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\nelso\Desktop\Universidade\LI4\ProjetoGit\LI4\FrontEnd\ConsultaJa\ConsultaJa\obj\Debug\netcoreapp3.1\ConsultaJa.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\nelso\Desktop\Universidade\LI4\ProjetoGit\LI4\FrontEnd\ConsultaJa\ConsultaJa\obj\Debug\netcoreapp3.1\ConsultaJa.csprojAssemblyReference.cache

@@ -790,7 +790,7 @@ namespace ConsultaJa.DataBase
 			if (!this.validaAceitacao(idConsulta))
 			{
 				this.remove(idConsulta);
-				throw new Exception("[Error] Impossível rejeitar consulta");
+				throw new Exception("[Error] Impossível aceitar consulta");
 			}
 			MySqlConnection connection = new MySqlConnection(this.connectionstring);
 			/* Abrimos a conexão */

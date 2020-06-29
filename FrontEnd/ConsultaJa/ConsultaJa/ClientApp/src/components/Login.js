@@ -119,7 +119,7 @@ export class Login extends Component {
                     <section className="relative block" style={{ height: "670px" }}>
                     <section className="absolute w-full h-full">
                         <div
-                            className="absolute top-20 w-full h-full bg-gray-900"
+                                className="absolute top-20 w-full h-full bg-blue-200"
                             style={{
                                 backgroundImage:
                                     "url(" + require("./images/este.png") + ")",
