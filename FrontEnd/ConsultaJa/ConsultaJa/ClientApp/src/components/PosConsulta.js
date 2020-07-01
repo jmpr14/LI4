@@ -3,6 +3,7 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import decode from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import logo from './images/logo_consultaJa.png';
 
 import { LayoutMedico } from './LayoutMedico';
 import api from './api';
@@ -10,14 +11,6 @@ import ListItem from './ListItem'
 import NewTaskInput from './NewTaskInput'
 import { NavMenuMedico } from './NavMenuMedico'
 import { RodapeConta } from './RodapeConta'
-
-
-//<div>
-//    <pre>
-//        {JSON.stringify(this.state.tasks, null, 8)
-//        }
-//    </pre>
-//</div>
 
 
 export class PosConsulta extends Component {
@@ -33,7 +26,6 @@ export class PosConsulta extends Component {
             observacoes: '',
             escolheCons: false,
             consultasAgendadas: [],
-            isToggleOn: false,
             name: null,
             dataNascimento: null,
             morada: null,
@@ -82,39 +74,6 @@ export class PosConsulta extends Component {
                 this.props.history.push("/perfilPaciente");
             })
             .catch(err => console.log(err));
-
-    }
-
-    handleOnAccept = () => {
-        (this.state.isToggleOn) ? this.setState({ isToggleOn: false }) : this.setState({ isToggleOn: true });
-    }
-
-    handleEdit = (event) => {
-        event.preventDefault();
-
-        api.put(`contas/${this.state.id}`, {
-            Password: this.state.passwordAntiga,
-            PasswordNova: this.state.passwordNova,
-            Morada: this.state.morada,
-            Nome: this.state.name,
-            Codigo_postal: this.state.codigo_postal,
-            DataNascimento: this.state.dataNascimento
-        })
-            .then(res => {
-                console.log(res);
-                alert("Perfil editado com sucesso ");
-                this.setState({ isToggleOn: false });
-                if (this.state.name != null) {
-                    localStorage.setItem("nome", this.state.name);
-                    this.setState({ firstName: this.state.name });
-                }
-                this.props.history.push("/perfilMedico");
-            })
-            .catch(err => {
-                console.log(err)
-                alert("Não foi possível editar perfil");
-                this.props.history.push("/perfilMedico");
-            });
     }
 
     myChangeHandler = (event) => {
@@ -162,16 +121,26 @@ export class PosConsulta extends Component {
     render() {
         return (
             <>
-                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 bg-opacity-75 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
 
                     {/* Bem-Vindo */}
-                    <div
-                        className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
-                    >
-                        Bem Vindo <br /> {this.state.firstName.split(' ', 1)}!
-                        </div>
+                    <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+                        <Link tag={Link} className="links" to="/perfilMedico">
+                            <a
+                                className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
+                            >
+                                <img className="text-gray-800 text-xs font-bold uppercase px-1 py-1 hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                                    width={180} src={logo} />
+                            </a>
+                        </Link>
+                    </div>
 
-                    {/* Propostas de Consulta */}
+                    <div
+                        className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
+                    >
+                        Olá {this.state.firstName.split(' ', 1)}
+                    </div>
+
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                         <li className="items-center">
                             <Link
@@ -210,80 +179,21 @@ export class PosConsulta extends Component {
                         </li>
 
                         <li className="items-center">
-
-                            <button
+                            <Link
                                 className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                                type="button"
-                                onClick={this.handleOnAccept}
+                                to="/editarPerfilM"
                             >
-                                <FontAwesomeIcon icon="edit" /> Editar Perfil
-                                    </button>
+                                <FontAwesomeIcon icon="edit" /><i className="text-gray-500 mr-2 text-sm"></i> Editar Perfil
+                                    </Link>
                         </li>
-                        <div>{(!this.state.isToggleOn) ? ""
-                            : <div>
-                                <form onSubmit={this.handleEdit}>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='name'
-                                            placeholder="Nome"
-                                            onChange={this.myChangeHandler2}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type='date'
-                                            name='dataNascimento'
-                                            placeholder="Data de Nascimento"
-                                            onChange={this.myChangeHandler2}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="password"
-                                            name='passwordAntiga'
-                                            placeholder="Password Atual"
-                                            onChange={this.myChangeHandler2}
-                                            required
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="password"
-                                            name='passwordNova'
-                                            placeholder="Nova Password"
-                                            onChange={this.myChangeHandler2}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='morada'
-                                            placeholder="Morada"
-                                            onChange={this.myChangeHandler2}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='codigo_postal'
-                                            placeholder="XXXX-XXX"
-                                            onChange={this.myChangeHandler2}
-                                        /> </div>
-                                    <br />
-                                    <br />
-                                    <input class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mb-2" type='submit' value="Editar" />
-                                </form></div>}
-                        </div>
                     </ul>
                     {/* Divider */}
                     <hr className="my-4 md:min-w-full" />
-
                 </nav>
+
                 <main className="relative md:ml-64 historico-page">
                     <NavMenuMedico />
-                    <section className="relative block" style={{ height: "500px" }}>
+                    <section className="relative block" style={{ height: "400px" }}>
                         <div
                             className="absolute top-0 w-full h-full bg-center bg-cover"
                             style={{
@@ -316,7 +226,7 @@ export class PosConsulta extends Component {
                         </div>
                     </section>
                     <section className="relative py-24 bg-gray-300">
-                        <div className="container mx-auto px-4">
+                        <div className="container mx-auto px-4 mb-20">
                             <div className="relative flex flex-col min-w-0 break-words mb-54 bg-white w-full mb-10 shadow-xl rounded-lg -mt-64">
                                 <div className="px-6">
                                     <div className=" py-10 border-t border-gray-300 text-center">

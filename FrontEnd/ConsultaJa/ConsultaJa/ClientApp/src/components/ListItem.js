@@ -1,4 +1,5 @@
 ﻿import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const ListItem = ({ onChange, onDelete, value, value1, value2 }) => {
     return (
@@ -18,7 +19,7 @@ const ListItem = ({ onChange, onDelete, value, value1, value2 }) => {
                 value={value2}
                 readonly="readonly"
             />
-            <button class="hover:bg-red-600 bg-red-400 text-blue-dark font-semibold text-white py-2 px-3 border rounded" onClick={onDelete}>Excluir</button>
+            <button class="font-semibold py-2 px-3 rounded" onClick={onDelete}> <FontAwesomeIcon icon="trash-alt" /> </button>
         </div>
     );
 };

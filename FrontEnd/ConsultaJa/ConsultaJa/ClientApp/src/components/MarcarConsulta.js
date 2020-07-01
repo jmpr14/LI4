@@ -3,13 +3,11 @@ import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLi
 import { Link } from 'react-router-dom';
 import decode from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import logo from './images/logo_consultaJa.png';
 
-import { LayoutPaciente } from './LayoutPaciente';
-import Medicos from './images/medicos.png';
 import api from './api';
 import { NavMenuPaciente } from './NavMenuPaciente';
 import { RodapeConta } from './RodapeConta';
-import { Rodape } from './Rodape';
 
 export class MarcarConsulta extends Component {
     static displayName = MarcarConsulta.name;
@@ -22,7 +20,6 @@ export class MarcarConsulta extends Component {
             data: '',
             hora: '',
             firstName: '',
-            isToggleOn: false,
             name: null,
             dataNascimento: null,
             morada: null,
@@ -65,38 +62,6 @@ export class MarcarConsulta extends Component {
             .catch(err => { console.log(err); alert("Erro na Marcação da Consulta"); });
     }
 
-    handleEdit = (event) => {
-        event.preventDefault();
-
-        api.put(`contas/${this.state.id}`, {
-            Password: this.state.passwordAntiga,
-            PasswordNova: this.state.passwordNova,
-            Morada: this.state.morada,
-            Nome: this.state.name,
-            Codigo_postal: this.state.codigo_postal,
-            DataNascimento: this.state.dataNascimento
-        })
-            .then(res => {
-                console.log(res);
-                alert("Perfil editado com sucesso ");
-                this.setState({ isToggleOn: false });
-                if (this.state.name != null) {
-                    localStorage.setItem("nome", this.state.name);
-                    this.setState({ firstName: this.state.name });
-                }
-                this.props.history.push("/perfilPaciente");
-            })
-            .catch(err => {
-                console.log(err)
-                alert("Não foi possível editar perfil");
-                this.props.history.push("/perfilPaciente");
-            });
-    }
-
-    handleOnAccept = () => {
-        (this.state.isToggleOn) ? this.setState({ isToggleOn: false }) : this.setState({ isToggleOn: true });
-    }
-
     myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
@@ -106,13 +71,24 @@ export class MarcarConsulta extends Component {
     render() {
         return (
             <>
-                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 bg-opacity-75 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
 
                     {/* Brand */}
+                    <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+                        <Link tag={Link} className="links" to="/perfilMedico">
+                            <a
+                                className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
+                            >
+                                <img className="text-gray-800 text-xs font-bold uppercase px-1 py-1 hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                                    width={180} src={logo} />
+                            </a>
+                        </Link>
+                    </div>
+
                     <div
                         className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
                     >
-                        Bem Vindo <br /> {this.state.firstName.split(' ', 1)}!
+                        Olá {this.state.firstName.split(' ', 1)}
                     </div>
 
                     {/* Navigation */}
@@ -154,79 +130,20 @@ export class MarcarConsulta extends Component {
                         </li>
 
                         <li className="items-center">
-
-                            <button
+                            <Link
                                 className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                                type="button"
-                                onClick={this.handleOnAccept}
+                                to="/editarPerfilP"
                             >
-                                <FontAwesomeIcon icon="edit" /> Editar Perfil
-                                    </button>
+                                <FontAwesomeIcon icon="edit" /><i className="text-gray-500 mr-2 text-sm"></i> Editar Perfil
+                                    </Link>
                         </li>
-                        <div>{(!this.state.isToggleOn) ? ""
-                            : <div>
-                                <form onSubmit={this.handleEdit}>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='name'
-                                            placeholder="Nome"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type='date'
-                                            name='dataNascimento'
-                                            placeholder="Data de Nascimento"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="password"
-                                            name='passwordAntiga'
-                                            placeholder="Password Atual"
-                                            onChange={this.myChangeHandler}
-                                            required
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="password"
-                                            name='passwordNova'
-                                            placeholder="Nova Password"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='morada'
-                                            placeholder="Morada"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full rounded"
-                                            type="text"
-                                            name='codigo_postal'
-                                            placeholder="XXXX-XXX"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <br />
-                                    <br />
-                                    <input class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mb-1" type='submit' value="Editar" />
-                                </form></div>}
-                        </div>
                     </ul>
                     {/* Divider */}
                     <hr className="my-4 md:min-w-full" />
                 </nav>
                 <main className="relative md:ml-64 h-full historico-page">
                     <NavMenuPaciente />
-                    <section className="relative block" style={{ height: "450px" }}>
+                    <section className="relative block" style={{ height: "500px" }}>
                         <div
                             className="absolute top-0 w-full h-full bg-center bg-cover"
                             style={{
@@ -272,37 +189,37 @@ export class MarcarConsulta extends Component {
                                                 <p class="Regp"> Preco da Consulta = {this.state.precoCons}€ </p>
                                             </div>
                                             <form onSubmit={this.handleSubmit}>
-                                                <div className="relative w-full mb-3">
-                                                    <label
-                                                        className="block uppercase text-gray-700 text-l font-bold mb-2"
-                                                        htmlFor="grid-password"
-                                                    >
-                                                        Insira a data:
-                            </label>
-                                                    <input
-                                                        type='date'
-                                                        class="appearance-none block w-70% bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                                        name='data'
-                                                        onChange={this.myChangeHandler}
-                                                    />
+                                                <div className="flex" >
+                                                    <div className="relative w-1/2">
+                                                        <label
+                                                            className="block uppercase text-gray-700 text-l font-bold"
+                                                            htmlFor="grid-password"
+                                                        >
+                                                            Insira a data:
+                                                        </label>
+                                                        <input
+                                                            type='date'
+                                                            class="appearance-none block w-70% bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                            name='data'
+                                                            onChange={this.myChangeHandler}
+                                                        />
+                                                    </div>
+                                                    <div className="relative w-1/2">
+                                                        <label
+                                                            className="block uppercase text-gray-700 text-l font-bold"
+                                                            htmlFor="grid-password"
+                                                        >
+                                                            Insira a hora:
+                                                        </label>
+                                                        <input
+                                                            type='time'
+                                                            class="appearance-none block w-70% g-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                            name='hora'
+                                                            onChange={this.myChangeHandler}
+                                                        />
+                                                    </div>
                                                 </div>
-                                                <div className="relative w-full mb-3">
-                                                    <label
-                                                        className="block uppercase text-gray-700 text-l font-bold mb-2"
-                                                        htmlFor="grid-password"
-                                                    >
-                                                        Insira a hora:
-                            </label>
-                                                    <input
-                                                        type='time'
-                                                        class="appearance-none block w-70% g-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                                        name='hora'
-                                                        onChange={this.myChangeHandler}
-                                                    />
-                                                </div>
-
-
-                                                <div className="text-center mt-6">
+                                                <div className="relative text-center mt-6">
                                                     <button
                                                         className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-4 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                                                         type="submit"

@@ -138,7 +138,7 @@ export class Receita extends Component {
 
     componentDidMount() {
         const idC = localStorage.getItem('consulta');
-        localStorage.removeItem('consulta');
+        //localStorage.removeItem('consulta');
         console.log("IdConsulta " + idC);
         this.setState({ id: idC });
         // Buscar os dados de uma receita

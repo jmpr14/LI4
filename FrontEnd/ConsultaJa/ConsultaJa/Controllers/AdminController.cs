@@ -35,7 +35,6 @@ namespace ConsultaJa.Controllers
        [Authorize]
         public async Task<IActionResult> Get([FromQuery]string admin)
         {
-
             AdminModel cmodel = new AdminModel();
 
             cmodel.Preco = this.model.getPreco();
@@ -135,7 +134,7 @@ namespace ConsultaJa.Controllers
                 //m.Morada = c.getMorada();
                 //m.Nif = c.getNif();
                 //m.Codigo_postal = c.getCodigoPostal();
-                //m.Contactos = c.getContactos();
+                m.Contactos = c.getContactos()[0];
                 //m.Localidade = c.getLocalidade();
 
                 lcm.Add(m);

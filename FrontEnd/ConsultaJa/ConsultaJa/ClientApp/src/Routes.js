@@ -13,6 +13,8 @@ import { PerfilMedico } from './components/PerfilMedico';
 import { HistoricoMedico } from './components/HistoricoMedico';
 import { PosConsulta } from './components/PosConsulta';
 import { MarcarConsulta } from './components/MarcarConsulta';
+import { EditarPerfilP } from './components/EditarPerfilP';
+import { EditarPerfilM } from './components/EditarPerfilM';
 
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import decode from 'jwt-decode';
@@ -126,12 +128,14 @@ const Routes = () => (
             <PrivateRouteP path='/historicoPaciente' component={HistoricoPaciente} />
             <PrivateRouteP path='/marcarConsulta' component={MarcarConsulta} />
             <PrivateRouteP path='/propostasConsultaP' component={PropostasConsultaP} />
+            <PrivateRouteP path='/editarPerfilP' component={EditarPerfilP} />
             <PrivateRoute path='/logout' component={Logout} />
             <PrivateRouteA path='/perfilAdmin' component={PerfilAdmin} />
             <PrivateRouteM path='/perfilMedico' component={PerfilMedico} />
             <PrivateRouteM path='/historicoMedico' component={HistoricoMedico} />
             <PrivateRouteM path='/posconsulta' component={PosConsulta} />
             <PrivateRouteM path='/propostasConsultaM' component={PropostasConsultaM} />
+            <PrivateRouteM path='/editarPerfilM' component={EditarPerfilM} />
         </Switch>
     </BrowserRouter>
 );

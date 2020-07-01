@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { LayoutAdmin } from './LayoutAdmin';
 import api from './api';
@@ -160,22 +161,15 @@ export class PerfilAdmin extends Component {
                         <div className="container mx-auto px-4">
                             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
                                 <div className="px-6">
-                                    
-                                    <div className="text-center mt-0">
-                                        <div className="mb-2 text-gray-700 mt-2">
-                                            <i className="fas fa-map-marker-alt mr-2 text-lg text-gray-500"></i>{" "}
-                                            Número de Médicos registados: {this.state.dadosAdmin.numMedicos} 
-                                        </div>
-                                        <div className="mb-2 text-gray-700 mt-2">
-                                            <i className="fas fa-briefcase mr-2 text-lg text-gray-500"></i>
-                                            Número de Pacientes registados: {this.state.dadosAdmin.numPacientes}
-                                        </div>
+
+                                    <div className="text-center mt-8">
+
                                         <h3 className="text-4xl font-semibold leading-normal mb-2 text-gray-800 mb-2">
                                             Preço por Consulta: {this.state.dadosAdmin.preco} €
                                         </h3>
 
-                                        <form onSubmit={this.handleSubmit}>
-                                            <input class="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                        <form class="mb-4" onSubmit={this.handleSubmit}>
+                                            <input class="appearance-none bg-gray-200 text-gray-700 border border-gray-200 rounded mr-8 py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                                 type='number'
                                                 min='0.0'
                                                 step='0.50'
@@ -183,16 +177,20 @@ export class PerfilAdmin extends Component {
                                                 placeholder="Novo preco"
                                                 onChange={this.myChangeHandler}
                                             />
-                                            <br />
 
-                                            <input class="bg-blue-500 text-white p-2 rounded font-bold overflow-visible" type='submit' value="Alterar Preco Consulta" />
+                                            <input class="hover:bg-indigo-700 bg-blue-500 text-white p-2 rounded font-bold overflow-visible" type='submit' value="Alterar Preco Consulta" />
                                         </form>
 
-                                    </div>
-                                   
-                                        
+                                        <div className="mb-2 text-gray-700 mt-2">
+                                            <FontAwesomeIcon icon="user-md" /> Número de Médicos registados: <span class="badge mb-3 bg-blue-500 rounded-full px-3 py-2 text-center object-right-top text-white text-sm mr-12"> {this.state.dadosAdmin.numMedicos}</span>
+                                        </div>
 
-                                    <div className="mt-10 py-10 border-t border-gray-300 text-center">
+                                        <div className="text-gray-700 mt-2">
+                                            <FontAwesomeIcon icon="user" /> Número de Pacientes registados: <span class="badge mb-3 bg-blue-500 rounded-full px-3 py-2 text-center object-right-top text-white text-sm mr-12">{this.state.dadosAdmin.numPacientes}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="mt-4 py-4 border-t border-gray-300 text-center">
                                         <div className="flex flex-wrap justify-center">
                                             <div className="w-full lg:w-9/12 px-4">
                                                 <p className="mb-4 text-lg leading-relaxed text-gray-800">
@@ -204,6 +202,7 @@ export class PerfilAdmin extends Component {
                                                             <tr>
                                                                 <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Nome</th>
                                                                 <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Email</th>
+                                                                <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Contacto</th>
                                                                 <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Data de Nascimento</th>
                                                                 <th class="p-3 font-bold uppercase bg-gray-200 text-gray-700 border-top border-gray-300 hidden lg:table-cell"></th>
                                                                 <th class="p-3 font-bold uppercase bg-gray-200 text-gray-700 border-top border-right border-gray-300 hidden lg:table-cell"></th>
@@ -213,6 +212,7 @@ export class PerfilAdmin extends Component {
                                                             <tr>
                                                                 <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{medico.nome}</td>
                                                                 <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{medico.email}</td>
+                                                                <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{medico.contactos}</td>
                                                                 <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{medico.dataNascimento}</td>
                                                                 <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">
                                                                     <button class="hover:bg-blue-500 bg-blue-400 text-blue-dark font-semibold text-white py-2 px-3 border rounded" key={medico.id} data-medico={medico.id} onClick={this.aceitar}> Aceitar </button> </td>

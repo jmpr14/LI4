@@ -437,7 +437,7 @@ namespace ConsultaJa.DataBase
 			if (obs.Equals("Sem observações"))
 				obs = null;
 
-			ret = new Consulta(dr.Field<int>("idConsulta"),p, m, dr.Field<string>("localidade"), dr.Field<string>("morada"), obs,
+			ret = new Consulta(dr.Field<int>("idConsulta"),p, m, dr.Field<int>("preco"), dr.Field<string>("localidade"), dr.Field<string>("morada"), obs,
 				dta.Year, dta.Month, dta.Day, dta.Hour, dta.Minute, dta.Second, Int32.Parse(dr.Field<string>("estado")));
 			return ret;
 		}

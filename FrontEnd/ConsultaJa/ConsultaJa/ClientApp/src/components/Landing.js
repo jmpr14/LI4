@@ -167,7 +167,7 @@ export class Landing extends Component {
                                         <FontAwesomeIcon icon="user-friends" />
                                     </div>
                                     <h3 className="text-3xl mb-2 font-semibold leading-normal">
-                                        O Médico vai à sua casa!
+                                        O Médico vai a sua casa!
                                     </h3>
                                     <p className="text-lg font-light leading-relaxed mt-4 mb-4 text-gray-700">
                                         Para quê esperar em filas de espera quando pode ser avaliado por um profissional em casa?

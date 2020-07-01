@@ -70,7 +70,8 @@ namespace ConsultaJa.Controllers
 
         // PUT /contas/P5
         [HttpPut("{id}")]
-        public async Task<IActionResult> EditarConta(string id, [FromBody] ContaModel conta)
+        [Authorize]
+        public ActionResult EditarConta(string id, [FromBody] ContaModel conta)
         {
             try
             {
@@ -85,9 +86,9 @@ namespace ConsultaJa.Controllers
                 }
                 this.model.editarPerfil(id, conta.PasswordNova, conta.Password, conta.Morada, conta.Codigo_postal, conta.Nome, dataNasc);
             }
-            catch(PasswordErrada e)
+            catch(Exception e)
             {
-                BadRequest(e);
+                return Unauthorized(e);
             }
             return Ok(id);
         }
@@ -116,15 +117,7 @@ namespace ConsultaJa.Controllers
                 }
                 return Ok(user);
             }
-            catch (PasswordErrada e)
-            {
-                return BadRequest(e);
-            }
-            catch (MailNaoRegistado e)
-            {
-                return BadRequest(e);
-            } 
-            catch(NotSupportedException e)
+            catch(Exception e)
             {
                 return BadRequest(e);
             }

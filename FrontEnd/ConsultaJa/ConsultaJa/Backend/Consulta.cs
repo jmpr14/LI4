@@ -70,14 +70,14 @@ namespace ConsultaJa.Backend
 		/**
 		 * Construtor para objetos da classe Consulta
 		 */
-		public Consulta(int id, Paciente p, Medico m, string localidade, string morada, string observacoes,
+		public Consulta(int id, Paciente p, Medico m, int preco, string localidade, string morada, string observacoes,
 			int ano, int mes, int dia, int hora, int min, int sec, int estado)
 		{
 			this.id = id;
 			this.m = m;
 			this.p = p;
 			this.localidade = localidade;
-			this.precoUni = -1;
+			this.precoUni = preco;
 			this.morada = morada;
 			this.estado = PEDIDO;
 			this.observacoes = observacoes;

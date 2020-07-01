@@ -209,7 +209,8 @@ namespace ConsultaJa
 		public void solicitarConsulta(string idPaciente, int ano, int mes, int dia, int hora, int minuto)
 		{
 			Paciente p;
-			(p = (Paciente)this.contas.get(idPaciente)).addPropostaConsulta(p.getCodigo_Postal(),
+			int preco = this.parametros.get("preco");
+			(p = (Paciente)this.contas.get(idPaciente)).addPropostaConsulta(p.getCodigo_Postal(), preco,
 				ano, mes, dia, hora, minuto, 0);
 		}
 
@@ -427,11 +428,19 @@ namespace ConsultaJa
 		public void editarPerfil(string id, string password, string oldpassWord, 
 			string morada, string codigo_postal, string nome, DateTime dataNascimento)
 		{
-			if (password != null) this.contas.changePassword(id, oldpassWord, PasswordHasher.Hash(password));
-			if (morada != null) this.contas.changeMorada(id, morada);
-			if (codigo_postal != null) this.contas.changeCodigoPostal(id, codigo_postal);
-			if (nome != null) this.contas.changeNome(id,nome);
-			if (dataNascimento != null) this.contas.changeDataNascimento(id, dataNascimento);
+			if (PasswordHasher.VerificaHash(oldpassWord, this.contas.get(id).getPassword()))
+			{
+				if (password != null) this.contas.changePassword(id, oldpassWord, PasswordHasher.Hash(password));
+				if (morada != null) this.contas.changeMorada(id, morada);
+				if (codigo_postal != null) this.contas.changeCodigoPostal(id, codigo_postal);
+				if (nome != null) this.contas.changeNome(id, nome);
+				if (dataNascimento != null) this.contas.changeDataNascimento(id, dataNascimento);
+			}
+			else
+			{
+				Console.WriteLine("Excecao");
+				throw new PasswordErrada("Password incorreta");
+			}
 		}
 
 		/**

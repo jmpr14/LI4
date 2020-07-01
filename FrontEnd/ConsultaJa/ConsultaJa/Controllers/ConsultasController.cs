@@ -312,6 +312,56 @@ namespace ConsultaJa.Controllers
             return Ok(rm);
         }
 
+        /* /consultas/recibos
+        Obter a o pdf de uma recibo relativo a uma consulta
+        */
+        [HttpGet("recibos")]
+        [Authorize]
+        public ActionResult Recibos([FromQuery] int id)
+        {
+            ReciboModel rm = new ReciboModel();
+            try
+            {
+                Receita r = this.model.getReceita(id);
+                rm.Id = id;
+                rm.Utente = r.getNomePaciente();
+                rm.NIFUt = r.getNifPaciente();
+                if (r.getContactosPaciente() != null)
+                {
+                    rm.ContactoUt = r.getContactosPaciente()[0];
+                }
+                else
+                {
+                    rm.ContactoUt = "";
+                }
+                rm.Medico = r.getNomeMedico();
+                rm.NIFMed = r.getNifMedico();
+                if (r.getContactosMedico().Count > 0)
+                {
+                    rm.ContactoMed = r.getContactosMedico()[0];
+                }
+                else
+                {
+                    rm.ContactoMed = "";
+                }
+                Consulta c = this.model.getConsulta(id);
+                rm.Preco = c.getPrecoUni().ToString();
+                rm.Data = c.getData_Hora().ToString().Substring(0, 16);
+                Medico m = c.getMedico();
+                Paciente p = c.getPaciente();
+                rm.CodPostalUt = p.getCodigo_Postal();
+                rm.CodPostalMed = m.getCodigo_Postal();
+                rm.DistritoUt = p.getLocalidade();
+                rm.DistritoMed = m.getLocalidade();
+            }
+            catch (Exception e)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(rm);
+        }
+
         /* /consultas/posconsulta
          * Marcar consulta Realizada, sendo que se recebe uma receita, as observacoes e marcar consulta
         */

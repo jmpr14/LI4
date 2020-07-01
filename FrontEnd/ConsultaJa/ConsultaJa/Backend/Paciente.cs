@@ -249,14 +249,14 @@ namespace ConsultaJa.Backend
 		 * Método que permite propor uma 
 		 * consulta a um paciente
 		 */
-		public void addPropostaConsulta(string localidade, int ano, int mes, int dia, 
+		public void addPropostaConsulta(string localidade, int preco, int ano, int mes, int dia, 
 			int hora, int minuto, int segundo)
 		{
 			/* É de notar que o id inserido neste caso em 
 			 * nada afeta, visto que ao inserir no cdao, 
 			 * esse id é despresado
 			 */
-			Consulta c = new Consulta(-1, this, null, localidade, this.morada, null, ano, mes, dia, hora, minuto, segundo, Consulta.PEDIDO);
+			Consulta c = new Consulta(-1, this, null, preco, localidade, this.morada, null, ano, mes, dia, hora, minuto, segundo, Consulta.PEDIDO);
 			/* Notar que a única maneira de adicionar 
 			 * consultas à aplicação é a partir do paciente*/
 			this.consultas.put(c);

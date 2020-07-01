@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import decode from 'jwt-decode';
+import logo from './images/logo_consultaJa.png';
 
 import { LayoutMedico } from './LayoutMedico';
 import ImgPerfil from './images/profile-placeholder.jpg';
@@ -28,7 +29,6 @@ export class PerfilMedico extends Component {
             dadosPerfil: [],
             consultasAgendadas: [],
             notificacoes: [],
-            isToggleOn: false,
             name: null,
             dataNascimento: null,
             morada: null,
@@ -121,64 +121,35 @@ export class PerfilMedico extends Component {
             });
     }
 
-    handleOnAccept = () => {
-        (this.state.isToggleOn) ? this.setState({ isToggleOn: false }) : this.setState({ isToggleOn: true });
-    }
-
     myChangeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
         this.setState({ [nam]: val });
     }
 
-    handleEdit = (event) => {
-        event.preventDefault();
-
-        var dataNasc = (this.state.dataNascimento != null) ? this.state.dataNascimento : this.state.dadosPerfil.dataNascimento;
-
-        api.put(`contas/${this.state.id}`, {
-            Password: this.state.passwordAntiga,
-            PasswordNova: this.state.passwordNova,
-            Morada: this.state.morada,
-            Nome: this.state.name,
-            Codigo_postal: this.state.codigo_postal,
-            DataNascimento: dataNasc
-        })
-            .then(res => {
-                console.log(res);
-                alert("Perfil editado com sucesso ");
-                this.setState({ isToggleOn: false });
-                if (this.state.passwordNova != null) this.state.dadosPerfil.password = this.state.passwordNova;
-                if (this.state.morada != null) this.state.dadosPerfil.morada = this.state.morada;
-                if (this.state.nome != null) this.state.dadosPerfil.nome = this.state.name;
-                if (this.state.dataNascimento != null) this.state.dadosPerfil.dataNascimento = this.state.dataNascimento;
-                if (this.state.codigo_postal != null) this.state.dadosPerfil.codigo_postal = this.state.codigo_postal;
-                if (this.state.name != null) {
-                    localStorage.setItem("nome", this.state.name);
-                    this.setState({ firstName: this.state.name });
-                }
-                this.props.history.push("/");
-            })
-            .catch(err => {
-                console.log(err)
-                alert("Não foi possível editar perfil");
-                this.props.history.push("/perfilMedico");
-            });
-    }
-
     render() {
         return (
             <>
-                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
+                <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-no-wrap md:overflow-hidden shadow-xl bg-blue-200 bg-opacity-75 flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
 
                     {/* Bem-Vindo */}
-                    <div
-                        className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-4 px-0"
-                    >
-                        Bem Vindo <br /> {this.state.firstName.split(' ',1)}!
-                        </div>
+                    <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+                        <Link tag={Link} className="links" to="/perfilMedico">
+                            <a
+                                className="text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-no-wrap uppercase"
+                            >
+                                <img className="text-gray-800 text-xs font-bold uppercase px-1 py-1 hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                                    width={180} src={logo} />
+                            </a>
+                        </Link>
+                    </div>
 
-                    {/* Propostas de Consulta */}
+                    <div
+                        className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
+                    >
+                        Olá {this.state.firstName.split(' ', 1)}
+                    </div>
+
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none">
                         <li className="items-center">
                             <Link
@@ -217,78 +188,18 @@ export class PerfilMedico extends Component {
                         </li>
 
                         <li className="items-center">
-
-                            <button
+                            <Link
                                 className="text-gray-800 hover:text-gray-600 text-xs uppercase py-3 font-bold block"
-                                type="button"
-                                onClick={this.handleOnAccept}
+                                to="/editarPerfilM"
                             >
-                                <FontAwesomeIcon icon="edit" /> Editar Perfil
-                                    </button>
+                                <FontAwesomeIcon icon="edit" /><i className="text-gray-500 mr-2 text-sm"></i> Editar Perfil
+                                    </Link>
                         </li>
-                        <div>{(!this.state.isToggleOn) ? ""
-                            : <div>
-                                <form onSubmit={this.handleEdit}>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='name'
-                                            placeholder="Nome"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type='date'
-                                            name='dataNascimento'
-                                            placeholder="Data de Nascimento"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="password"
-                                            name='passwordAntiga'
-                                            placeholder="Password Atual"
-                                            onChange={this.myChangeHandler}
-                                            required
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="password"
-                                            name='passwordNova'
-                                            placeholder="Nova Password"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='morada'
-                                            placeholder="Morada"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <div>
-                                        <input
-                                            class="w-full mb-1 rounded"
-                                            type="text"
-                                            name='codigo_postal'
-                                            placeholder="XXXX-XXX"
-                                            onChange={this.myChangeHandler}
-                                        /> </div>
-                                    <br />
-                                    <br />
-                                    <input class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded mb-2" type='submit' value="Editar" />
-                                </form></div>}
-                        </div>
                     </ul>
                     {/* Divider */}
                     <hr className="my-4 md:min-w-full" />
-
-
                 </nav>
+
                 <main className="relative md:ml-64 profile-page">
                     <NavMenuMedico />
                     <section className="relative block" style={{ height: "400px" }}>
