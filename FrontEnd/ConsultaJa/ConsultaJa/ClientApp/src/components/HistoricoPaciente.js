@@ -9,7 +9,6 @@ import DownloadRecibo from './DownloadRecibo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import logo from './images/logo_consultaJa.png';
 
-import { LayoutPaciente } from './LayoutPaciente';
 import api from './api';
 
 export class HistoricoPaciente extends Component {
@@ -114,7 +113,7 @@ export class HistoricoPaciente extends Component {
                     <div
                         className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
                     >
-                        Olá {this.state.firstName.split(' ', 1)}
+                        Bem Vindo(a) <br /> {this.state.firstName.split(' ', 1)}
                     </div>
 
                     {/* Navigation */}
@@ -259,7 +258,6 @@ export class HistoricoPaciente extends Component {
             </>
         )
     }
-
 }
 
 

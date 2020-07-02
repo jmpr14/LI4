@@ -5,12 +5,10 @@ import decode from 'jwt-decode';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import logo from './images/logo_consultaJa.png';
 
-import { LayoutPaciente } from './LayoutPaciente';
 import Medicos from './images/medicos.png';
 import api from './api';
 import { NavMenuMedico } from './NavMenuMedico';
 import { RodapeConta } from './RodapeConta';
-import { Rodape } from './Rodape';
 
 export class EditarPerfilM extends Component {
     static displayName = EditarPerfilM.name;
@@ -108,7 +106,7 @@ export class EditarPerfilM extends Component {
                     <div
                         className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
                     >
-                        Olá {this.state.firstName.split(' ', 1)}
+                        Bem Vindo(a) <br /> {this.state.firstName.split(' ', 1)}
                     </div>
 
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none">

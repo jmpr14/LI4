@@ -1,5 +1,4 @@
 ﻿import React, { Component } from 'react';
-import { Layout } from './Layout';
 import { Rodape } from './Rodape';
 import { NavBarOut } from './NavBarOut';
 import LogoS from './images/logo.png';

@@ -111,6 +111,7 @@ namespace ConsultaJa.Controllers
             try
             {
                 lc = this.model.getConsultasAgendadas(id);
+                lc.Sort((consulta1, consulta2) => consulta1.getData_Hora().CompareTo(consulta2.getData_Hora()));
                 foreach (Consulta c in lc)
                 {
                     DateTime agora = DateTime.Now;

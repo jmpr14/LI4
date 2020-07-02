@@ -1,7 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Layout } from './Layout';
 import Medicos from './images/medicos.png';
 import Casa1 from './images/casas3.png';
 import Casa2 from './images/casas4.jpg';
@@ -11,7 +10,6 @@ import Trust from './images/trust.jpg';
 import Logo from './images/logo_consultaJa.png';
 import LogoS from './images/logo.png';
 import Fundo from './images/fundo.jpg'
-import { NavMenu } from './NavMenu';
 import { Rodape } from './Rodape.js';
 import { NavBarOut } from './NavBarOut.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

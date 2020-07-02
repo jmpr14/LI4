@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import decode from 'jwt-decode';
 import logo from './images/logo_consultaJa.png';
 
-import { LayoutMedico } from './LayoutMedico';
 import ImgPerfil from './images/profile-placeholder.jpg';
 import api from './api';
 import { NavMenuMedico } from './NavMenuMedico';
@@ -47,6 +46,9 @@ export class PerfilMedico extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
+        if (localStorage.getItem("nome") != null) {
+            this.setState({ firstName: localStorage.getItem("nome") });
+        }
         if (localStorage.getItem('intervalo') == null) {
             var notifications = localStorage.getItem('notify')
             if (notifications == null) {
@@ -99,8 +101,8 @@ export class PerfilMedico extends Component {
             .then(res => {
                 console.log(res);
                 this.setState({ dadosPerfil: res.data });
-                this.setState({ firstName: res.data.nome });
                 if (localStorage.getItem("nome") == null) {
+                    this.setState({ firstName: res.data.nome });
                     localStorage.setItem("nome", this.state.firstName);
                 }
             })
@@ -147,7 +149,7 @@ export class PerfilMedico extends Component {
                     <div
                         className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
                     >
-                        Olá {this.state.firstName.split(' ', 1)}
+                        Bem Vindo(a) <br /> {this.state.firstName.split(' ', 1)}
                     </div>
 
                     <ul className="md:flex-col md:min-w-full flex flex-col list-none">
@@ -280,7 +282,11 @@ export class PerfilMedico extends Component {
                                                                 <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Paciente</th>
                                                             </tr>
                                                         </thead>
-                                                        {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Sr(a). {consulta.paciente}</td></tr>)}
+                                                        {this.state.consultasAgendadas.map(consulta => <tr>
+                                                            <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{consulta.data}</td>
+                                                            <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{consulta.hora}</td>
+                                                            <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">Sr(a). {consulta.paciente}</td>
+                                                        </tr>)}
                                                     </table>
                                                 </div>
                                             </div>

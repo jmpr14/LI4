@@ -23,7 +23,6 @@ export class NavMenuPaciente extends Component {
 
     render() {
         return (
-
             <>
                 <nav
                     className="top-0 absolute z-50 w-full items-center justify-between px-2 py-3 navbar-expand-sm"
@@ -42,7 +41,7 @@ export class NavMenuPaciente extends Component {
                                 <li className="flex items-center">
                                     <Link tag={Link} className="links" to="/logout">
                                         <button
-                                            className="bg-white text-gray-800 active:bg-gray-100 text-s font-bold uppercase px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
+                                            className="bg-white text-gray-800 active:bg-gray-100 text-s font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3"
 
                                             type="button"
                                             style={{ transition: "all .15s ease" }}

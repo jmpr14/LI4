@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import logo from './images/logo_consultaJa.png';
 
-import { LayoutPaciente } from './LayoutPaciente';
 import { MarcarConsulta } from './MarcarConsulta';
 import ImgPerfil from './images/profile-placeholder.jpg';
 import api from './api';
@@ -48,6 +47,9 @@ export class PerfilPaciente extends Component {
         const idD = decoded.Id;
         //console.log("Id" + idD);
         this.state.id = idD;
+        if (localStorage.getItem("nome") != null) {
+            this.setState({ firstName: localStorage.getItem("nome") });
+        }
         if (localStorage.getItem('intervalo') == null) {
             var notifications = localStorage.getItem('notify')
             if (notifications == null) {
@@ -100,8 +102,8 @@ export class PerfilPaciente extends Component {
             .then(res => {
                 console.log(res);
                 this.setState({ dadosPerfil: res.data });
-                this.setState({ firstName: res.data.nome });
                 if (localStorage.getItem("nome") == null) {
+                    this.setState({ firstName: res.data.nome });
                     localStorage.setItem("nome", this.state.firstName);
                 }
             })
@@ -151,7 +153,7 @@ export class PerfilPaciente extends Component {
                     <div
                         className="md:block text-left text-xl md:pb-2 text-gray-800 mr-0 inline-block whitespace-no-wrap text-sm uppercase font-bold p-3 px-0"
                     >
-                        Olá {this.state.firstName.split(' ', 1)}
+                        Bem Vindo(a) <br /> {this.state.firstName.split(' ', 1)}
                     </div>
 
                 {/* Navigation */}
@@ -283,7 +285,11 @@ export class PerfilPaciente extends Component {
                                                             <th class="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">Médico</th>
                                                         </tr>
                                                     </thead>
-                                                    {this.state.consultasAgendadas.map(consulta => <tr><td>{consulta.data}</td><td>{consulta.hora}</td><td>Dr(a). {consulta.medico}</td></tr>)}
+                                                        {this.state.consultasAgendadas.map(consulta => <tr>
+                                                            <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{consulta.data}</td>
+                                                            <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">{consulta.hora}</td>
+                                                            <td class="p-3 font-semibold border-top border-gray-300 hidden lg:table-cell">Dr(a). {consulta.medico}</td>
+                                                        </tr>)}
                                                 </table>
                                             </div>
                                         </div>

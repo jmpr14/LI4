@@ -2,7 +2,6 @@
 import { Link, Redirect } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { LayoutAdmin } from './LayoutAdmin';
 import api from './api';
 import { NavMenuAdmin } from './NavMenuAdmin';
 import { RodapeConta } from './RodapeConta';

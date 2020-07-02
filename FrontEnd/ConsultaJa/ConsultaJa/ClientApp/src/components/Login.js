@@ -3,10 +3,8 @@ import axios from 'axios';
 
 import { CONTAS_URL } from './api';
 import { ADMIN_URL } from './api';
-import { Layout } from './Layout';
 import { Rodape } from './Rodape';
 import { Redirect } from 'react-router-dom';
-import { NavMenu } from './NavMenu';
 import { NavBarOut } from './NavBarOut.js';
 
 export class Login extends Component {
