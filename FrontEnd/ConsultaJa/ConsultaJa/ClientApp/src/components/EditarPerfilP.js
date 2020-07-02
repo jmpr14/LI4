@@ -30,7 +30,8 @@ export class EditarPerfilP extends Component {
             passwordNova: null,
             nif: null,
             contactos: null,
-            localidade: null
+            localidade: null,
+            valInput: true
         };
     }
 
@@ -64,32 +65,51 @@ export class EditarPerfilP extends Component {
             .catch(err => { console.log(err); alert("Erro na Marcação da Consulta"); });
     }
 
+    verificaInputs = () => {
+
+        if ((this.state.passwordNova == '' || this.state.passwordNova == null) &&
+            (this.state.morada == '' || this.state.morada == null) &&
+            (this.state.name == '' || this.state.name == null) &&
+            (this.state.codigo_postal == '' || this.state.codigo_postal == null) &&
+            (this.state.dataNascimento == '' || this.state.dataNascimento == null)) {
+            this.state.valInput = false;
+        } else {
+            this.state.valInput = true;
+        }
+    }
+
     handleEdit = (event) => {
         event.preventDefault();
 
-        api.put(`contas/${this.state.id}`, {
-            Password: this.state.passwordAntiga,
-            PasswordNova: this.state.passwordNova,
-            Morada: this.state.morada,
-            Nome: this.state.name,
-            Codigo_postal: this.state.codigo_postal,
-            DataNascimento: this.state.dataNascimento
-        })
-            .then(res => {
-                console.log(res);
-                alert("Perfil editado com sucesso ");
-                this.setState({ isToggleOn: false });
-                if (this.state.name != null) {
-                    localStorage.setItem("nome", this.state.name);
-                    this.setState({ firstName: this.state.name });
-                }
-                this.props.history.push("/perfilPaciente");
+        this.verificaInputs();
+
+        if (this.state.valInput == true) {
+            api.put(`contas/${this.state.id}`, {
+                Password: this.state.passwordAntiga,
+                PasswordNova: this.state.passwordNova,
+                Morada: this.state.morada,
+                Nome: this.state.name,
+                Codigo_postal: this.state.codigo_postal,
+                DataNascimento: this.state.dataNascimento
             })
-            .catch(err => {
-                console.log(err)
-                alert("Não foi possível editar perfil");
-                this.props.history.push("/perfilPaciente");
-            });
+                .then(res => {
+                    console.log(res);
+                    alert("Perfil editado com sucesso ");
+                    this.setState({ isToggleOn: false });
+                    if (this.state.name != null && this.state.name != '') {
+                        localStorage.setItem("nome", this.state.name);
+                        this.setState({ firstName: this.state.name });
+                    }
+                    this.props.history.push("/perfilPaciente");
+                })
+                .catch(err => {
+                    console.log(err)
+                    alert("Não foi possível editar perfil");
+                    this.props.history.push("/perfilPaciente");
+                });
+        } else {
+            alert("Não foi possível editar perfil");
+        }
     }
 
     handleOnAccept = () => {

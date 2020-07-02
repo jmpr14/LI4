@@ -141,6 +141,32 @@ namespace ConsultaJa.DataBase
 		}
 
 		/**
+		 * Método que nos diz se existe alguma conta 
+		 * registada com um determinado email
+		 */
+		public bool containsWithEmail(string email)
+		{
+			MySqlConnection connection = new MySqlConnection(this.connectionstring);
+			/* Abrimos a conexão */
+			connection.Open();
+			DataTable dt = new DataTable();
+
+			StringBuilder sb = new StringBuilder();
+
+			sb.Append("select * from Conta where email='");
+			sb.Append(email);
+			sb.Append("'");
+
+			MySqlDataAdapter msda = new MySqlDataAdapter(sb.ToString(), connection);
+
+			msda.Fill(dt);
+
+			/* Fechamos a conexão */
+			connection.Close();
+			return dt.Rows.Count != 0;
+		}
+
+		/**
 		 * Método que permite remover todas as entradas 
 		 * na tabela Contactos que referenciem a conta 
 		 * cujo id é passado por parâmetro do método

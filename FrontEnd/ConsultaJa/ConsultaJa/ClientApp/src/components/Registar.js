@@ -52,11 +52,12 @@ export class Registar extends Component {
         })
             .then(conta => {
                 this.setState({ codR: conta.data });
+                (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
             })
-            .catch(err => console.log(err));
-
-        (this.state.isRegistarOn) ? this.setState({ isRegistarOn: false }) : this.setState({ isRegistarOn: true });
-
+            .catch(err => {
+                console.log(err)
+                alert("Email já existente!")
+            });
     }
 
     // Submeter um novo usuario, caso o codigo esteja bem

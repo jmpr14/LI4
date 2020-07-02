@@ -58,12 +58,12 @@ namespace ConsultaJa.Controllers
                 DateTime data = DateTime.Parse(conta.DataNascimento);
                 List<string> contac = new List<string>();
                 contac.Add(conta.Contactos);
-                id = model.novoPaciente(conta.Email, conta.Password, conta.Nome, data, conta.Morada, conta.Nif, conta.Codigo_postal, contac, conta.Localidade);
+                id = this.model.novoPaciente(conta.Email, conta.Password, conta.Nome, data, conta.Morada, conta.Nif, conta.Codigo_postal, contac, conta.Localidade);
             }
             else
             {
                 DateTime data = DateTime.Parse(conta.DataNascimento);
-                model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade, conta.Contactos);
+                this.model.fazerPedidoInscricao(conta.Email, conta.Password, conta.Nome, data, conta.Nif, conta.Morada, conta.Codigo_postal, conta.Localidade, conta.Contactos);
             }
             return Ok(id);
         }
@@ -150,7 +150,7 @@ namespace ConsultaJa.Controllers
                 codigo = this.model.enviarEmail(email);
             } catch(Exception e)
             {
-                return Unauthorized();
+                return Unauthorized(e.Message);
             }
 
             return Ok(codigo);

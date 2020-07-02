@@ -96,9 +96,12 @@ namespace ConsultaJa
 		/**
 		 * Método usado para enviar um email para um dado utilizador
 		 */
-		 public int enviarEmail(string email)
+		public int enviarEmail(string email)
 		{
-			return EnviarEmail.sendEmail(email);
+			if (!this.contas.containsWithEmail(email))
+				return EnviarEmail.sendEmail(email);
+			else
+				throw new MailNaoRegistado("Email já atribuido");
 		}
 
 		/*
@@ -430,10 +433,10 @@ namespace ConsultaJa
 		{
 			if (PasswordHasher.VerificaHash(oldpassWord, this.contas.get(id).getPassword()))
 			{
-				if (password != null) this.contas.changePassword(id, oldpassWord, PasswordHasher.Hash(password));
-				if (morada != null) this.contas.changeMorada(id, morada);
-				if (codigo_postal != null) this.contas.changeCodigoPostal(id, codigo_postal);
-				if (nome != null) this.contas.changeNome(id, nome);
+				if (password != null && password.Length > 0) this.contas.changePassword(id, oldpassWord, PasswordHasher.Hash(password));
+				if (morada != null && morada.Length > 0) this.contas.changeMorada(id, morada);
+				if (codigo_postal != null && codigo_postal.Length > 0) this.contas.changeCodigoPostal(id, codigo_postal);
+				if (nome != null && nome.Length > 0) this.contas.changeNome(id, nome);
 				if (dataNascimento != null) this.contas.changeDataNascimento(id, dataNascimento);
 			}
 			else
